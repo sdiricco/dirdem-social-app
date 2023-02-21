@@ -1,0 +1,30 @@
+# IDE files
+.vscode/
+.idea/
+*.iml
+
+# Dependency directories
+node_modules/
+www/
+
+# Compiled output
+/dist/
+/www/
+/android/
+/ios/
+/capacitor.config.json
+
+# Debugging logs
+npm-debug.log*
+
+# Environment variables
+.env.local
+.env.*.local
+.env.development
+.env.production
+.env.staging
+.env.test
+
+# Miscellaneous
+.DS_Store
+Thumbs.db
