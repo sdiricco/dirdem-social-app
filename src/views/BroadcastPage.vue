@@ -10,7 +10,7 @@
           </ion-buttons>
           <ion-title>Welcome</ion-title>
           <ion-buttons slot="end">
-            <ion-button :strong="true" @click="modalOpen = false">Confirm</ion-button>
+            <ion-button :strong="true" @click="onSubimit">Confirm</ion-button>
           </ion-buttons>
         </ion-toolbar>
       </ion-header>
@@ -38,6 +38,13 @@ const userEmail = ref('')
 const userId = ref('')
 const modalOpen = ref(false)
 
+async function onSubimit(){
+  modalOpen.value = false;
+  await db.bcast.insert(userId.value)({maxDistanceKm: 100,expiresAt: new Date(), tag: ['mioTag'], location: {lat: 11.11, lng: 22.22}, maxUsers: 30, content: {
+    message: "message",
+    title: "title",
+  }   })
+}
 
 onMounted(async ()=>{
   const authKey = `sb-${supabaseProjectId}-auth-token`
@@ -45,7 +52,7 @@ onMounted(async ()=>{
   userEmail.value = userData?.user?.email
   userId.value = userData?.user?.id
   console.log("userData", userData)
-  const response = await db.bcast.getAccepted(userId.value)
+  const response = await db.bcast.getPending(userId.value)
   console.log(response)
 })
 
