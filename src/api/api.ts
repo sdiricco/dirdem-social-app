@@ -1,28 +1,12 @@
 
+import { UserInfo } from '@/interfaces/user-info';
 import { createClient, RealtimePostgresChangesPayload } from '@supabase/supabase-js';
+import { Bcast } from 'dirdem-bcast-client/dist/interfaces/bcast';
 import { v4 as uuid } from 'uuid';
+import { supabaseKey, supabaseUrl } from '../constants';
 
-export interface Bcast {
-    expiresAt: Date;
-    content: {
-        title: string;
-        message: string;
-    },
-    maxUsers: number;
-    maxDistanceKm: number;
-    tag: string[];
-    location: {
-        lat: number;
-        lng: number;
-    };
-    explicitContent?: boolean
-}
-
-import {supabaseKey, supabaseUrl} from '../constants';
 
 const supabase = createClient(supabaseUrl, supabaseKey);
-
-
 
 const bcast = {
     insert: (userId: string) => (bcast: Bcast) => supabase
@@ -118,12 +102,30 @@ const message = {
             cb
         )
         .subscribe()
+}
 
+const userInfo = {
+    get: (userId: string) => supabase
+        .from('user_info')
+        .select('*')
+        .eq('user_id', userId),
+
+    insert: (userId: string) => (userInfo: UserInfo) => supabase
+        .from('user_info')
+        .insert({
+            user_id: userId,
+            bcast_to_send: userInfo.bcast.toSend,
+            bcast_to_get: userInfo.bcast.toGet,
+            tag: userInfo.tag,
+            latitude: userInfo.location.lat,
+            longitude: userInfo.location.lng
+        })
 }
 
 
 export default {
     supabase,
     bcast,
-    message
+    message,
+    userInfo
 }
