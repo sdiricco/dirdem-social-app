@@ -20,6 +20,13 @@ const routes: Array<RouteRecordRaw> = [
     path: '/home',
     name: 'Home',
     component: () => import('@/views/HomePage.vue'),
+    redirect: '/home/broadcast',
+    children: [
+      {
+        path: "broadcast",
+        component: () => import('@/views/BroadcastPage.vue')
+      }
+    ]
   }
 ]
 
