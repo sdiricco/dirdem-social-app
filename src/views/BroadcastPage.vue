@@ -1,7 +1,7 @@
 <template>
   <h1>Benvenuto {{ userEmail }}</h1>
   <p>Id: {{ userId }}</p>
-  <ion-button @click="getItems">getItems</ion-button>
+  <ion-button @click="getPendingBCast">get pending bcast</ion-button>
   <ion-modal :is-open="modalOpen">
     <ion-header>
       <ion-toolbar>
@@ -72,7 +72,7 @@ async function onSubimit() {
   console.log(response)
 }
 
-async function getItems(){
+async function getPendingBCast(){
   const response = await dbUtility.bcast.getPending(userId.value);
   console.log(response);
 }
@@ -83,6 +83,10 @@ onMounted(async () => {
   userEmail.value = userData?.user?.email;
   userId.value = userData?.user?.id;
   console.log("userData", userData);
+
+  dbUtility.bcast.onInsert(userId.value)((data)=>{
+    console.log('on insert', data);
+  })
 
 });
 </script>

@@ -14,6 +14,10 @@ interface IState {
   preferences: {
     isDark: boolean;
   },
+  user: {
+    email: string,
+    id: string
+  }
 }
 export const useStore = defineStore({
   id: "store",
@@ -26,6 +30,10 @@ export const useStore = defineStore({
     },
     preferences: {
       isDark: false,
+    },
+    user: {
+      email: '',
+      id: ''
     }
   }),
   getters: {

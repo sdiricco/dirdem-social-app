@@ -25,6 +25,10 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: "broadcast",
         component: () => import('@/views/BroadcastPage.vue')
+      },
+      {
+        path: "profile",
+        component: () => import('@/views/ProfilePage.vue')
       }
     ]
   }
