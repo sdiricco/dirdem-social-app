@@ -4,6 +4,7 @@ import App from './App.vue'
 import router from './router';
 import './registerServiceWorker';
 
+
 /*********************************************
  * IONIC
  *********************************************/
@@ -40,6 +41,12 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 /* import specific icons */
 import { faUserSecret, faSatelliteDish, faMoon, faSun, faWifi, faMagnifyingGlass, faCircleXmark } from '@fortawesome/free-solid-svg-icons'
+
+import { createClient } from '@supabase/supabase-js';
+import {supabaseUrl, supabaseKey} from "@/constants";
+import api from "@/api/api"
+export const supabaseClient = createClient(supabaseUrl, supabaseKey);
+export const dbUtility = api(supabaseClient)
 
 /* add icons to the library */
 library.add(faUserSecret, faSatelliteDish, faMoon, faSun, faWifi, faMagnifyingGlass, faCircleXmark)

@@ -1,6 +1,7 @@
 <template>
   <h1>Benvenuto {{ userEmail }}</h1>
   <p>Id: {{ userId }}</p>
+  <ion-button @click="getItems">getItems</ion-button>
   <ion-modal :is-open="modalOpen">
     <ion-header>
       <ion-toolbar>
@@ -47,14 +48,17 @@ import {
 } from "@ionic/vue";
 import { supabaseProjectId } from "../constants";
 import { add } from "ionicons/icons";
-import db from "../api/api";
+
+
+import {dbUtility } from "../main"
+
 const userEmail = ref("");
 const userId = ref("");
 const modalOpen = ref(false);
 
 async function onSubimit() {
   modalOpen.value = false;
-  await db.bcast.insert(userId.value)({
+  const response = await dbUtility.bcast.insert(userId.value)({
     maxDistanceKm: 100,
     expiresAt: new Date(),
     tag: ["mioTag"],
@@ -65,6 +69,12 @@ async function onSubimit() {
       title: "title",
     },
   });
+  console.log(response)
+}
+
+async function getItems(){
+  const response = await dbUtility.bcast.getPending(userId.value);
+  console.log(response);
 }
 
 onMounted(async () => {
@@ -73,7 +83,6 @@ onMounted(async () => {
   userEmail.value = userData?.user?.email;
   userId.value = userData?.user?.id;
   console.log("userData", userData);
-  const response = await db.bcast.getPending(userId.value);
-  console.log(response);
+
 });
 </script>
