@@ -117,12 +117,12 @@ const api = (init = false) =>
                 get: (userId: string) => supabase
                     .from('user_info')
                     .select('*')
-                    .eq('user_id', userId),
+                    .eq('id', userId),
 
                 insert: (userId: string) => (userInfo: UserInfo) => supabase
                     .from('user_info')
                     .insert({
-                        user_id: userId,
+                        id: userId,
                         bcast_to_send: userInfo.bcast.toSend,
                         bcast_to_get: userInfo.bcast.toGet,
                         tag: userInfo.tag,

@@ -16,11 +16,14 @@
       >
       </ion-toggle>
     </ion-item>
+    <ion-item lines="inset" button @click="()=>router.push('/home/profile')">
+      <ion-label>Profile</ion-label>
+    </ion-item>
   </ion-content>
 </template>
 
 <script lang="ts" setup>
-
+import router from "../router"
 import {
   IonHeader,
   IonToolbar,

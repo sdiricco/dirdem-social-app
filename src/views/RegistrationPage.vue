@@ -34,8 +34,7 @@ import { arrowForwardSharp, informationCircle } from 'ionicons/icons';
 import { ref } from "vue";
 import router from "../router/index"
 
-import db from "../api/api";
-
+import {supabaseClient } from "../main"
 
 const email = ref('');
 const password = ref('');
@@ -43,7 +42,7 @@ const loginErrorMessage = ref('');
 
 
 async function onSignUp(){
-  const {error} = await db.supabase.auth.signUp({
+  const {error} = await supabaseClient.auth.signUp({
     email: email.value,
     password: password.value
   })
