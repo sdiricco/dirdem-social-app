@@ -28,7 +28,7 @@ const api = (init = false) =>
                         explicit: bcast.explicitContent
                     }),
 
-                getCreated: (userId: string) => supabase
+                getInserted: (userId: string) => supabase
                     .from('bcast')
                     .select('*')
                     .eq('user_id', userId),
