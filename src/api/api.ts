@@ -1,7 +1,8 @@
-import { RealtimePostgresChangesPayload, SupabaseClient } from '@supabase/supabase-js';
+import { RealtimePostgresChangesPayload, SupabaseClient, PostgrestResponse } from '@supabase/supabase-js';
 import { v4 as uuid } from 'uuid';
 import { Bcast } from '../interfaces/bcast';
 import { UserInfo } from '../interfaces/user-info';
+
 
 
 const api = (init = false) =>

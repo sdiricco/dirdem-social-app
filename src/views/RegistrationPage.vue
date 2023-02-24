@@ -79,9 +79,6 @@ ion-card-content{
   align-items: center;
 }
 
-.m64{
-  margin-bottom: 64px;
-}
 
 .mt64{
   margin-top: 64px;
