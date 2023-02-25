@@ -1,4 +1,4 @@
-import { Location } from "./location";
+import { GeoLocation } from "./geo-location";
 
 export interface Bcast {
     expiresAt: Date;
@@ -9,6 +9,6 @@ export interface Bcast {
     maxUsers: number;
     maxDistanceKm: number;
     tag: string[];
-    location: Location;
+    location: GeoLocation;
     explicitContent?: boolean;
 }
