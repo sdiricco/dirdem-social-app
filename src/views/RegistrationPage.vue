@@ -34,7 +34,8 @@ import { arrowForwardSharp, informationCircle } from 'ionicons/icons';
 import { ref } from "vue";
 import router from "../router/index"
 
-import {supabaseClient } from "../main"
+import * as authApi from "../api/auth"
+import { ApiError } from "@/api/errorHandler";
 
 const email = ref('');
 const password = ref('');
@@ -42,15 +43,19 @@ const loginErrorMessage = ref('');
 
 
 async function onSignUp(){
-  const {error} = await supabaseClient.auth.signUp({
-    email: email.value,
-    password: password.value
-  })
-  if (error) {
-    loginErrorMessage.value = error.message
-    return;
+  try {
+    await authApi.signUp({
+      email:email.value,
+      password:password.value
+    })
+    router.push('/home')
+  } catch (error:any) {
+    if (error instanceof ApiError) {
+      loginErrorMessage.value = error.message
+    }else{
+      alert(`[UNKNOWN ERROR]: ${error.message}`)
+    }
   }
-  router.push('/home')
 }
 
 </script>
