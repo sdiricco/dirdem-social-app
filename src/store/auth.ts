@@ -1,4 +1,3 @@
-import { supabase } from './../main';
 import { defineStore } from "pinia";
 import * as authApi from "@/api/auth"
 import { ApiError } from "@/api/errorHandler";
@@ -23,15 +22,6 @@ export const useAuthStore = defineStore({
     session: null
   }),
   actions: {
-
-    /* HANDLE ERRORS */
-    async handleApiError(error:any){
-      if (error instanceof ApiError) {
-        this.error = error;
-      } else {
-        alert(`[UNKNOWN ERROR]: ${error.message}`);
-      }
-    },
 
     /* SIGN UP */
     async signUp() {
@@ -62,5 +52,15 @@ export const useAuthStore = defineStore({
         this.handleApiError(error)
       }
     },
+
+    /* HANDLE ERRORS */
+    async handleApiError(error:any){
+      if (error instanceof ApiError) {
+        this.error = error;
+      } else {
+        alert(`[UNKNOWN ERROR]: ${error.message}`);
+      }
+    },
+
   },
 });
