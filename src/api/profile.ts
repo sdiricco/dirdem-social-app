@@ -1,30 +1,35 @@
-import { ISignIn, ISignUp } from "./interfaces/auth";
+import { UserInfo } from "@/interfaces/user-info";
 import { supabase } from "../main";
 import { ApiError } from "./errorHandler";
 
 /*****************************************************************************/
-/* Sign In */
+/* Fetch */
 /*****************************************************************************/
-export async function signIn(signIn: ISignIn) {
-  const { data, error } = await supabase.auth.signInWithPassword(signIn);
+export async function fetch(userId: string) :Promise<UserInfo> {
+  const { data, error } = await supabase
+    .from('user_info')
+    .select('*')
+    .eq('id', userId);
   if (error) {
     throw new ApiError(error.message, {
-      details: error.name,
-      code: error.status,
+      details: error.details,
+      code: Number(error.code),
     });
   }
-  return data;
+  return data[0];
 }
 
 /*****************************************************************************/
-/* Sign Up */
+/* Update */
 /*****************************************************************************/
-export async function signUp(signUp: ISignUp) {
-  const { data, error } = await supabase.auth.signUp(signUp);
+export async function update(userInfo: UserInfo) {
+  const { data, error } = await supabase
+    .from('user_info')
+    .insert(userInfo);
   if (error) {
     throw new ApiError(error.message, {
-      details: error.name,
-      code: error.status,
+      details: error.details,
+      code: Number(error.code),
     });
   }
   return data;

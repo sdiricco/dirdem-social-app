@@ -32,7 +32,11 @@
 import { IonContent, IonPage, IonItem, IonButton, IonLabel, IonInput, IonCard, IonCardHeader, IonCardContent, IonCardTitle, IonIcon } from "@ionic/vue";
 import { arrowForwardSharp, informationCircle } from 'ionicons/icons';
 import { useAuthStore } from "@/store/auth";
+import { onMounted } from "vue";
 const authStore = useAuthStore();
+onMounted(() => {
+  authStore.$reset()
+})
 </script>
 
 <style scoped>
