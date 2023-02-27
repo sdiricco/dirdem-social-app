@@ -1,9 +1,15 @@
+/*****************************************************************************/
+/* Imports */
+/*****************************************************************************/
 import { defineStore } from "pinia";
 import * as authApi from "@/api/auth"
 import { ApiError } from "@/api/errorHandler";
 import router from "@/router/index"
 import {User, Session} from "@supabase/supabase-js"
 
+/*****************************************************************************/
+/* Interfaces */
+/*****************************************************************************/
 interface IAuthState {
   email: string;
   password: string;
@@ -12,8 +18,12 @@ interface IAuthState {
   session: Session | null;
 }
 
+/*****************************************************************************/
+/* Store */
+/*****************************************************************************/
 export const useAuthStore = defineStore({
   id: "auth",
+
   state: (): IAuthState => ({
     email: "",
     password: "",
@@ -21,9 +31,10 @@ export const useAuthStore = defineStore({
     user: null,
     session: null
   }),
-  actions: {
 
-    /* SIGN UP */
+  actions: {
+    
+    /* Sign up */
     async signUp() {
       try {
         const data = await authApi.signUp({
@@ -38,7 +49,7 @@ export const useAuthStore = defineStore({
       }
     },
 
-    /* SIGN IN */
+    /* sign in */
     async signIn() {
       try {
         const data = await authApi.signIn({
@@ -53,7 +64,7 @@ export const useAuthStore = defineStore({
       }
     },
 
-    /* HANDLE ERRORS */
+    /* handle errors */
     async handleApiError(error:any){
       if (error instanceof ApiError) {
         this.error = error;
