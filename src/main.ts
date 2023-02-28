@@ -44,9 +44,7 @@ import { faUserSecret, faSatelliteDish, faMoon, faSun, faWifi, faMagnifyingGlass
 
 import { createClient } from '@supabase/supabase-js';
 import {supabaseUrl, supabaseKey} from "@/constants";
-import api from "@/api/api"
-export const supabaseClient = createClient(supabaseUrl, supabaseKey);
-export const dbUtility = api(supabaseClient)
+export const supabase = createClient(supabaseUrl, supabaseKey);
 
 /* add icons to the library */
 library.add(faUserSecret, faSatelliteDish, faMoon, faSun, faWifi, faMagnifyingGlass, faCircleXmark)

@@ -8,18 +8,18 @@
       <ion-card-content>
         <ion-item fill="outline" class="ion-margin-bottom">
           <ion-label position="floating">Email</ion-label>
-          <ion-input placeholder="Enter email" v-model="email" ></ion-input>
+          <ion-input placeholder="Enter email" v-model="authStore.email" ></ion-input>
         </ion-item >
         <ion-item fill="outline" class="ion-margin-bottom">
           <ion-label position="floating">Password</ion-label>
-          <ion-input placeholder="Enter password" v-model="password" type="password"></ion-input>
+          <ion-input placeholder="Enter password" v-model="authStore.password" type="password"></ion-input>
         </ion-item>
-        <ion-button size="large" expand="block" @click="onSignIn">Continua
+        <ion-button size="large" expand="block" @click="authStore.signIn">Continua
           <ion-icon slot="end" :icon="arrowForwardSharp"></ion-icon>
         </ion-button>
-        <div v-if="loginErrorMessage" class="ion-text-start error-container">
+        <div v-if="authStore.error" class="ion-text-start error-container">
           <ion-icon :icon="informationCircle" color="danger" size="small"></ion-icon>
-          <ion-label class="ion-padding-left" color="danger" >{{ loginErrorMessage }}</ion-label>
+          <ion-label class="ion-padding-left" color="danger" >{{ authStore.error?.message }}</ion-label>
         </div>
         <p class="mt64">Non hai un account? <router-link to="/registration">Registrati</router-link> </p>
       </ion-card-content>
@@ -31,29 +31,12 @@
 <script lang="ts" setup>
 import { IonContent, IonPage, IonItem, IonButton, IonLabel, IonInput, IonCard, IonCardHeader, IonCardContent, IonCardTitle, IonIcon } from "@ionic/vue";
 import { arrowForwardSharp, informationCircle } from 'ionicons/icons';
-import { ref } from "vue";
-import router from "../router/index"
-
-import {supabaseClient } from "../main"
-
-
-const email = ref('');
-const password = ref('');
-const loginErrorMessage = ref('');
-
-
-async function onSignIn(){
-  const {error} = await supabaseClient.auth.signInWithPassword({
-    email: email.value,
-    password: password.value
-  })
-  if (error) {
-    loginErrorMessage.value = error.message
-    return;
-  }
-  router.push('/home')
-}
-
+import { useAuthStore } from "@/store/auth";
+import { onMounted } from "vue";
+const authStore = useAuthStore();
+onMounted(() => {
+  authStore.$reset()
+})
 </script>
 
 <style scoped>
