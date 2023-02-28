@@ -3,9 +3,10 @@ import {
   SupabaseClient,
 } from "@supabase/supabase-js";
 import { v4 as uuid } from "uuid";
-import { Bcast } from "../interfaces/bcast";
-import { GeoLocation } from "../interfaces/geo-location";
-import { UserInfo } from "../interfaces/user-info";
+import { IBcast } from "../interfaces/bcast";
+import { IGeoLocation } from "../interfaces/geo-location";
+import { IUserInfo } from "../interfaces/user-info";
+import handlers from "./utils/handlers";
 
 const api =
   (init = false) => (supabase: SupabaseClient<any, "public", any>) => {
@@ -18,7 +19,7 @@ const api =
       supabase,
 
       bcast: {
-        insert: (userId: string) => (bcast: Bcast) =>
+        insert: (userId: string) => (bcast: IBcast) =>
           supabase
             .from("bcast")
             .insert({
@@ -37,9 +38,11 @@ const api =
           supabase
             .from("bcast")
             .select("*")
-            .eq("user_id", userId),
+            .eq("user_id", userId)
+            .then(handlers.bcastHandler),
 
-        getCandidate: (userId: string) => (location: GeoLocation) => (tag: string[]) =>
+        getCandidate:
+          (userId: string) => (location: IGeoLocation) => (tag: string[]) =>
             supabase
               .rpc("candidate_bcast", {
                 _user_id: userId,
@@ -146,9 +149,10 @@ const api =
           supabase
             .from("user_info")
             .select("*")
-            .eq("id", userId),
+            .eq("id", userId)
+            .then(handlers.userInfoHandler),
 
-        insert: (userId: string) => (userInfo: UserInfo) =>
+        insert: (userId: string) => (userInfo: IUserInfo) =>
           supabase
             .from("user_info")
             .insert({
@@ -157,7 +161,7 @@ const api =
               bcast_to_get: userInfo.bcast.toGet,
               tag: userInfo.tag,
             }),
-      }
+      },
     };
   };
 

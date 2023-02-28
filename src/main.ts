@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import App from './App.vue'
-import router from './router/router';
+import router from './router';
 import './registerServiceWorker';
 
 
@@ -43,10 +43,9 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { faUserSecret, faSatelliteDish, faMoon, faSun, faWifi, faMagnifyingGlass, faCircleXmark } from '@fortawesome/free-solid-svg-icons'
 
 import { createClient } from '@supabase/supabase-js';
-import {supabaseUrl, supabaseKey} from "@/constants/constants";
-import api from "@/api/api"
-export const supabaseClient = createClient(supabaseUrl, supabaseKey);
-export const dbUtility = api(supabaseClient)
+import { supabaseKey, supabaseUrl } from './constants';
+
+export const supabase = createClient(supabaseUrl, supabaseKey);
 
 /* add icons to the library */
 library.add(faUserSecret, faSatelliteDish, faMoon, faSun, faWifi, faMagnifyingGlass, faCircleXmark)

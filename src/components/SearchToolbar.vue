@@ -10,7 +10,7 @@
 <script lang="ts" setup>
 import { IonToolbar, IonProgressBar, IonButtons, IonMenuButton } from "@ionic/vue";
 
-import { useStore } from "@/store/store";
+import { useStore } from "@/store";
 const store = useStore();
 
 </script>

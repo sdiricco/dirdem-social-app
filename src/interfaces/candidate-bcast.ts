@@ -1,5 +1,5 @@
-import { Bcast } from "./bcast";
+import { IBcast } from "./bcast";
 
-export interface CandidateBcast extends Bcast {
+export interface ICandidateBcast extends IBcast {
     distanceKm: number;
 }

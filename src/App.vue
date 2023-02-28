@@ -13,7 +13,7 @@
 import { IonApp, IonRouterOutlet, IonPage, IonMenu } from "@ionic/vue";
 import SiderBar from './components/SideBar.vue'
 import { onMounted } from "vue";
-import { useStore } from "@/store/store";
+import { useStore } from "@/store";
 
 
 const store = useStore();

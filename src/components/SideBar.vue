@@ -19,7 +19,7 @@
 </template>
 
 <script lang="ts" setup>
-import router from "../router/router"
+import router from "../router"
 import {
   IonHeader,
   IonToolbar,
@@ -30,7 +30,7 @@ import {
   IonItem,
 } from "@ionic/vue";
 import { moon } from "ionicons/icons";
-import { useStore } from "@/store/store";
+import { useStore } from "@/store";
 
 const store = useStore();
 

@@ -1,7 +1,7 @@
 <template>
-  <h1>Benvenuto {{ userEmail }}</h1>
-  <p>Id: {{ userId }}</p>
-  <ion-button @click="getGandidateBcast">get pending bcast</ion-button>
+  <h1>Welcome {{ authStore.email }}</h1>
+  <p>Id: {{ authStore.user?.id }}</p>
+  <ion-button>get pending bcast</ion-button>
   <ion-modal :is-open="modalOpen">
     <ion-header>
       <ion-toolbar>
@@ -10,7 +10,7 @@
         </ion-buttons>
         <ion-title>Welcome</ion-title>
         <ion-buttons slot="end">
-          <ion-button :strong="true" @click="onSubimit">Confirm</ion-button>
+          <ion-button :strong="true">Confirm</ion-button>
         </ion-buttons>
       </ion-toolbar>
     </ion-header>
@@ -29,11 +29,10 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from "vue";
+import {ref } from "vue";
 import {
   IonContent,
   IonHeader,
-  IonPage,
   IonModal,
   IonToolbar,
   IonButtons,
@@ -46,47 +45,8 @@ import {
   IonButton,
   IonTitle,
 } from "@ionic/vue";
-import { supabaseProjectId } from "../constants/constants";
 import { add } from "ionicons/icons";
-
-
-import {dbUtility } from "../main"
-
-const userEmail = ref("");
-const userId = ref("");
+import {useAuthStore} from "@/store/auth"
+const authStore = useAuthStore()
 const modalOpen = ref(false);
-
-async function onSubimit() {
-  modalOpen.value = false;
-  const response = await dbUtility.bcast.insert(userId.value)({
-    maxDistanceKm: 100,
-    expiresAt: new Date(),
-    tag: ["mioTag"],
-    location: { lat: 11.11, lng: 22.22 },
-    maxUsers: 30,
-    content: {
-      message: "message",
-      title: "title",
-    },
-  });
-  console.log(response)
-}
-
-async function getGandidateBcast(){
-  const response = await dbUtility.bcast.getCandidate(userId.value);
-  console.log(response);
-}
-
-onMounted(async () => {
-  const authKey = `sb-${supabaseProjectId}-auth-token`;
-  const userData = JSON.parse(localStorage.getItem(authKey) || "");
-  userEmail.value = userData?.user?.email;
-  userId.value = userData?.user?.id;
-  console.log("userData", userData);
-
-  dbUtility.bcast.onInsert(userId.value)((data)=>{
-    console.log('on insert', data);
-  })
-
-});
 </script>

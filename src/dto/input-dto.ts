@@ -1,8 +1,8 @@
-import { Message } from "@/interfaces/message";
+import { IMessage } from "@/interfaces/message";
 import { RawBcast } from "@/interfaces/raw/raw-bcast";
 import { RawMessage } from "@/interfaces/raw/raw-message";
 import { RawUserInfo } from "@/interfaces/raw/raw-user-info";
-import { UserInfo } from "@/interfaces/user-info";
+import { IUserInfo } from "@/interfaces/user-info";
 import { Bcast } from "dirdem-bcast-client/dist/interfaces/bcast";
 
 
@@ -22,7 +22,7 @@ const rawBcastToBcast = (rawBcast: RawBcast): Bcast => ({
   explicitContent: rawBcast.explicit,
 });
 
-const rawUserInfoToUserInfo = (rawUserInfo: RawUserInfo): UserInfo => ({
+const rawUserInfoToUserInfo = (rawUserInfo: RawUserInfo): IUserInfo => ({
   bcast: {
     toGet: rawUserInfo.bcast_to_get,
     toSend: rawUserInfo.bcast_to_send,
@@ -30,12 +30,13 @@ const rawUserInfoToUserInfo = (rawUserInfo: RawUserInfo): UserInfo => ({
   tag: rawUserInfo.tag,
 });
 
-const rawMessageToMessage = (rawMessage: RawMessage): Message => ({
+const rawMessageToMessage = (rawMessage: RawMessage): IMessage => ({
   bcastId: rawMessage.bcast_id,
   content: rawMessage.content,
   userId: rawMessage.user_id,
   createdAt: new Date(rawMessage.created_at),
 });
+
 
 
 export default {
