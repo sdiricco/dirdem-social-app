@@ -32,7 +32,7 @@
 import { IonContent, IonPage, IonItem, IonButton, IonLabel, IonInput, IonCard, IonCardHeader, IonCardContent, IonCardTitle, IonIcon } from "@ionic/vue";
 import { arrowForwardSharp, informationCircle } from 'ionicons/icons';
 import { ref } from "vue";
-import router from "../router/index"
+import router from "../router/router"
 
 import {supabaseClient } from "../main"
 
@@ -54,36 +54,3 @@ async function onSignUp(){
 }
 
 </script>
-
-<style scoped>
-ion-card{
-    margin:auto;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    box-shadow: none;
-    text-align: center;
-}
-
-ion-card-header{
-    margin-top: auto;
-}
-
-ion-card-content{
-    padding-bottom: 20vh;
-    margin-bottom: auto;
-}
-
-.error-container{
-  display: flex;
-  align-items: center;
-}
-
-.m64{
-  margin-bottom: 64px;
-}
-
-.mt64{
-  margin-top: 64px;
-}
-</style>

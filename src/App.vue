@@ -11,9 +11,9 @@
 
 <script lang="ts" setup>
 import { IonApp, IonRouterOutlet, IonPage, IonMenu } from "@ionic/vue";
-import  SiderBar from './components/SideBar.vue'
+import SiderBar from './components/SideBar.vue'
 import { onMounted } from "vue";
-import { useStore } from "@/store/main";
+import { useStore } from "@/store/store";
 
 
 const store = useStore();
@@ -26,5 +26,5 @@ onMounted(async () => {
 </script>
 
 <style>
-@import './main.css'
+@import './styles/styles.css'
 </style>

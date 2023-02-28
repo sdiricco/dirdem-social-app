@@ -157,7 +157,7 @@ const api =
               bcast_to_get: userInfo.bcast.toGet,
               tag: userInfo.tag,
             }),
-      },
+      }
     };
   };
 

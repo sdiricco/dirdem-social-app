@@ -32,7 +32,7 @@
 import { IonContent, IonPage, IonItem, IonButton, IonLabel, IonInput, IonCard, IonCardHeader, IonCardContent, IonCardTitle, IonIcon } from "@ionic/vue";
 import { arrowForwardSharp, informationCircle } from 'ionicons/icons';
 import { ref } from "vue";
-import router from "../router/index"
+import router from "../router/router"
 
 import {supabaseClient } from "../main"
 

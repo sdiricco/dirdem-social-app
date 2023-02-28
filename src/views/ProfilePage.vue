@@ -9,13 +9,13 @@ import { IonButton } from "@ionic/vue";
 import { onMounted } from "vue";
 import { dbUtility } from "../main";
 
-import { useStore } from "@/store/main";
+import { useStore } from "@/store/store";
 
 
 const store = useStore();
 
 async function submitProfile() {
-  const response = await dbUtility.userInfo.insert(store.user.id)({ bcast: { toGet: 10, toSend: 100 }, location: { lat: 11.11, lng: 22.22 }, tag: ["sport", "trekking", "sex", "mioTag"] });
+  const response = await dbUtility.userInfo.insert(store.user.id)({ bcast: { toGet: 10, toSend: 100 }, tag: ["sport", "trekking", "sex", "mioTag"] });
   console.log(response);
 }
 

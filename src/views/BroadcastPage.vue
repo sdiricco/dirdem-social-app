@@ -1,7 +1,7 @@
 <template>
   <h1>Benvenuto {{ userEmail }}</h1>
   <p>Id: {{ userId }}</p>
-  <ion-button @click="getPendingBCast">get pending bcast</ion-button>
+  <ion-button @click="getGandidateBcast">get pending bcast</ion-button>
   <ion-modal :is-open="modalOpen">
     <ion-header>
       <ion-toolbar>
@@ -46,7 +46,7 @@ import {
   IonButton,
   IonTitle,
 } from "@ionic/vue";
-import { supabaseProjectId } from "../constants";
+import { supabaseProjectId } from "../constants/constants";
 import { add } from "ionicons/icons";
 
 
@@ -72,8 +72,8 @@ async function onSubimit() {
   console.log(response)
 }
 
-async function getPendingBCast(){
-  const response = await dbUtility.bcast.getPending(userId.value);
+async function getGandidateBcast(){
+  const response = await dbUtility.bcast.getCandidate(userId.value);
   console.log(response);
 }
 
