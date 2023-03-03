@@ -34,3 +34,4 @@ export async function update(userInfo: UserInfo) {
   }
   return data;
 }
+

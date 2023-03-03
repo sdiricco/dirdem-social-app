@@ -29,3 +29,5 @@ export async function signUp(signUp: ISignUp) {
   }
   return data;
 }
+
+

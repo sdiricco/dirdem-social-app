@@ -40,7 +40,7 @@ export const useAuthStore = defineStore({
         const data = await authApi.signUp({
           email: this.email,
           password: this.password,
-        });
+        })
         this.user = data.user;
         this.session = data.session;
         router.push("/home");

@@ -16,9 +16,12 @@
       >
       </ion-toggle>
     </ion-item>
-    <ion-item lines="inset" button @click="()=>router.push('/home/profile')">
+    <ion-menu-toggle>
+      <ion-item lines="inset" button @click="onClickProfile">
       <ion-label>Profile</ion-label>
     </ion-item>
+      </ion-menu-toggle>
+
   </ion-content>
 </template>
 
@@ -32,15 +35,23 @@ import {
   IonLabel,
   IonToggle,
   IonItem,
+  IonMenuToggle
 } from "@ionic/vue";
 import { moon } from "ionicons/icons";
 import { useStore } from "@/store/main";
+import {useLayoutStore} from "@/store/layout"
 
 const store = useStore();
+const layout = useLayoutStore();
 
 async function onToggleTheme(evt: any) {
   const isDark = evt.target.checked;
   await store.toggleTheme(isDark);
+}
+
+function onClickProfile(){
+  router.push('/home/profile')
+  layout.sideBar = false
 }
 
 </script>
