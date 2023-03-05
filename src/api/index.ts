@@ -3,9 +3,11 @@ import {
   SupabaseClient,
 } from "@supabase/supabase-js";
 import { v4 as uuid } from "uuid";
+import { ISignUp } from "../interfaces/sign-up";
 import { IBcast } from "../interfaces/bcast";
 import { IGeoLocation } from "../interfaces/geo-location";
 import { IUserInfo } from "../interfaces/user-info";
+import { ISignIn } from "@/interfaces/sign-in";
 import handlers from "./utils/handlers";
 
 const api =
@@ -49,28 +51,32 @@ const api =
                 _lat: location.lat,
                 _lng: location.lng,
                 _tag: tag,
-              }),
+              })
+              .then(handlers.bcastHandler),
 
         getJoined: (userId: string) =>
           supabase
             .from("bcast_user")
             .select("bcast(*)")
             .eq("user_id", userId)
-            .is("joined", true),
+            .is("joined", true)
+            .then(handlers.bcastHandler),
 
         getHided: (userId: string) =>
           supabase
             .from("bcast_user")
             .select("bcast(*)")
             .eq("user_id", userId)
-            .is("hided", true),
+            .is("hided", true)
+            .then(handlers.bcastHandler),
 
         getReported: (userId: string) =>
           supabase
             .from("bcast_user")
             .select("bcast(*)")
             .eq("user_id", userId)
-            .is("reported", true),
+            .is("reported", true)
+            .then(handlers.bcastHandler),
 
         onInsert: (userId: string) =>
         (
@@ -113,7 +119,8 @@ const api =
           supabase
             .from("message")
             .select("*")
-            .eq("bcast_id", bcastId),
+            .eq("bcast_id", bcastId)
+            .then(handlers.messageHandler),
 
         insert: (userId: string) => (bcastId: string) => (content: string) =>
           supabase
@@ -162,7 +169,18 @@ const api =
               tag: userInfo.tag,
             }),
       },
-    };
+
+      auth: {
+        signIn: (signIn: ISignIn) =>
+          supabase
+            .auth.signInWithPassword(signIn),
+
+        signUp: (signUp: ISignUp) =>
+          supabase
+            .auth.signUp(signUp)
+      }
+    }
+    
   };
 
 export default api();

@@ -1,12 +1,13 @@
 import { IMessage } from "@/interfaces/message";
-import { RawBcast } from "@/interfaces/raw/raw-bcast";
-import { RawMessage } from "@/interfaces/raw/raw-message";
-import { RawUserInfo } from "@/interfaces/raw/raw-user-info";
+import { IRawBcast } from "@/interfaces/raw/raw-bcast";
+import { IRawMessage } from "@/interfaces/raw/raw-message";
+import { IRawUserInfo } from "@/interfaces/raw/raw-user-info";
 import { IUserInfo } from "@/interfaces/user-info";
 import { Bcast } from "dirdem-bcast-client/dist/interfaces/bcast";
 
+// @todo check correct data wrapping in all dto functions
 
-const rawBcastToBcast = (rawBcast: RawBcast): Bcast => ({
+const rawBcastToBcast = (rawBcast: IRawBcast): Bcast => ({
   content: {
     title: rawBcast.title,
     message: rawBcast.content,
@@ -22,7 +23,7 @@ const rawBcastToBcast = (rawBcast: RawBcast): Bcast => ({
   explicitContent: rawBcast.explicit,
 });
 
-const rawUserInfoToUserInfo = (rawUserInfo: RawUserInfo): IUserInfo => ({
+const rawUserInfoToUserInfo = (rawUserInfo: IRawUserInfo): IUserInfo => ({
   bcast: {
     toGet: rawUserInfo.bcast_to_get,
     toSend: rawUserInfo.bcast_to_send,
@@ -30,7 +31,7 @@ const rawUserInfoToUserInfo = (rawUserInfo: RawUserInfo): IUserInfo => ({
   tag: rawUserInfo.tag,
 });
 
-const rawMessageToMessage = (rawMessage: RawMessage): IMessage => ({
+const rawMessageToMessage = (rawMessage: IRawMessage): IMessage => ({
   bcastId: rawMessage.bcast_id,
   content: rawMessage.content,
   userId: rawMessage.user_id,

@@ -4,6 +4,7 @@ import { IMessage } from "@/interfaces/message";
 import { IUserInfo } from "@/interfaces/user-info";
 import { ApiError } from "../../models/apiError";
 
+
 type ApiHandler<T> = (dto) => ({data, error}) => T;
 
 const handler = (dto: Function) => ({data, error}: {data: any, error: any}) => {
