@@ -1,5 +1,5 @@
 <template>
-  <h1>Benvenuto {{ authStore.email }}</h1>
+  <h1>Welcome {{ authStore.email }}</h1>
   <p>Id: {{ authStore.user?.id }}</p>
   <ion-button>get pending bcast</ion-button>
   <ion-modal :is-open="modalOpen">

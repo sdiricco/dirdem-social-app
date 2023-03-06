@@ -46,10 +46,6 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 /* import specific icons */
 import { faUserSecret, faSatelliteDish, faMoon, faSun, faWifi, faMagnifyingGlass, faCircleXmark } from '@fortawesome/free-solid-svg-icons'
 
-import { createClient } from '@supabase/supabase-js';
-import {supabaseUrl, supabaseKey} from "@/constants";
-export const supabase = createClient(supabaseUrl, supabaseKey);
-
 /* add icons to the library */
 library.add(faUserSecret, faSatelliteDish, faMoon, faSun, faWifi, faMagnifyingGlass, faCircleXmark)
 

@@ -1,4 +1,4 @@
-export interface UserInfo {
+export interface IUserInfo {
     bcast: {
         toGet: number
         toSend: number

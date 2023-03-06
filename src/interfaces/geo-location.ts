@@ -1,4 +1,4 @@
-export interface GeoLocation {
+export interface IGeoLocation {
     lat: number,
     lng: number
 }

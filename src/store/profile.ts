@@ -2,17 +2,17 @@
 /* Imports */
 /*****************************************************************************/
 import { defineStore } from "pinia";
-import {fetch, update} from "@/api/profile"
 import { useAuthStore} from "./auth"
-import { UserInfo } from "@/interfaces/user-info"
-import { ApiError } from "@/api/errorHandler";
+import { IUserInfo } from "@/interfaces/user-info"
+import { ApiError } from "@/models/apiError";
+
 
 /*****************************************************************************/
 /* Interfaces */
 /*****************************************************************************/
 export interface IProfile {
-  userInfo: UserInfo | null,
-  tempUserInfo: UserInfo | null,
+  userInfo: IUserInfo | null,
+  tempUserInfo: IUserInfo | null,
   error: ApiError | null
 }
 
@@ -53,7 +53,7 @@ export const useProfileStore = defineStore({
         if (!this.tempUserInfo) {
           return
         }
-        await update(this.tempUserInfo);
+        await (this.tempUserInfo);
       } catch (error) {
         this.handleApiError(error);
       }

@@ -17,7 +17,7 @@
         <ion-button size="large" expand="block" @click="authStore.signUp">Procedi
           <ion-icon slot="end" :icon="arrowForwardSharp"></ion-icon>
         </ion-button>
-        <div v-if="authStore.error" class="ion-text-start error-container">
+        <div v-if="authStore.error" class="ion-text-start">
           <ion-icon :icon="informationCircle" color="danger" size="small"></ion-icon>
           <ion-label class="ion-padding-left" color="danger" >{{ authStore.error.message }}</ion-label>
         </div>
@@ -38,33 +38,3 @@ onMounted(() => {
   authStore.$reset()
 })
 </script>
-
-<style scoped>
-ion-card{
-    margin:auto;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    box-shadow: none;
-    text-align: center;
-}
-
-ion-card-header{
-    margin-top: auto;
-}
-
-ion-card-content{
-    padding-bottom: 20vh;
-    margin-bottom: auto;
-}
-
-.error-container{
-  display: flex;
-  align-items: center;
-}
-
-
-.mt64{
-  margin-top: 64px;
-}
-</style>

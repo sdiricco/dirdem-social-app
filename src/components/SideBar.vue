@@ -28,7 +28,7 @@
 import router from "../router";
 import { IonHeader, IonToolbar, IonContent, IonIcon, IonLabel, IonToggle, IonItem, IonMenuToggle } from "@ionic/vue";
 import { moon } from "ionicons/icons";
-import { useStore } from "@/store/main";
+import { useStore } from "@/store";
 
 const store = useStore();
 

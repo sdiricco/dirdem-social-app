@@ -3,9 +3,12 @@ import {
   SupabaseClient,
 } from "@supabase/supabase-js";
 import { v4 as uuid } from "uuid";
-import { Bcast } from "../interfaces/bcast";
-import { GeoLocation } from "../interfaces/geo-location";
-import { UserInfo } from "../interfaces/user-info";
+import { ISignUp } from "../interfaces/sign-up";
+import { IBcast } from "../interfaces/bcast";
+import { IGeoLocation } from "../interfaces/geo-location";
+import { IUserInfo } from "../interfaces/user-info";
+import { ISignIn } from "@/interfaces/sign-in";
+import handlers from "./utils/handlers";
 
 const api =
   (init = false) => (supabase: SupabaseClient<any, "public", any>) => {
@@ -18,7 +21,7 @@ const api =
       supabase,
 
       bcast: {
-        insert: (userId: string) => (bcast: Bcast) =>
+        insert: (userId: string) => (bcast: IBcast) =>
           supabase
             .from("bcast")
             .insert({
@@ -37,37 +40,43 @@ const api =
           supabase
             .from("bcast")
             .select("*")
-            .eq("user_id", userId),
+            .eq("user_id", userId)
+            .then(handlers.bcastHandler),
 
-        getCandidate: (userId: string) => (location: GeoLocation) => (tag: string[]) =>
+        getCandidate:
+          (userId: string) => (location: IGeoLocation) => (tag: string[]) =>
             supabase
               .rpc("candidate_bcast", {
                 _user_id: userId,
                 _lat: location.lat,
                 _lng: location.lng,
                 _tag: tag,
-              }),
+              })
+              .then(handlers.bcastHandler),
 
         getJoined: (userId: string) =>
           supabase
             .from("bcast_user")
             .select("bcast(*)")
             .eq("user_id", userId)
-            .is("joined", true),
+            .is("joined", true)
+            .then(handlers.bcastHandler),
 
         getHided: (userId: string) =>
           supabase
             .from("bcast_user")
             .select("bcast(*)")
             .eq("user_id", userId)
-            .is("hided", true),
+            .is("hided", true)
+            .then(handlers.bcastHandler),
 
         getReported: (userId: string) =>
           supabase
             .from("bcast_user")
             .select("bcast(*)")
             .eq("user_id", userId)
-            .is("reported", true),
+            .is("reported", true)
+            .then(handlers.bcastHandler),
 
         onInsert: (userId: string) =>
         (
@@ -110,7 +119,8 @@ const api =
           supabase
             .from("message")
             .select("*")
-            .eq("bcast_id", bcastId),
+            .eq("bcast_id", bcastId)
+            .then(handlers.messageHandler),
 
         insert: (userId: string) => (bcastId: string) => (content: string) =>
           supabase
@@ -146,9 +156,10 @@ const api =
           supabase
             .from("user_info")
             .select("*")
-            .eq("id", userId),
+            .eq("id", userId)
+            .then(handlers.userInfoHandler),
 
-        insert: (userId: string) => (userInfo: UserInfo) =>
+        insert: (userId: string) => (userInfo: IUserInfo) =>
           supabase
             .from("user_info")
             .insert({
@@ -158,7 +169,18 @@ const api =
               tag: userInfo.tag,
             }),
       },
-    };
+
+      auth: {
+        signIn: (signIn: ISignIn) =>
+          supabase
+            .auth.signInWithPassword(signIn),
+
+        signUp: (signUp: ISignUp) =>
+          supabase
+            .auth.signUp(signUp)
+      }
+    }
+    
   };
 
 export default api();
