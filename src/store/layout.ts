@@ -4,6 +4,7 @@ import { setTheme } from "@/theme/utility";
 
 
 interface IState {
+  sideBar: boolean;
   preferences: {
     isDark: boolean;
   }
@@ -11,6 +12,7 @@ interface IState {
 export const useLayoutStore = defineStore({
   id: "layout-store",
   state: (): IState =>({
+    sideBar: false,
     preferences: {
       isDark: false,
     }

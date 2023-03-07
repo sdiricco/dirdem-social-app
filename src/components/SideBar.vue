@@ -9,26 +9,24 @@
     <ion-item lines="inset">
       <ion-icon slot="start" :icon="moon"></ion-icon>
       <ion-label>Dark mode</ion-label>
-      <ion-toggle slot="end" @ion-change="onToggleTheme" :checked="store.isDark">
-      </ion-toggle>
+      <ion-toggle slot="end" @ion-change="onToggleTheme" :checked="store.isDark"> </ion-toggle>
     </ion-item>
-    <ion-item lines="inset" button @click="() => router.push('/home/profile')">
-      <ion-label>Profile</ion-label>
-    </ion-item>
+    <ion-menu-toggle>
+      <ion-item lines="inset" button @click="onClickHome">
+        <ion-label>Home</ion-label>
+      </ion-item>
+    </ion-menu-toggle>
+    <ion-menu-toggle>
+      <ion-item lines="inset" button @click="onClickProfile">
+        <ion-label>Profile</ion-label>
+      </ion-item>
+    </ion-menu-toggle>
   </ion-content>
 </template>
 
 <script lang="ts" setup>
-import router from "../router"
-import {
-  IonHeader,
-  IonToolbar,
-  IonContent,
-  IonIcon,
-  IonLabel,
-  IonToggle,
-  IonItem,
-} from "@ionic/vue";
+import router from "../router";
+import { IonHeader, IonToolbar, IonContent, IonIcon, IonLabel, IonToggle, IonItem, IonMenuToggle } from "@ionic/vue";
 import { moon } from "ionicons/icons";
 import { useStore } from "@/store";
 
@@ -39,4 +37,21 @@ async function onToggleTheme(evt: any) {
   await store.toggleTheme(isDark);
 }
 
+function onClickProfile() {
+  router.push("/home/profile");
+}
+
+function onClickHome(){
+  router.push("/home");
+}
 </script>
+
+<style scoped>
+.pt64 {
+  padding-top: 64px;
+}
+
+.pb16 {
+  padding-bottom: 16px;
+}
+</style>

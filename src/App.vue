@@ -11,13 +11,12 @@
 
 <script lang="ts" setup>
 import { IonApp, IonRouterOutlet, IonPage, IonMenu } from "@ionic/vue";
-import SiderBar from './components/SideBar.vue'
+import SiderBar from "./components/SideBar.vue";
 import { onMounted } from "vue";
-import { useStore } from "@/store";
+import {useStore} from "@/store"
 
-
-const store = useStore();
-onMounted(async () => {
+const store = useStore()
+onMounted(async() => {
   await store.loadApp();
   store.$subscribe(async (_mutations, state) => {
     await store.savePreferences(state.preferences);
@@ -26,5 +25,4 @@ onMounted(async () => {
 </script>
 
 <style>
-@import './styles/styles.css'
 </style>

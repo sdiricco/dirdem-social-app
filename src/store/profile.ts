@@ -4,6 +4,7 @@
 import { defineStore } from "pinia";
 import { useAuthStore} from "./auth"
 import { IUserInfo } from "@/interfaces/user-info"
+import client from "@/api/client"
 import { ApiError } from "@/models/apiError";
 
 
@@ -12,7 +13,6 @@ import { ApiError } from "@/models/apiError";
 /*****************************************************************************/
 export interface IProfile {
   userInfo: IUserInfo | null,
-  tempUserInfo: IUserInfo | null,
   error: ApiError | null
 }
 
@@ -23,7 +23,6 @@ export const useProfileStore = defineStore({
   id: "profile",
   state: (): IProfile =>({
     userInfo: null,
-    tempUserInfo: null,
     error: null,
   }),
   getters: {
@@ -31,6 +30,10 @@ export const useProfileStore = defineStore({
     userId(){
       const authStore = useAuthStore();
       return authStore.user?.id;
+    },
+    email(){
+      const authStore = useAuthStore();
+      return authStore.user?.email;
     }
   },
   actions: { 
@@ -38,10 +41,8 @@ export const useProfileStore = defineStore({
     /* fetch user profile */
     async fetch(){
       try {
-        if (!this.userId) {
-          return;
-        }
-        this.userInfo = await fetch(this.userId);
+        this.userInfo = await client.userInfo.get(this.userId);
+        console.log(this.userInfo)
       } catch (error) {
         this.handleApiError(error);
       }
@@ -50,10 +51,8 @@ export const useProfileStore = defineStore({
     /* update user profile */
     async update(){
       try {
-        if (!this.tempUserInfo) {
-          return
-        }
-        await (this.tempUserInfo);
+        const response = await client.userInfo.insert(this.userdId)({bcast: {toGet: 10, toSend:10}, tag: ['mio', 'tuo']})
+        console.log(response)
       } catch (error) {
         this.handleApiError(error);
       }
