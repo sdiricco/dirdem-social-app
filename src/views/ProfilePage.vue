@@ -17,21 +17,21 @@
         <ion-icon slot="start" :icon="mailOutline"></ion-icon>
         <ion-label>
           <h3>Email</h3>
-          <p>{{ user.email }}</p>
+          <p>{{ profileStore.email }}</p>
         </ion-label>
       </ion-item>
       <ion-item lines="none">
-        <ion-icon slot="start" :icon="callOutline"> </ion-icon>
+        <ion-icon slot="start" :icon="arrowRedoOutline"> </ion-icon>
         <ion-label>
-          <h3>Telefono</h3>
-          <p>{{ user.phone }}</p>
+          <h3>Broadcast in uscita</h3>
+          <p>{{ profileStore?.userInfo?.bcast?.toSend || 0 }}</p>
         </ion-label>
       </ion-item>
       <ion-item lines="none">
-        <ion-icon slot="start" :icon="lockClosedOutline"></ion-icon>
+        <ion-icon slot="start" :icon="arrowUndoOutline"> </ion-icon>
         <ion-label>
-          <h3>Password</h3>
-          <p>**********</p>
+          <h3>Broadcast in entrata</h3>
+          <p>{{ profileStore?.userInfo?.bcast?.toGet || 0 }}</p>
         </ion-label>
       </ion-item>
     </ion-list>
@@ -63,7 +63,7 @@
           </ion-item>
         </ion-list>
 
-        <ion-button shape="round" color="primary" expand="block"> Salva </ion-button>
+        <ion-button shape="round" color="primary" expand="block" @click="onClickSave"> Salva </ion-button>
       </ion-content>
     </ion-modal>
   </div>
@@ -91,9 +91,9 @@ import {
   IonCardTitle,
   IonCardSubtitle,
 } from "@ionic/vue";
-import { mailOutline, callOutline, lockClosedOutline, pencil, closeOutline } from "ionicons/icons";
-import { useProfileStore } from "@/store/profile";
+import { mailOutline, callOutline, lockClosedOutline, pencil, closeOutline, sendOutline, arrowRedoOutline, arrowUndoOutline } from "ionicons/icons";
 import { onMounted, reactive, ref } from "vue";
+import {useProfileStore} from "@/store/profile"
 import router from "@/router";
 
 const profileStore = useProfileStore();
@@ -107,6 +107,10 @@ const user = reactive({
 
 function onModifyProfile() {
   router.push("temp-profile");
+}
+
+async function onClickSave(){
+  await profileStore.update();
 }
 
 const avatarUrl = ref(`https://robohash.org/${Math.random().toString(36).substring(7)}.png`);
