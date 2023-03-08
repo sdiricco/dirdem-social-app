@@ -9,6 +9,8 @@ import { IGeoLocation } from "../interfaces/geo-location";
 import { IUserInfo } from "../interfaces/user-info";
 import { ISignIn } from "@/interfaces/sign-in";
 import handlers from "./utils/handlers";
+import outputDto from "@/functions/dto/output-dto";
+import utilsFns from "@/functions/utils-fns";
 
 const api =
   (init = false) => (supabase: SupabaseClient<any, "public", any>) => {
@@ -21,20 +23,12 @@ const api =
       supabase,
 
       bcast: {
-        insert: (userId: string) => (bcast: IBcast) =>
-          supabase
+        insert: (userId: string) => (bcast: IBcast) => {
+          const rawBcast = outputDto.buildRawBcast(userId, bcast);
+          return supabase
             .from("bcast")
-            .insert({
-              user_id: userId,
-              expires_at: bcast.expiresAt,
-              max_user: bcast.maxUsers,
-              max_distance_km: bcast.maxDistanceKm,
-              tag: bcast.tag,
-              title: bcast.content.title,
-              content: bcast.content.message,
-              location: `POINT(${bcast.location.lng} ${bcast.location.lat})`,
-              explicit: bcast.explicitContent,
-            }),
+            .insert(rawBcast);
+        },
 
         getInserted: (userId: string) =>
           supabase
@@ -159,15 +153,20 @@ const api =
             .eq("id", userId)
             .then(handlers.userInfoHandler),
 
-        insert: (userId: string) => (userInfo: IUserInfo) =>
+        insert: (userId: string) => (userInfo: IUserInfo) => {
+          const rawUserInfo = outputDto.buildRawUserInfo(userId, userInfo);
           supabase
             .from("user_info")
-            .insert({
-              id: userId,
-              bcast_to_send: userInfo.bcast.toSend,
-              bcast_to_get: userInfo.bcast.toGet,
-              tag: userInfo.tag,
-            }),
+            .insert(rawUserInfo);
+        },
+
+        update: (userId: string) => (userInfo: Partial<IUserInfo>) => {
+          const rawUserInfo = outputDto.buildRawUserInfo(userId, userInfo);
+          const obj = utilsFns.removeUndefinedOrNullProps(rawUserInfo);
+          supabase
+            .from("user_info")
+            .update(obj);
+        },
       },
 
       auth: {
@@ -177,10 +176,9 @@ const api =
 
         signUp: (signUp: ISignUp) =>
           supabase
-            .auth.signUp(signUp)
-      }
-    }
-    
+            .auth.signUp(signUp),
+      },
+    };
   };
 
 export default api();
