@@ -51,7 +51,7 @@ export const useProfileStore = defineStore({
     /* update user profile */
     async update(){
       try {
-        const response = await client.userInfo.insert(this.userdId)({bcast: {toGet: 10, toSend:10}, tag: ['mio', 'tuo']})
+        const response = await client.userInfo.update(this.userId)({bcast: {toGet: 10, toSend:10}, tag: ['mio', 'tuo']})
         console.log(response)
       } catch (error) {
         this.handleApiError(error);

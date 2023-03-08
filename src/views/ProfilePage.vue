@@ -34,6 +34,13 @@
           <p>{{ profileStore?.userInfo?.bcast?.toGet || 0 }}</p>
         </ion-label>
       </ion-item>
+      <ion-item lines="none">
+        <ion-icon slot="start" :icon="bookmarkOutline"> </ion-icon>
+        <ion-label>
+          <h3>Interessi</h3>
+          <p>{{ profileStore?.userInfo?.tag || [] }}</p>
+        </ion-label>
+      </ion-item>
     </ion-list>
 
     <ion-modal :is-open="isOpen">
@@ -91,7 +98,7 @@ import {
   IonCardTitle,
   IonCardSubtitle,
 } from "@ionic/vue";
-import { mailOutline, callOutline, lockClosedOutline, pencil, closeOutline, sendOutline, arrowRedoOutline, arrowUndoOutline } from "ionicons/icons";
+import { mailOutline, callOutline, lockClosedOutline, pencil, closeOutline, sendOutline, arrowRedoOutline, arrowUndoOutline, bookmarkOutline } from "ionicons/icons";
 import { onMounted, reactive, ref } from "vue";
 import {useProfileStore} from "@/store/profile"
 import router from "@/router";
