@@ -14,7 +14,7 @@ const handler = (dto: Function) => ({data, error}: {data: any, error: any}) => {
             code: error.status
         })
     }
-    return dto(data);
+    return dto(data?.at(0));
 }
 
 const bcastHandler: ApiHandler<IBcast> = handler(inputDto.buildBcast);
