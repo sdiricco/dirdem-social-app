@@ -119,5 +119,6 @@ const isOpen = ref(false);
 
 onMounted(() => {
   profileStore.fetch();
+  console.log(profileStore.userInfo)
 });
 </script>
