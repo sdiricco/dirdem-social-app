@@ -1,9 +1,33 @@
 <template>
-  <ion-card v-for="bcast in broadcastStore.broadcasts" class="m-4">
+  <div >
+    <ion-segment v-model="filter" :scrollable="true" class="mb-2 px-2">
+    <ion-segment-button value="all" @click="broadcastStore.fetchAll">
+      <ion-label>All</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="candidate" @click="broadcastStore.fetchCandidate">
+      <ion-label>Candidate</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="inserted" @click="broadcastStore.fetchInserted">
+      <ion-label>Inserted</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="joined" @click="broadcastStore.fetchJoined">
+      <ion-label>Joined</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="hided" @click="broadcastStore.fetchHided">
+      <ion-label>Hided</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+  </div>
+
+  <div class="overflow-auto h-100">
+    <div v-if="!broadcastStore.broadcasts.length">
+      <p>No broadcast fetching API [{{ filter }}]</p>
+    </div>
+    <ion-card v-for="bcast in broadcastStore.broadcasts" class="m-4">
     <ion-card-header class="d-flex justify-content-between">
       <div>
-        <ion-card-title>{{ bcast.content.title }}</ion-card-title>
-        <ion-card-subtitle>{{ bcast.content.message }}</ion-card-subtitle>
+        <ion-card-title>{{ bcast.content.title || '---' }}</ion-card-title>
+        <ion-card-subtitle>{{ bcast.content.message || '---' }}</ion-card-subtitle>
       </div>
       <ion-fab-button color="danger" size="small">
         <ion-icon :icon="closeOutline"></ion-icon>
@@ -28,8 +52,10 @@
         </ion-item>
       </ion-list>
     </ion-card-content>
-      <ion-button fill="solid" expand="full" class="no-margin">Unisciti</ion-button>
+    <ion-button fill="solid" expand="full" class="no-margin">Unisciti</ion-button>
   </ion-card>
+  </div>
+
   <ion-modal :is-open="modalOpen">
     <ion-header>
       <ion-toolbar>
@@ -76,6 +102,8 @@ import {
   IonCardSubtitle,
   IonList,
   IonFooter,
+  IonSegment,
+  IonSegmentButton
 } from "@ionic/vue";
 import { add, star, mailOutline, arrowRedoOutline, closeOutline, locationOutline, timeOutline } from "ionicons/icons";
 import { useAuthStore } from "@/store/auth";
@@ -84,14 +112,17 @@ import BroadcastForm from "@/components/BroadcastForm.vue";
 const broadcastStore = useBroadcastStore();
 const authStore = useAuthStore();
 const modalOpen = ref(false);
+const filter = ref('all')
 
 async function onSubmitBCast() {
   await broadcastStore.create();
 }
 
 onMounted(async () => {
-  await broadcastStore.fetch();
+  await broadcastStore.fetchInserted();
 });
+
+
 </script>
 
 <style scoped>
@@ -99,7 +130,11 @@ onMounted(async () => {
   padding: 0px !important;
 }
 
-.no-margin{
-  margin: 0px !important;;
+.no-margin {
+  margin: 0px !important;
+}
+
+ion-segment {
+  --background: #efefef;
 }
 </style>

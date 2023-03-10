@@ -62,7 +62,7 @@ export const useAuthStore = defineStore({
           password: this.password,
         });
         this.user = response.data.user
-        this.session = response.data.session
+        this.session = response.data.session;
         router.push("/home");
       } catch (error) {
         this.handleApiError(error)

@@ -11,38 +11,7 @@ interface IState {
 export const useBroadcastStore = defineStore({
   id: "broadcast-store",
   state: (): IState => ({
-    broadcasts: [
-      {
-        content: {
-          title: "Gita sulla Pania",
-          message: "Chi si aggrega per una escursione questa domenica?",
-        },
-        expiresAt: new Date(),
-        location: {
-          lat: 22.0,
-          lng: 34.0,
-        },
-        maxDistanceKm: 1000,
-        maxUsers: 12,
-        tag: ["sport", "trekking"],
-        explicitContent: false,
-      },
-      {
-        content: {
-          title: "Giro in città",
-          message: "Chi si aggrega per una escursione questa domenica?",
-        },
-        expiresAt: new Date(),
-        location: {
-          lat: 22.0,
-          lng: 34.0,
-        },
-        maxDistanceKm: 1000,
-        maxUsers: 12,
-        tag: ["sport", "trekking"],
-        explicitContent: false,
-      },
-    ],
+    broadcasts: [],
     tempBroadcast: {
       content: {
         title: "",
@@ -67,9 +36,24 @@ export const useBroadcastStore = defineStore({
     },
   },
   actions: {
-    async fetch() {
-      const response = await client.bcast.getInserted(this.userId);
-      console.log(response);
+
+    async fetchAll() {
+      this.$store.broadcasts = await client.bcast.getAll();
+    },
+    async fetchInserted() {
+      this.broadcasts = await client.bcast.getInserted(this.userId);
+    },
+    async fetchCandidate() {
+      this.broadcasts = await client.bcast.getCandidate(this.userId)({
+        lat: 33.33,
+        lng: 44.44
+      })(['mio', 'tuo']);
+    },
+    async fetchJoined() {
+      this.broadcasts = await client.bcast.getJoined(this.userId);
+    },
+    async fetchHided() {
+      this.broadcasts = await client.bcast.getHided(this.userId);
     },
     async create() {
       const response = await client.bcast.insert(this.userId)(this.tempBroadcast);
