@@ -1,7 +1,61 @@
 <template>
-  <h1>Welcome {{ authStore.email }}</h1>
-  <p>Id: {{ authStore.user?.id }}</p>
-  <ion-button>get pending bcast</ion-button>
+  <div >
+    <ion-segment v-model="filter" :scrollable="true" class="mb-2 px-2">
+    <ion-segment-button value="all" @click="broadcastStore.fetchAll">
+      <ion-label>All</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="candidate" @click="broadcastStore.fetchCandidate">
+      <ion-label>Candidate</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="inserted" @click="broadcastStore.fetchInserted">
+      <ion-label>Inserted</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="joined" @click="broadcastStore.fetchJoined">
+      <ion-label>Joined</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="hided" @click="broadcastStore.fetchHided">
+      <ion-label>Hided</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+  </div>
+
+  <div class="overflow-auto h-100">
+    <div v-if="!broadcastStore.broadcasts.length">
+      <p>No broadcast fetching API [{{ filter }}]</p>
+    </div>
+    <ion-card v-for="bcast in broadcastStore.broadcasts" class="m-4">
+    <ion-card-header class="d-flex justify-content-between">
+      <div>
+        <ion-card-title>{{ bcast.content.title || '---' }}</ion-card-title>
+        <ion-card-subtitle>{{ bcast.content.message || '---' }}</ion-card-subtitle>
+      </div>
+      <ion-fab-button color="danger" size="small">
+        <ion-icon :icon="closeOutline"></ion-icon>
+      </ion-fab-button>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-list>
+        <ion-item lines="none">
+          <ion-icon slot="start" :icon="locationOutline"></ion-icon>
+          <ion-label>
+            <h3>Dove</h3>
+            <p>{{ bcast.location }}</p>
+          </ion-label>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-icon slot="start" :icon="timeOutline"> </ion-icon>
+          <ion-label>
+            <h3>Scadenza</h3>
+            <p>{{ bcast.expiresAt }}</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+    <ion-button fill="solid" expand="full" class="no-margin">Unisciti</ion-button>
+  </ion-card>
+  </div>
+
   <ion-modal :is-open="modalOpen">
     <ion-header>
       <ion-toolbar>
@@ -10,15 +64,12 @@
         </ion-buttons>
         <ion-title>Welcome</ion-title>
         <ion-buttons slot="end">
-          <ion-button :strong="true">Confirm</ion-button>
+          <ion-button :strong="true" @click="onSubmitBCast">Salva</ion-button>
         </ion-buttons>
       </ion-toolbar>
     </ion-header>
     <ion-content class="ion-padding">
-      <ion-item>
-        <ion-label position="stacked">Enter your name</ion-label>
-        <ion-input ref="input" type="text" placeholder="Your name"></ion-input>
-      </ion-item>
+      <BroadcastForm />
     </ion-content>
   </ion-modal>
   <ion-fab slot="fixed" vertical="bottom" horizontal="end">
@@ -29,7 +80,7 @@
 </template>
 
 <script lang="ts" setup>
-import {ref } from "vue";
+import { ref, onMounted } from "vue";
 import {
   IonContent,
   IonHeader,
@@ -44,9 +95,46 @@ import {
   IonInput,
   IonButton,
   IonTitle,
+  IonCard,
+  IonCardHeader,
+  IonCardContent,
+  IonCardTitle,
+  IonCardSubtitle,
+  IonList,
+  IonFooter,
+  IonSegment,
+  IonSegmentButton
 } from "@ionic/vue";
-import { add } from "ionicons/icons";
-import {useAuthStore} from "@/store/auth"
-const authStore = useAuthStore()
+import { add, star, mailOutline, arrowRedoOutline, closeOutline, locationOutline, timeOutline } from "ionicons/icons";
+import { useAuthStore } from "@/store/auth";
+import { useBroadcastStore } from "@/store/broadcast";
+import BroadcastForm from "@/components/BroadcastForm.vue";
+const broadcastStore = useBroadcastStore();
+const authStore = useAuthStore();
 const modalOpen = ref(false);
+const filter = ref('all')
+
+async function onSubmitBCast() {
+  await broadcastStore.create();
+}
+
+onMounted(async () => {
+  await broadcastStore.fetchInserted();
+});
+
+
 </script>
+
+<style scoped>
+.no-padding {
+  padding: 0px !important;
+}
+
+.no-margin {
+  margin: 0px !important;
+}
+
+ion-segment {
+  --background: #efefef;
+}
+</style>

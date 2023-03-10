@@ -30,6 +30,12 @@ const api =
             .insert(rawBcast);
         },
 
+        getAll: () =>
+          supabase
+            .from("bcast")
+            .select("*")
+            .then(handlers.bcastHandler),
+
         getInserted: (userId: string) =>
           supabase
             .from("bcast")
