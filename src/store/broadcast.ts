@@ -63,7 +63,7 @@ export const useBroadcastStore = defineStore({
   getters: {
     userId() {
       const authStore = useAuthStore();
-      return authStore.user?.id;
+      return authStore.getUserId
     },
   },
   actions: {

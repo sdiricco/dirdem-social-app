@@ -1,15 +1,13 @@
 <template>
-  <h1>Welcome {{ authStore.email }}</h1>
-  <p>Id: {{ authStore.user?.id }}</p>
-  <ion-card v-for="bcast in broadcastStore.broadcasts">
+  <ion-card v-for="bcast in broadcastStore.broadcasts" class="m-4">
     <ion-card-header class="d-flex justify-content-between">
       <div>
         <ion-card-title>{{ bcast.content.title }}</ion-card-title>
         <ion-card-subtitle>{{ bcast.content.message }}</ion-card-subtitle>
       </div>
-        <ion-fab-button color="danger" size="small">
-          <ion-icon :icon="closeOutline"></ion-icon>
-        </ion-fab-button>
+      <ion-fab-button color="danger" size="small">
+        <ion-icon :icon="closeOutline"></ion-icon>
+      </ion-fab-button>
     </ion-card-header>
 
     <ion-card-content>
@@ -29,8 +27,8 @@
           </ion-label>
         </ion-item>
       </ion-list>
-      <ion-button fill="outline" expand="block">Unisciti</ion-button>
     </ion-card-content>
+      <ion-button fill="solid" expand="full" class="no-margin">Unisciti</ion-button>
   </ion-card>
   <ion-modal :is-open="modalOpen">
     <ion-header>
@@ -40,7 +38,7 @@
         </ion-buttons>
         <ion-title>Welcome</ion-title>
         <ion-buttons slot="end">
-          <ion-button :strong="true" @click="onSubmitBCast">Confirm</ion-button>
+          <ion-button :strong="true" @click="onSubmitBCast">Salva</ion-button>
         </ion-buttons>
       </ion-toolbar>
     </ion-header>
@@ -77,11 +75,12 @@ import {
   IonCardTitle,
   IonCardSubtitle,
   IonList,
+  IonFooter,
 } from "@ionic/vue";
 import { add, star, mailOutline, arrowRedoOutline, closeOutline, locationOutline, timeOutline } from "ionicons/icons";
 import { useAuthStore } from "@/store/auth";
 import { useBroadcastStore } from "@/store/broadcast";
-import BroadcastForm from "@/components/BroadcastForm.vue"
+import BroadcastForm from "@/components/BroadcastForm.vue";
 const broadcastStore = useBroadcastStore();
 const authStore = useAuthStore();
 const modalOpen = ref(false);
@@ -95,4 +94,12 @@ onMounted(async () => {
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.no-padding {
+  padding: 0px !important;
+}
+
+.no-margin{
+  margin: 0px !important;;
+}
+</style>

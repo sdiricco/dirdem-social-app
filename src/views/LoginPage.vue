@@ -1,8 +1,7 @@
 <template>
   <ion-page>
     <ion-content class="ion-padding">
-    <ion-card class="ion-padding">
-      <ion-card-header>
+      <ion-card-header class="mt-5">
         <ion-card-title>Accedi</ion-card-title>
       </ion-card-header>
       <ion-card-content>
@@ -23,7 +22,6 @@
         </div>
         <p>Non hai un account? <router-link to="/registration">Registrati</router-link> </p>
       </ion-card-content>
-    </ion-card>
     </ion-content>
   </ion-page>
 </template>

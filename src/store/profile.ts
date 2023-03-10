@@ -28,12 +28,12 @@ export const useProfileStore = defineStore({
   getters: {
     /* get user id from auth store */
     userId(){
-      const authStore = useAuthStore();
-      return authStore.user?.id;
+      const auth = useAuthStore();
+      return auth.getUserId
     },
     email(){
-      const authStore = useAuthStore();
-      return authStore.user?.email;
+      const auth = useAuthStore();
+      return auth.getEmail
     }
   },
   actions: { 
