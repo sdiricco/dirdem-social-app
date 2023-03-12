@@ -8,12 +8,12 @@ http://ionicframework.com/docs/theming/ */
   --ion-statusbar-color: #ffffff;
   --ion-statusbar-color-dark: #121212;
   /** primary **/
-  --ion-color-primary: #3880ff;
+  --ion-color-primary: #121212;
   --ion-color-primary-rgb: 56, 128, 255;
   --ion-color-primary-contrast: #ffffff;
   --ion-color-primary-contrast-rgb: 255, 255, 255;
-  --ion-color-primary-shade: #3171e0;
-  --ion-color-primary-tint: #4c8dff;
+  --ion-color-primary-shade: #121212;
+  --ion-color-primary-tint: #121212;
 
   /** secondary **/
   --ion-color-secondary: #3dc2ff;
