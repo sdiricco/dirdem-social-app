@@ -1,14 +1,52 @@
 <template>
   <ion-page>
-    <div>Admin</div>
+    <ion-content :fullscreen="true">
+      <!--Users-->
+      <ion-item-divider color="dark">
+        <ion-label>User</ion-label>
+      </ion-item-divider>
+      <ion-list class="ion-padding">
+        <!-- List all users -->
+        <ion-item>
+          <ion-label>User</ion-label>
+          <ion-select interface="action-sheet" placeholder="Select a user" v-model="selectedUser">
+            <ion-select-option :value="user" v-for="user in users">{{ user.email }}</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label>Id: {{ selectedUser?.id }}</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>email: {{ selectedUser?.email }}</ion-label>
+        </ion-item>
+      </ion-list>
+
+      <!--Broadcasts-->
+      <ion-item-divider color="dark">
+        <ion-label>Broadcasts</ion-label>
+      </ion-item-divider>
+      <ion-list class="ion-padding">
+        <!-- List all users -->
+        <ion-item>
+          <ion-button @click="getAllBroadcasts" fill="outline">Get All broadcasts</ion-button>
+        </ion-item>
+        <ion-item>
+          <ion-label>Broadcasts: {{ broadcasts.length}}</ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-content>
   </ion-page>
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, reactive } from "vue";
 import {
-  IonPage,  
+  IonPage,
+  IonSelect,
+  IonSelectOption,
   IonContent,
+  IonItemGroup,
+  IonItemDivider,
   IonHeader,
   IonModal,
   IonToolbar,
@@ -29,26 +67,49 @@ import {
   IonList,
   IonFooter,
   IonSegment,
-  IonSegmentButton
+  IonSegmentButton,
 } from "@ionic/vue";
 import { add, star, mailOutline, arrowRedoOutline, closeOutline, locationOutline, timeOutline } from "ionicons/icons";
 import { useAuthStore } from "@/store/auth";
 import { useBroadcastStore } from "@/store/broadcast";
 import BroadcastForm from "@/components/BroadcastForm.vue";
+import { createClient } from '@supabase/supabase-js';
+
+import client from "@/api/client";
+import { supabaseUrl, supabaseKey, supabaseAdminKey } from '@/constants';
+import api from "@/api"
+import { IBcast } from "@/interfaces/bcast";
+import { Console } from "console";
+const clientAdmin = createClient(supabaseUrl, supabaseAdminKey);
 const broadcastStore = useBroadcastStore();
 const authStore = useAuthStore();
 const modalOpen = ref(false);
-const filter = ref('all')
+const filter = ref("all");
+
 
 async function onSubmitBCast() {
   await broadcastStore.create();
 }
 
+let users = ref([]);
+
+let selectedUser = ref(null);
+let broadcasts = ref([]);
+
+async function listUsers(){
+  const response = await clientAdmin.auth.admin.listUsers();
+  users.value = response.data.users;
+  console.log(users);
+}
+
+async function getAllBroadcasts(){
+  broadcasts.value = await client.bcast.getAll();
+  console.log(broadcasts);
+}
+
 onMounted(async () => {
-  await broadcastStore.fetchInserted();
+ await listUsers();
 });
-
-
 </script>
 
 <style scoped>

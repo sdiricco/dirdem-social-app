@@ -1,29 +1,9 @@
 <template>
-  <div >
-    <ion-segment v-model="filter" :scrollable="true" class="mb-2 px-2">
-    <ion-segment-button value="all" @click="broadcastStore.fetchAll">
-      <ion-label>All</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="candidate" @click="broadcastStore.fetchCandidate">
-      <ion-label>Candidate</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="inserted" @click="broadcastStore.fetchInserted">
-      <ion-label>Inserted</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="joined" @click="broadcastStore.fetchJoined">
-      <ion-label>Joined</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="hided" @click="broadcastStore.fetchHided">
-      <ion-label>Hided</ion-label>
-    </ion-segment-button>
-  </ion-segment>
-  </div>
-
   <div class="overflow-auto h-100">
     <div v-if="!broadcastStore.broadcasts.length">
       <p>No broadcast fetching API [{{ filter }}]</p>
     </div>
-    <ion-card v-for="bcast in broadcastStore.broadcasts" class="m-4">
+    <ion-card card v-for="bcast in broadcastStore.broadcasts" class="m-4">
     <ion-card-header class="d-flex justify-content-between">
       <div>
         <ion-card-title>{{ bcast.content.title || '---' }}</ion-card-title>
