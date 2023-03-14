@@ -8,7 +8,7 @@ import { IBcast } from "../interfaces/bcast";
 import { IGeoLocation } from "../interfaces/geo-location";
 import { IUserInfo } from "../interfaces/user-info";
 import { ISignIn } from "@/interfaces/sign-in";
-import handlers from "./utils/handlers";
+import handlers from "./handlers";
 import outputDto from "@/functions/dto/output-dto";
 import utilsFns from "@/functions/utils-fns";
 
@@ -161,7 +161,7 @@ const api =
 
         insert: (userId: string) => (userInfo: IUserInfo) => {
           const rawUserInfo = outputDto.buildRawUserInfo(userId, userInfo);
-          supabase
+          return supabase
             .from("user_info")
             .insert(rawUserInfo);
         },
@@ -169,9 +169,10 @@ const api =
         update: (userId: string) => (userInfo: Partial<IUserInfo>) => {
           const rawUserInfo = outputDto.buildRawUserInfo(userId, userInfo);
           const obj = utilsFns.removeUndefinedOrNullProps(rawUserInfo);
-          supabase
+          return supabase
             .from("user_info")
-            .update(obj);
+            .update(obj)
+            .eq('id', userId);
         },
       },
 
