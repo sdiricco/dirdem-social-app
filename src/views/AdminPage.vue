@@ -123,7 +123,7 @@ async function listUsers() {
 }
 
 async function getAllBroadcasts() {
-  broadcasts.value = await client.bcast.getAll();
+  broadcasts.value = await client.bcast.getAll() as any;
   console.log(broadcasts);
 }
 

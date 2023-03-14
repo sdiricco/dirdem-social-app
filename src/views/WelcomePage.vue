@@ -67,6 +67,7 @@ async function onSubmitBCast() {
 }
 
 onMounted(async () => {
+  await broadcastStore.fetchCandidate();
   await broadcastStore.fetchInserted();
 });
 </script>

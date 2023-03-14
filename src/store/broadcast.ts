@@ -42,6 +42,7 @@ export const useBroadcastStore = defineStore({
     },
     async fetchInserted() {
       this.broadcasts = await client.bcast.getInserted(this.userId);
+      console.log(this.broadcasts)
     },
     async fetchCandidate() {
       this.broadcasts = await client.bcast.getCandidate(this.userId)({
