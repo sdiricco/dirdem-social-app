@@ -4,12 +4,12 @@ import { IRawBcast } from "@/interfaces/raw/raw-bcast";
 import { IRawMessage } from "@/interfaces/raw/raw-message";
 import { IRawUserInfo } from "@/interfaces/raw/raw-user-info";
 import { IUserInfo } from "@/interfaces/user-info";
-import wkx from 'wkx';
+import { parseGeoPoint } from "../geolocalization";
 
 // @todo check correct data wrapping in all dto functions
 
 const buildBcast = (rawBcast: IRawBcast): IBcast => {
-  const { x: lng, y: lat } = wkx.Geometry.parse(Buffer.from(rawBcast?.location, 'hex')) as any;
+  const { lat, lng } = parseGeoPoint(rawBcast.location);
   return {
     content: {
       title: rawBcast.title,
