@@ -27,12 +27,31 @@
       </ion-item-divider>
       <ion-list class="ion-padding">
         <!-- List all users -->
-        <ion-item>
+        <ion-item class="overflow-auto">
           <ion-button @click="getAllBroadcasts" fill="outline">Get All broadcasts</ion-button>
+          <ion-button @click="getAllBroadcasts" fill="outline">Get Candidate Broadcast</ion-button>
         </ion-item>
-        <ion-item>
-          <ion-label>Broadcasts: {{ broadcasts.length}}</ion-label>
+        <ion-item class="mb-4">
+          <ion-label>Broadcasts: {{ broadcasts.length }}</ion-label>
         </ion-item>
+        <ion-accordion-group class="border">
+          <ion-accordion :value="String(idx)" v-for="broadcast, idx in broadcasts">
+            <ion-item slot="header">
+              <ion-label>Title: {{ broadcast.content.title }}</ion-label>
+            </ion-item>
+            <div class="ion-padding overflow-auto" slot="content">
+              <code>
+                <div class="text-nowrap">Title: {{ broadcast.content.title }}</div>
+                <div class="text-nowrap">Message: {{ broadcast.content.message }}</div>
+                <div class="text-nowrap">ExpiresAt: {{ broadcast.expiresAt }}</div>
+                <div class="text-nowrap">Location: {{ broadcast.location }}</div>
+                <div class="text-nowrap">MaxDistanceKm: {{ broadcast.maxDistanceKm }}</div>
+                <div class="text-nowrap">MaxUsers: {{ broadcast.maxUsers }}</div>
+                <div class="text-nowrap">tag: {{ broadcast.tag }}</div>
+              </code>
+            </div>
+          </ion-accordion>
+        </ion-accordion-group>
       </ion-list>
     </ion-content>
   </ion-page>
@@ -41,6 +60,8 @@
 <script lang="ts" setup>
 import { ref, onMounted, reactive } from "vue";
 import {
+  IonAccordion,
+  IonAccordionGroup,
   IonPage,
   IonSelect,
   IonSelectOption,
@@ -73,11 +94,11 @@ import { add, star, mailOutline, arrowRedoOutline, closeOutline, locationOutline
 import { useAuthStore } from "@/store/auth";
 import { useBroadcastStore } from "@/store/broadcast";
 import BroadcastForm from "@/components/BroadcastForm.vue";
-import { createClient } from '@supabase/supabase-js';
+import { createClient } from "@supabase/supabase-js";
 
 import client from "@/api/client";
-import { supabaseUrl, supabaseKey, supabaseAdminKey } from '@/constants';
-import api from "@/api"
+import { supabaseUrl, supabaseKey, supabaseAdminKey } from "@/constants";
+import api from "@/api";
 import { IBcast } from "@/interfaces/bcast";
 import { Console } from "console";
 const clientAdmin = createClient(supabaseUrl, supabaseAdminKey);
@@ -85,7 +106,6 @@ const broadcastStore = useBroadcastStore();
 const authStore = useAuthStore();
 const modalOpen = ref(false);
 const filter = ref("all");
-
 
 async function onSubmitBCast() {
   await broadcastStore.create();
@@ -96,19 +116,19 @@ let users = ref([]);
 let selectedUser = ref(null);
 let broadcasts = ref([]);
 
-async function listUsers(){
+async function listUsers() {
   const response = await clientAdmin.auth.admin.listUsers();
   users.value = response.data.users;
   console.log(users);
 }
 
-async function getAllBroadcasts(){
+async function getAllBroadcasts() {
   broadcasts.value = await client.bcast.getAll();
   console.log(broadcasts);
 }
 
 onMounted(async () => {
- await listUsers();
+  await listUsers();
 });
 </script>
 
