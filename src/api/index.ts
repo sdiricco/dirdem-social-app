@@ -4,13 +4,13 @@ import {
 } from "@supabase/supabase-js";
 import { v4 as uuid } from "uuid";
 import { ISignUp } from "../interfaces/sign-up";
-import { IBcast } from "../interfaces/bcast";
 import { IGeoLocation } from "../interfaces/geo-location";
 import { IUserInfo } from "../interfaces/user-info";
 import { ISignIn } from "@/interfaces/sign-in";
 import handlers from "./handlers";
 import outputDto from "@/functions/dto/output-dto";
 import utilsFns from "@/functions/utils-fns";
+import { IInsertBcast } from "@/interfaces/insert-bcast";
 
 const api =
   (init = false) => (supabase: SupabaseClient<any, "public", any>) => {
@@ -23,7 +23,7 @@ const api =
       supabase,
 
       bcast: {
-        insert: (userId: string) => (bcast: IBcast) => {
+        insert: (userId: string) => (bcast: IInsertBcast) => {
           const rawBcast = outputDto.buildRawBcast(userId, bcast);
           return supabase
             .from("bcast")

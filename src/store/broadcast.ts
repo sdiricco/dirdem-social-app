@@ -2,10 +2,11 @@ import { defineStore } from "pinia";
 import { useAuthStore } from "./auth";
 import { IBcast } from "@/interfaces/bcast";
 import client from "@/api/client";
+import { IInsertBcast } from "@/interfaces/insert-bcast";
 
 interface IState {
   broadcasts: IBcast[];
-  tempBroadcast: IBcast;
+  tempBroadcast: IInsertBcast;
   tempTag: string;
 }
 export const useBroadcastStore = defineStore({
@@ -38,7 +39,7 @@ export const useBroadcastStore = defineStore({
   actions: {
 
     async fetchAll() {
-      this.$store.broadcasts = await client.bcast.getAll();
+      this.broadcasts = await client.bcast.getAll();
     },
     async fetchInserted() {
       this.broadcasts = await client.bcast.getInserted(this.userId);

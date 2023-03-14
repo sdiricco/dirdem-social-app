@@ -11,6 +11,8 @@ import { parseGeoPoint } from "../geolocalization";
 const buildBcast = (rawBcast: IRawBcast): IBcast => {
   const { lat, lng } = parseGeoPoint(rawBcast.location);
   return {
+    id: rawBcast.id,
+    userId: rawBcast.user_id,
     content: {
       title: rawBcast.title,
       message: rawBcast.content,

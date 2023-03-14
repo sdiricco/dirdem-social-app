@@ -99,7 +99,7 @@ async function onSubmitBCast() {
 }
 
 onMounted(async () => {
-  await broadcastStore.fetchInserted();
+  await broadcastStore.fetchAll();
 });
 
 
