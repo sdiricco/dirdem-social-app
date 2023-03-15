@@ -99,19 +99,20 @@ const api =
             )
             .subscribe(),
 
-        join: (userId: string) =>
+        join: (userId: string, bcastId: string) =>
           supabase
             .from("bcast_user")
-            .update({ accepted: true })
+            .update({ joined: true })
             .eq("user_id", userId)
-            .is("accepted", null),
+            .eq("bcast_id", bcastId)
+            .is("joined", null),
 
         hide: (userId: string) =>
           supabase
             .from("bcast_user")
-            .update({ accepted: false })
+            .update({ joined: false })
             .eq("user_id", userId)
-            .is("accepted", null),
+            .is("joined", null),
       },
 
       message: {

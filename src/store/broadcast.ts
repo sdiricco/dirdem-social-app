@@ -5,6 +5,7 @@ import client from "@/api/client";
 import { IInsertBcast } from "@/interfaces/insert-bcast";
 
 interface IState {
+  myBroadcasts: IBcast[];
   broadcasts: IBcast[];
   tempBroadcast: IInsertBcast;
   tempTag: string;
@@ -12,6 +13,7 @@ interface IState {
 export const useBroadcastStore = defineStore({
   id: "broadcast-store",
   state: (): IState => ({
+    myBroadcasts: [],
     broadcasts: [],
     tempBroadcast: {
       content: {
@@ -37,7 +39,9 @@ export const useBroadcastStore = defineStore({
     },
   },
   actions: {
-
+    async join(bcastId: string){
+      await client.bcast.join(this.userId, bcastId);
+    },
     async fetchAll() {
       this.broadcasts = await client.bcast.getAll();
     },
@@ -51,8 +55,8 @@ export const useBroadcastStore = defineStore({
         lng: 44.44
       })(['mio', 'tuo']);
     },
-    async fetchJoined() {
-      this.broadcasts = await client.bcast.getJoined(this.userId);
+    async fetchMyBroadcasts() {
+      this.myBroadcasts = await client.bcast.getJoined(this.userId);
     },
     async fetchHided() {
       this.broadcasts = await client.bcast.getHided(this.userId);

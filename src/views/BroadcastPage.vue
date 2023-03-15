@@ -32,7 +32,7 @@
         </ion-item>
       </ion-list>
     </ion-card-content>
-    <ion-button fill="solid" expand="full" class="no-margin">Unisciti</ion-button>
+    <ion-button fill="solid" expand="full" class="no-margin" @click="onClickJoin(bcast)">Unisciti</ion-button>
   </ion-card>
   </div>
 
@@ -96,6 +96,11 @@ const filter = ref('all')
 
 async function onSubmitBCast() {
   await broadcastStore.create();
+}
+
+async function onClickJoin(bcast:any){
+  console.log('join', bcast?.id)
+  await broadcastStore.join(bcast?.id)
 }
 
 onMounted(async () => {

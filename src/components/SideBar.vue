@@ -17,6 +17,11 @@
       </ion-item>
     </ion-menu-toggle>
     <ion-menu-toggle>
+      <ion-item lines="inset" button @click="onClickMyBroadcasts">
+        <ion-label>My Broadcasts</ion-label>
+      </ion-item>
+    </ion-menu-toggle>
+    <ion-menu-toggle>
       <ion-item lines="inset" button @click="onClickProfile">
         <ion-label>Profile</ion-label>
       </ion-item>
@@ -35,6 +40,10 @@ const store = useStore();
 async function onToggleTheme(evt: any) {
   const isDark = evt.target.checked;
   await store.toggleTheme(isDark);
+}
+
+function onClickMyBroadcasts(){
+  router.push("/home/my-broadcasts");
 }
 
 function onClickProfile() {
