@@ -2,16 +2,15 @@
 /* Imports */
 /*****************************************************************************/
 import { defineStore } from "pinia";
-import router from "@/router";
-import { ApiError } from "@/models/apiError";
-import client from "@/api/client";
 import {getUser} from "@/functions/localstorage"
+
+import client from "@/api/client";
 
 /*****************************************************************************/
 /* Interfaces */
 /*****************************************************************************/
 interface IMessageState {
-  messages: [];
+  messages: any[];
   tempMessage: string;
   bcastId: string;
 }
@@ -28,7 +27,22 @@ export const useMessageStore = defineStore({
     bcastId: ''
   }),
 
+  getters:{
+    getUserId: () => getUser()?.id,
+  },
+
   actions: {
-    
+    async sendMessage(){
+      if (!this.getUserId) {
+        return
+      }
+      console.log('[Send messages]');
+      await client.message.insert(this.getUserId)(this.bcastId)(this.tempMessage)
+      this.tempMessage = ''
+    },
+    async fetchMessages(){
+      console.log('[Fetch messages]');
+      this.messages = await client.message.get(this.bcastId);
+    }
   },
 });

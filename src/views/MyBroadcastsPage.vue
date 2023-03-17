@@ -62,12 +62,15 @@ import {
 } from "@ionic/vue";
 import { add, star, mailOutline, arrowRedoOutline, closeOutline, locationOutline, timeOutline } from "ionicons/icons";
 import { onMounted } from "vue";
+import { useMessageStore } from "@/store/message";
 import { useBroadcastStore } from "@/store/broadcast";
 import router from "@/router";
 const broadcastStore = useBroadcastStore();
+const messageStore = useMessageStore();
 
 async function onClickJoin(bcast:any){
   await broadcastStore.join(bcast.id)
+  messageStore.bcastId = bcast.id
   router.push('/home/chat-page')
 }
 

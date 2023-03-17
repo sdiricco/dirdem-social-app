@@ -1,52 +1,53 @@
 <template>
   <div class="chat-container">
-    <div class="chat-header ion-padding">
-      <ion-avatar slot="start">
-      </ion-avatar>
-      <ion-label>{{ otherUser.name }}</ion-label>
+    <div class="chat-header ion-padding border">
+      <div>{{ otherUser.name }}</div>
+      <div>{{ `bcastId: ${messageStore.bcastId}` }}</div>
     </div>
     <div class="chat-messages ion-padding">
-      <div v-for="message in messages" :key="message.id" class="chat-message" :class="{ 'my-message': message.senderId === user.id }">
+      <div v-for="message in messageStore.messages" class="chat-message" :class="{ 'my-message': message.userId === messageStore.getUserId }">
         <ion-card>
           <ion-card-content>
-            {{ message.text }}
+            {{ message.content }}
           </ion-card-content>
         </ion-card>
       </div>
     </div>
-    <form class="chat-form ion-padding">
-      <ion-input type="text" placeholder="Type a message..."></ion-input>
-      <ion-button expand="block" type="submit">Send</ion-button>
-    </form>
+    <div class="chat-form ion-padding border">
+      <ion-input type="text" placeholder="Type a message..." v-model="messageStore.tempMessage"></ion-input>
+      <ion-button expand="block" @click="messageStore.sendMessage">Send</ion-button>
+    </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import SearchToolbar from "@/components/SearchToolbar.vue";
-import { IonContent, IonHeader, IonPage } from "@ionic/vue";
-import { useMainStore } from "@/store";
-import { ref } from "vue";
+import { IonContent, IonHeader, IonPage, IonInput, IonButton, IonCard, IonCardContent } from "@ionic/vue";
+import { useMessageStore } from "@/store/message";
+import { ref, onMounted, onBeforeUnmount } from "vue";
+import client from "@/api/client";
 
-const messages = ref([
-  {
-    id: 'ndddwndwndkwd',
-    text: 'my bellissimo text',
-    senderId: 'senderId',
-  }
-])
+const messageStore = useMessageStore();
 
 const otherUser = ref({
-  name: 'otherUser',
-
-})
+  name: "otherUser",
+});
 
 const user = ref({
-  id: 'sjasjamma' 
-})
+  id: "sjasjamma",
+});
 
-const store = useMainStore();
+onMounted(async () => {
+  await messageStore.fetchMessages();
+  if (!messageStore.getUserId) {
+    return;
+  }
+  console.log("[Listen messages]");
 
-
+  client.message.onInsert(messageStore.getUserId, (payload) => {
+    console.log("New message", payload);
+  });
+});
 </script>
 
 <style scoped>

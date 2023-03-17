@@ -30,7 +30,7 @@ const handlerArray = (dto: Function) => ({data, error}: {data: any, error: any})
 const bcastHandler: ApiHandler<IBcast[]> = handlerArray(inputDto.buildBcast);
 const bcastCandidateHandler: ApiHandler<ICandidateBcast[]> = handlerArray(inputDto.buildCandidateBcast);
 const userInfoHandler: ApiHandler<IUserInfo> = handlerObject(inputDto.buildUserInfo);
-const messageHandler: ApiHandler<IMessage> = handlerArray(inputDto.buildMessage);
+const messageHandler: ApiHandler<IMessage[]> = handlerArray(inputDto.buildMessage);
 
 
 export default {
