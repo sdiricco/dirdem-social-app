@@ -6,11 +6,20 @@ import { v4 as uuid } from "uuid";
 import { ISignUp } from "../interfaces/sign-up";
 import { IGeoLocation } from "../interfaces/geo-location";
 import { IUserInfo } from "../interfaces/user-info";
-import { ISignIn } from "@/interfaces/sign-in";
 import handlers from "./handlers";
 import outputDto from "@/functions/dto/output-dto";
 import utilsFns from "@/functions/utils-fns";
 import { IInsertBcast } from "@/interfaces/insert-bcast";
+import { ISignIn } from "@/interfaces/sign-in";
+
+const bcastUserRecordExists = (supabase: SupabaseClient<any, "public", any>) => (userId: string) => (bcastId: string) => {
+    return supabase.from("bcast_user")
+      .select('*')
+      .eq("user_id", userId)
+      .eq("bcast_id", bcastId)
+      .then(handlers.bcastUserExistsHandler)
+  }
+
 
 const api =
   (init = false) => (supabase: SupabaseClient<any, "public", any>) => {
@@ -79,40 +88,70 @@ const api =
             .then(handlers.bcastHandler),
 
         onInsert: (userId: string) =>
-        (
-          cb: (
-            payload: RealtimePostgresChangesPayload<{ [key: string]: any }>,
-          ) => void,
-          channelId = uuid(),
-        ) =>
-          supabase
-            .channel(channelId)
-            .on(
-              "postgres_changes",
-              {
-                event: "INSERT",
-                schema: "public",
-                table: "bcast_user",
-                filter: `user_id=eq.${userId}`,
-              },
-              cb,
-            )
-            .subscribe(),
+          (
+            cb: (
+              payload: RealtimePostgresChangesPayload<{ [key: string]: any }>,
+            ) => void,
+            channelId = uuid(),
+          ) =>
+            supabase
+              .channel(channelId)
+              .on(
+                "postgres_changes",
+                {
+                  event: "INSERT",
+                  schema: "public",
+                  table: "bcast_user",
+                  filter: `user_id=eq.${userId}`,
+                },
+                cb,
+              )
+              .subscribe(),
 
-        join: (userId: string, bcastId: string) =>
-          supabase
+        join: async (userId: string) => async (bcastId: string) => {
+          const bcastUserExists = await bcastUserRecordExists(supabase)(userId)(bcastId);
+          if (bcastUserExists) {
+            return supabase
+              .from("bcast_user")
+              .update({ joined: true })
+              .eq("user_id", userId)
+              .eq("bcast_id", bcastId)
+          } else {
+            return supabase
             .from("bcast_user")
-            .update({ joined: true })
-            .eq("user_id", userId)
-            .eq("bcast_id", bcastId)
-            .is("joined", null),
+            .insert({ user_id: userId, bcast_id: bcastId, joined: true })
+          }
+        },
 
-        hide: (userId: string) =>
-          supabase
+        hide: async (userId: string) => async (bcastId: string) => {
+          const bcastUserExists = await bcastUserRecordExists(supabase)(userId)(bcastId);
+          if (bcastUserExists) {
+            return supabase
+              .from("bcast_user")
+              .update({ hided: true })
+              .eq("user_id", userId)
+              .eq("bcast_id", bcastId)
+          } else {
+            return supabase
             .from("bcast_user")
-            .update({ joined: false })
-            .eq("user_id", userId)
-            .is("joined", null),
+            .insert({ user_id: userId, bcast_id: bcastId, hided: true })
+          }
+        },
+
+        report: async (userId: string) => async (bcastId: string) => {
+          const bcastUserExists = await bcastUserRecordExists(supabase)(userId)(bcastId);
+          if (bcastUserExists) {
+            return supabase
+              .from("bcast_user")
+              .update({ reported: true })
+              .eq("user_id", userId)
+              .eq("bcast_id", bcastId)
+          } else {
+            return supabase
+            .from("bcast_user")
+            .insert({ user_id: userId, bcast_id: bcastId, reported: true })
+          }
+        }
       },
 
       message: {

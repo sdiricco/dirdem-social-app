@@ -44,7 +44,7 @@ export const useBroadcastStore = defineStore({
       if (!this.userId) {
         return
       }
-      await client.bcast.join(this.userId, bcastId);
+      await client.bcast.join(this.userId);
       console.log('[JOINED, bcastid]', bcastId)
     },
     async fetchAll() {
