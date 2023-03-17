@@ -65,7 +65,7 @@
         </ion-item>
       </ion-list>
     </ion-card-content>
-    <ion-button fill="solid" expand="full" class="no-margin" @click="onClickJoin(bcast)">Chat</ion-button>
+    <ion-button fill="solid" expand="full" class="no-margin" @click="onClickChat(bcast)">Chat</ion-button>
   </ion-card>
 </template>
 
@@ -109,7 +109,8 @@ async function onClickJoin(bcast:any){
 }
 
 async function onClickChat(bcast:any){
-  alert('@todo')
+  messageStore.bcastId = bcast.id
+  router.push('/home/chat-page')
 }
 
 onMounted(async () => {
