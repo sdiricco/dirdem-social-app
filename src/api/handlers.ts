@@ -1,12 +1,23 @@
 import inputDto from "@/functions/dto/input-dto";
 import { IBcast } from "@/interfaces/bcast";
+import { ICandidateBcast } from "@/interfaces/candidate-bcast";
 import { IMessage } from "@/interfaces/message";
 import { IUserInfo } from "@/interfaces/user-info";
 import { ApiError } from "../models/apiError";
 
-type ApiHandler<T> = (dto) => ({data, error}) => T;
+type ApiHandler<T> = (dto: any) => T;
 
-const handlerObject = (dto: Function) => ({data, error}: {data: any, error: any}) => {
+const handleObject = (dto: Function) => ({ data, error }: { data: any, error: any }) => {
+    if (error) {
+        throw new ApiError(error.message, {
+            details: error.name,
+            code: error.status
+        })
+    }
+    return dto(data);
+}
+
+const handleFirstObject = (dto: Function) => ({data, error}: {data: any, error: any}) => {
     if (error) {
         throw new ApiError(error.message, {
             details: error.name,
@@ -16,7 +27,7 @@ const handlerObject = (dto: Function) => ({data, error}: {data: any, error: any}
     return dto(data?.at(0));
 }
 
-const handlerArray = (dto: Function) => ({data, error}: {data: any, error: any}) => {
+const handleArray = (dto: Function) => ({data, error}: {data: any, error: any}) => {
     if (error) {
         throw new ApiError(error.message, {
             details: error.name,
@@ -26,15 +37,19 @@ const handlerArray = (dto: Function) => ({data, error}: {data: any, error: any})
     return data.map((_:any) => dto(_));
 }
 
-const bcastHandler: ApiHandler<IBcast[]> = handlerArray(inputDto.buildBcast);
-const userInfoHandler: ApiHandler<IUserInfo> = handlerObject(inputDto.buildUserInfo);
-const messageHandler: ApiHandler<IMessage> = handlerArray(inputDto.buildMessage);
+const bcastHandler: ApiHandler<IBcast[]> = handleArray(inputDto.buildBcast);
+const userInfoHandler: ApiHandler<IUserInfo> = handleFirstObject(inputDto.buildUserInfo);
+const messageHandler: ApiHandler<IMessage> = handleArray(inputDto.buildMessage);
+const bcastUserExistsHandler: ApiHandler<boolean> = handleObject(((data: any) => data.length > 0));
+const candidateBcastHandler: ApiHandler<ICandidateBcast[]> = handleArray(inputDto?.buildBcast);
 
 
 export default {
   bcastHandler,
   userInfoHandler,
-  messageHandler
+  messageHandler,
+  bcastUserExistsHandler,
+  candidateBcastHandler
 }
 
 
