@@ -11,10 +11,10 @@
 <script lang="ts" setup>
 import { IonToolbar, IonProgressBar, IonButtons, IonMenuButton, IonTitle } from "@ionic/vue";
 
-import { useStore } from "@/store";
+import { useMainStore } from "@/store";
 import {useAuthStore} from "@/store/auth"
 
 const auth = useAuthStore();
-const store = useStore();
+const store = useMainStore();
 
 </script>

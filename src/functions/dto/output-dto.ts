@@ -8,9 +8,9 @@ import { IInsertBcast } from "@/interfaces/insert-bcast";
 
 const buildRawUserInfo = (userId: string, userInfo: Partial<IUserInfo> ): IRawUserInfo => ({
     id: userId,
-    bcast_to_get: userInfo.bcast.toGet,
-    bcast_to_send: userInfo.bcast.toSend,
-    tag: userInfo?.tag,
+    bcast_to_get: userInfo?.bcast?.toGet || 0,
+    bcast_to_send: userInfo?.bcast?.toSend || 0,
+    tag: userInfo?.tag || [],
 });
 
 const buildRawBcast = (userId: string, bcast: IInsertBcast): Partial<IRawBcast> => ({

@@ -41,6 +41,10 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/MyBroadcastsPage.vue')
       },
       {
+        path: "chat-page",
+        component: () => import('@/views/ChatPage.vue')
+      },
+      {
         path: "profile",
         component: () => import('@/views/ProfilePage.vue')
       }

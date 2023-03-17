@@ -10,7 +10,7 @@ interface IState {
   }
 }
 export const useLayoutStore = defineStore({
-  id: "layout-store",
+  id: "layout",
   state: (): IState =>({
     sideBar: false,
     preferences: {

@@ -50,9 +50,11 @@ import { faUserSecret, faSatelliteDish, faMoon, faSun, faWifi, faMagnifyingGlass
 library.add(faUserSecret, faSatelliteDish, faMoon, faSun, faWifi, faMagnifyingGlass, faCircleXmark)
 
 
+const pinia = createPinia()
+
 const app = createApp(App)
   .component('font-awesome-icon', FontAwesomeIcon)
-  .use(createPinia())
+  .use(pinia)
   .use(IonicVue)
   .use(router);
   

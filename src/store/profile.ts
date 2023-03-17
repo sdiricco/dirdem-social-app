@@ -41,6 +41,9 @@ export const useProfileStore = defineStore({
     /* fetch user profile */
     async fetch(){
       try {
+        if (!this.userId) {
+          return;
+        }
         this.userInfo = await client.userInfo.get(this.userId);
         console.log(this.userInfo)
       } catch (error) {
@@ -51,6 +54,9 @@ export const useProfileStore = defineStore({
     /* update user profile */
     async update(){
       try {
+        if (!this.userId) {
+          return;
+        }
         const response = await client.userInfo.update(this.userId)({bcast: {toGet: 10, toSend:10}, tag: ['mio', 'tuo']})
         console.log(response)
       } catch (error) {

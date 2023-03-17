@@ -1,10 +1,11 @@
+import { ICandidateBcast } from './../interfaces/candidate-bcast';
 import inputDto from "@/functions/dto/input-dto";
 import { IBcast } from "@/interfaces/bcast";
 import { IMessage } from "@/interfaces/message";
 import { IUserInfo } from "@/interfaces/user-info";
 import { ApiError } from "../models/apiError";
 
-type ApiHandler<T> = (dto) => ({data, error}) => T;
+type ApiHandler<T> = (dto:any) => T;
 
 const handlerObject = (dto: Function) => ({data, error}: {data: any, error: any}) => {
     if (error) {
@@ -27,11 +28,13 @@ const handlerArray = (dto: Function) => ({data, error}: {data: any, error: any})
 }
 
 const bcastHandler: ApiHandler<IBcast[]> = handlerArray(inputDto.buildBcast);
+const bcastCandidateHandler: ApiHandler<ICandidateBcast[]> = handlerArray(inputDto.buildCandidateBcast);
 const userInfoHandler: ApiHandler<IUserInfo> = handlerObject(inputDto.buildUserInfo);
 const messageHandler: ApiHandler<IMessage> = handlerArray(inputDto.buildMessage);
 
 
 export default {
+  bcastCandidateHandler,
   bcastHandler,
   userInfoHandler,
   messageHandler

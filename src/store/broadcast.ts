@@ -3,15 +3,16 @@ import { useAuthStore } from "./auth";
 import { IBcast } from "@/interfaces/bcast";
 import client from "@/api/client";
 import { IInsertBcast } from "@/interfaces/insert-bcast";
+import { ICandidateBcast } from "@/interfaces/candidate-bcast";
 
 interface IState {
-  myBroadcasts: IBcast[];
+  myBroadcasts: ICandidateBcast[];
   broadcasts: IBcast[];
   tempBroadcast: IInsertBcast;
   tempTag: string;
 }
 export const useBroadcastStore = defineStore({
-  id: "broadcast-store",
+  id: "broadcast",
   state: (): IState => ({
     myBroadcasts: [],
     broadcasts: [],
@@ -40,30 +41,67 @@ export const useBroadcastStore = defineStore({
   },
   actions: {
     async join(bcastId: string){
+      if (!this.userId) {
+        return
+      }
       await client.bcast.join(this.userId, bcastId);
+      console.log('[JOINED, bcastid]', bcastId)
     },
     async fetchAll() {
-      this.broadcasts = await client.bcast.getAll();
+      if (!this.userId) {
+        return
+      }
+      const response = await client.bcast.getAll();
+      console.log('[Api response: bcast.getAll()]', response);
+      this.broadcasts = response
     },
     async fetchInserted() {
-      this.broadcasts = await client.bcast.getInserted(this.userId);
-      console.log(this.broadcasts)
+      if (!this.userId) {
+        return
+      }
+      const response = await client.bcast.getInserted(this.userId);
+      console.log('[Api response: bcast.getInserted()]', response);
+
     },
     async fetchCandidate() {
-      this.broadcasts = await client.bcast.getCandidate(this.userId)({
-        lat: 33.33,
-        lng: 44.44
-      })(['mio', 'tuo']);
+      try {
+        console.log('user-id', this.userId);
+        if (!this.userId) {
+          return
+        }
+        const response = await client.bcast.getCandidate(this.userId)({
+          lat: 33.33,
+          lng: 44.33
+        })(['mio']);
+        console.log('[Api response: bcast.getCandidate()]', response);
+        this.myBroadcasts = response
+      } catch (e) {
+        console.log('error in fetch', e)
+      }
     },
     async fetchMyBroadcasts() {
-      this.myBroadcasts = await client.bcast.getJoined(this.userId);
+      if (!this.userId) {
+        return
+      }
+      const response = await client.bcast.getJoined(this.userId);
+      console.log('[Api response: bcast.getJoined()]', response);
+
     },
     async fetchHided() {
-      this.broadcasts = await client.bcast.getHided(this.userId);
+      if (!this.userId) {
+        return
+      }
+      const response = await client.bcast.getHided(this.userId);
+      console.log('[Api response: bcast.getHided()]', response);
+
     },
     async create() {
+      if (!this.userId) {
+        return
+      }
       const response = await client.bcast.insert(this.userId)(this.tempBroadcast);
-      console.log(response);
+      console.log('[Api response: bcast.insert()]', response);
+
     },
   },
 });

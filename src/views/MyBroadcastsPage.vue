@@ -1,18 +1,77 @@
 <template>
-  <div>
-    My broadcasts {{  }}
+  <div v-if="!broadcastStore.myBroadcasts.length">
+    <p>No broadcast fetching API</p>
   </div>
+  <ion-card card v-for="bcast in broadcastStore.myBroadcasts" class="m-4">
+    <ion-card-header class="d-flex justify-content-between">
+      <div>
+        <ion-card-title>{{ bcast.content.title || "---" }}</ion-card-title>
+        <ion-card-subtitle>{{ bcast.content.message || "---" }}</ion-card-subtitle>
+      </div>
+      <ion-fab-button color="danger" size="small">
+        <ion-icon :icon="closeOutline"></ion-icon>
+      </ion-fab-button>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-list>
+        <ion-item lines="none">
+          <ion-icon slot="start" :icon="locationOutline"></ion-icon>
+          <ion-label>
+            <h3>Dove</h3>
+            <p>{{ bcast.location }}</p>
+          </ion-label>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-icon slot="start" :icon="timeOutline"> </ion-icon>
+          <ion-label>
+            <h3>Scadenza</h3>
+            <p>{{ bcast.expiresAt }}</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+    <ion-button fill="solid" expand="full" class="no-margin" @click="onClickJoin(bcast)">Unisciti</ion-button>
+  </ion-card>
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from "vue";
-import {} from "@ionic/vue";
-import {} from "ionicons/icons";
+import {
+  IonContent,
+  IonHeader,
+  IonModal,
+  IonToolbar,
+  IonButtons,
+  IonFab,
+  IonFabButton,
+  IonIcon,
+  IonItem,
+  IonLabel,
+  IonInput,
+  IonButton,
+  IonTitle,
+  IonCard,
+  IonCardHeader,
+  IonCardContent,
+  IonCardTitle,
+  IonCardSubtitle,
+  IonList,
+  IonFooter,
+  IonSegment,
+  IonSegmentButton
+} from "@ionic/vue";
+import { add, star, mailOutline, arrowRedoOutline, closeOutline, locationOutline, timeOutline } from "ionicons/icons";
+import { onMounted } from "vue";
 import { useBroadcastStore } from "@/store/broadcast";
+import router from "@/router";
 const broadcastStore = useBroadcastStore();
 
+async function onClickJoin(bcast:any){
+  await broadcastStore.join(bcast.id)
+  router.push('/home/chat-page')
+}
+
 onMounted(async () => {
-  await broadcastStore.fetchMyBroadcasts();
+  await broadcastStore.fetchCandidate();
 });
 </script>
-

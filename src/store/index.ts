@@ -19,8 +19,8 @@ interface IState {
     id: string
   }
 }
-export const useStore = defineStore({
-  id: "store",
+export const useMainStore = defineStore({
+  id: "main",
   state: (): IState =>({
     httpRequestOnGoing: false,
     appVersion: "0.0.1",

@@ -14,9 +14,9 @@
 <script lang="ts" setup>
 import SearchToolbar from "@/components/SearchToolbar.vue";
 import { IonContent, IonHeader, IonPage } from "@ionic/vue";
-import { useStore } from "@/store";
+import { useMainStore } from "@/store";
 
-const store = useStore();
+const store = useMainStore();
 
 
 </script>
