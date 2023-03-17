@@ -108,7 +108,7 @@ const api =
               )
               .subscribe(),
 
-        join: async (userId: string) => async (bcastId: string) => {
+        join: (userId: string) => async (bcastId: string) => {
           const bcastUserExists = await bcastUserRecordExists(supabase)(userId)(bcastId);
           if (bcastUserExists) {
             return supabase
@@ -123,12 +123,12 @@ const api =
           }
         },
 
-        hide: async (userId: string) => async (bcastId: string) => {
+        hide: (userId: string) => async (bcastId: string) => {
           const bcastUserExists = await bcastUserRecordExists(supabase)(userId)(bcastId);
           if (bcastUserExists) {
             return supabase
               .from("bcast_user")
-              .update({ hided: true })
+              .update({ joined: false, hided: true, reported: false })
               .eq("user_id", userId)
               .eq("bcast_id", bcastId)
           } else {
@@ -138,12 +138,12 @@ const api =
           }
         },
 
-        report: async (userId: string) => async (bcastId: string) => {
+        report: (userId: string) => async (bcastId: string) => {
           const bcastUserExists = await bcastUserRecordExists(supabase)(userId)(bcastId);
           if (bcastUserExists) {
             return supabase
               .from("bcast_user")
-              .update({ reported: true })
+              .update({ joined: false, hided: true, reported: true })
               .eq("user_id", userId)
               .eq("bcast_id", bcastId)
           } else {

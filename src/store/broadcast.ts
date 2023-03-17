@@ -44,8 +44,22 @@ export const useBroadcastStore = defineStore({
       if (!this.userId) {
         return
       }
-      await client.bcast.join(this.userId);
+      await client.bcast.join(this.userId)(bcastId);
       console.log('[JOINED, bcastid]', bcastId)
+    },
+    async hide(bcastId: string){
+      if (!this.userId) {
+        return
+      }
+      await client.bcast.hide(this.userId)(bcastId);
+      console.log('[HIDED, bcastid]', bcastId)
+    },
+    async report(bcastId: string){
+      if (!this.userId) {
+        return
+      }
+      await client.bcast.report(this.userId)(bcastId);
+      console.log('[REPORTED, bcastid]', bcastId)
     },
     async fetchAll() {
       if (!this.userId) {
