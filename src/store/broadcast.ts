@@ -6,16 +6,16 @@ import { IInsertBcast } from "@/interfaces/insert-bcast";
 import { ICandidateBcast } from "@/interfaces/candidate-bcast";
 
 interface IState {
-  myBroadcasts: ICandidateBcast[];
-  broadcasts: IBcast[];
+  candidateBroadcasts: ICandidateBcast[];
+  joinedBroadcasts: IBcast[];
   tempBroadcast: IInsertBcast;
   tempTag: string;
 }
 export const useBroadcastStore = defineStore({
   id: "broadcast",
   state: (): IState => ({
-    myBroadcasts: [],
-    broadcasts: [],
+    candidateBroadcasts: [],
+    joinedBroadcasts: [],
     tempBroadcast: {
       content: {
         title: "",
@@ -61,14 +61,6 @@ export const useBroadcastStore = defineStore({
       await client.bcast.report(this.userId)(bcastId);
       console.log('[REPORTED, bcastid]', bcastId)
     },
-    async fetchAll() {
-      if (!this.userId) {
-        return
-      }
-      const response = await client.bcast.getAll();
-      console.log('[Api response: bcast.getAll()]', response);
-      this.broadcasts = response
-    },
     async fetchInserted() {
       if (!this.userId) {
         return
@@ -88,18 +80,10 @@ export const useBroadcastStore = defineStore({
           lng: 44.33
         })(['mio']);
         console.log('[Api response: bcast.getCandidate()]', response);
-        this.myBroadcasts = response
+        this.candidateBroadcasts = response
       } catch (e) {
         console.log('error in fetch', e)
       }
-    },
-    async fetchMyBroadcasts() {
-      if (!this.userId) {
-        return
-      }
-      const response = await client.bcast.getJoined(this.userId);
-      console.log('[Api response: bcast.getJoined()]', response);
-
     },
     async fetchHided() {
       if (!this.userId) {
@@ -107,7 +91,16 @@ export const useBroadcastStore = defineStore({
       }
       const response = await client.bcast.getHided(this.userId);
       console.log('[Api response: bcast.getHided()]', response);
-
+    },
+    async fetchJoined() {
+      if (!this.userId) {
+        return
+      }
+      console.log('user id')
+      console.log(this.userId)
+      const response = await client.bcast.getJoined(this.userId);
+      console.log('[Api response: bcast.getJoined()]', response);
+      this.joinedBroadcasts = response
     },
     async create() {
       if (!this.userId) {

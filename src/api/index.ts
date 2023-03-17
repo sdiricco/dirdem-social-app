@@ -69,7 +69,7 @@ const api =
             .select("bcast(*)")
             .eq("user_id", userId)
             .is("joined", true)
-            .then(handlers.bcastHandler),
+            .then(handlers.interactedBcastHandler),
 
         getHided: (userId: string) =>
           supabase
@@ -77,7 +77,7 @@ const api =
             .select("bcast(*)")
             .eq("user_id", userId)
             .is("hided", true)
-            .then(handlers.bcastHandler),
+            .then(handlers.interactedBcastHandler),
 
         getReported: (userId: string) =>
           supabase
@@ -85,7 +85,7 @@ const api =
             .select("bcast(*)")
             .eq("user_id", userId)
             .is("reported", true)
-            .then(handlers.bcastHandler),
+            .then(handlers.interactedBcastHandler),
 
         onInsert: (userId: string) =>
           (

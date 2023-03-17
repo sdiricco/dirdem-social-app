@@ -44,7 +44,7 @@ onMounted(async () => {
   }
   console.log("[Listen messages]");
 
-  client.message.onInsert(messageStore.getUserId, (payload) => {
+  client.message.onInsert(messageStore.bcastId, (payload) => {
     console.log("New message", payload);
   });
 });

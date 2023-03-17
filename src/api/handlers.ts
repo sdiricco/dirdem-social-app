@@ -37,12 +37,23 @@ const handleArray = (dto: Function) => ({data, error}: {data: any, error: any}) 
     return data.map((_:any) => dto(_));
 }
 
+const handleInteractedBcast = (dto: Function) => ({data, error}: {data: any, error: any}) => {
+    if (error) {
+        throw new ApiError(error.message, {
+            details: error.name,
+            code: error.status
+        })
+    }
+    return data.map((_:any) => dto(_.bcast));
+}
+
 const bcastCandidateHandler: ApiHandler<ICandidateBcast[]> = handleArray(inputDto.buildCandidateBcast);
 const bcastHandler: ApiHandler<IBcast[]> = handleArray(inputDto.buildBcast);
 const userInfoHandler: ApiHandler<IUserInfo> = handleFirstObject(inputDto.buildUserInfo);
 const messageHandler: ApiHandler<IMessage[]> = handleArray(inputDto.buildMessage);
 const bcastUserExistsHandler: ApiHandler<boolean> = handleObject(((data: any) => data.length > 0));
 const candidateBcastHandler: ApiHandler<ICandidateBcast[]> = handleArray(inputDto?.buildBcast);
+const interactedBcastHandler: ApiHandler<IBcast[]> = handleInteractedBcast(inputDto.buildBcast);
 
 
 export default {
@@ -51,7 +62,8 @@ export default {
   userInfoHandler,
   messageHandler,
   bcastUserExistsHandler,
-  candidateBcastHandler
+  candidateBcastHandler,
+  interactedBcastHandler
 }
 
 

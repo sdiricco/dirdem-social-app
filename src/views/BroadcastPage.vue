@@ -1,9 +1,9 @@
 <template>
   <div class="overflow-auto h-100">
-    <div v-if="!broadcastStore.broadcasts.length">
+    <div v-if="!broadcastStore.candidateBroadcasts.length">
       <p>No broadcast fetching API [{{ filter }}]</p>
     </div>
-    <ion-card card v-for="bcast in broadcastStore.broadcasts" class="m-4">
+    <ion-card card v-for="bcast in broadcastStore.candidateBroadcasts" class="m-4">
     <ion-card-header class="d-flex justify-content-between">
       <div>
         <ion-card-title>{{ bcast.content.title || '---' }}</ion-card-title>
@@ -104,7 +104,6 @@ async function onClickJoin(bcast:any){
 }
 
 onMounted(async () => {
-  await broadcastStore.fetchAll();
 });
 
 

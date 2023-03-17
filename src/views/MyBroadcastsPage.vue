@@ -1,8 +1,9 @@
 <template>
-  <div v-if="!broadcastStore.myBroadcasts.length">
+  <div v-if="!broadcastStore.candidateBroadcasts.length">
     <p>No broadcast fetching API</p>
   </div>
-  <ion-card card v-for="bcast in broadcastStore.myBroadcasts" class="m-4">
+  <div>candidate:</div>
+  <ion-card card v-for="bcast in broadcastStore.candidateBroadcasts" class="m-4">
     <ion-card-header class="d-flex justify-content-between">
       <div>
         <ion-card-title>{{ bcast.content.title || "---" }}</ion-card-title>
@@ -32,6 +33,39 @@
       </ion-list>
     </ion-card-content>
     <ion-button fill="solid" expand="full" class="no-margin" @click="onClickJoin(bcast)">Unisciti</ion-button>
+  </ion-card>
+
+  <div>joined:</div> 
+  <ion-card card v-for="bcast in broadcastStore.joinedBroadcasts" class="m-4">
+    <ion-card-header class="d-flex justify-content-between">
+      <div>
+        <ion-card-title>{{ bcast.content.title || "---" }}</ion-card-title>
+        <ion-card-subtitle>{{ bcast.content.message || "---" }}</ion-card-subtitle>
+      </div>
+      <ion-fab-button color="danger" size="small">
+        <ion-icon :icon="closeOutline"></ion-icon>
+      </ion-fab-button>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-list>
+        <ion-item lines="none">
+          <ion-icon slot="start" :icon="locationOutline"></ion-icon>
+          <ion-label>
+            <h3>Dove</h3>
+            <p>{{ bcast.location }}</p>
+          </ion-label>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-icon slot="start" :icon="timeOutline"> </ion-icon>
+          <ion-label>
+            <h3>Scadenza</h3>
+            <p>{{ bcast.expiresAt }}</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+    <ion-button fill="solid" expand="full" class="no-margin" @click="onClickJoin(bcast)">Chat</ion-button>
   </ion-card>
 </template>
 
@@ -74,7 +108,12 @@ async function onClickJoin(bcast:any){
   router.push('/home/chat-page')
 }
 
+async function onClickChat(bcast:any){
+  alert('@todo')
+}
+
 onMounted(async () => {
   await broadcastStore.fetchCandidate();
+  await broadcastStore.fetchJoined();
 });
 </script>
