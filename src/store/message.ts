@@ -33,7 +33,7 @@ export const useMessageStore = defineStore({
 
   actions: {
     async sendMessage(){
-      if (!this.getUserId) {
+      if (!this.getUserId || !this.tempMessage) {
         return
       }
       console.log('[Send messages]');
@@ -43,6 +43,20 @@ export const useMessageStore = defineStore({
     async fetchMessages(){
       console.log('[Fetch messages]');
       this.messages = await client.message.get(this.bcastId);
+    },
+    listenMessages(){
+      client.message.onInsert(this.bcastId, (payload:any) => {
+        console.log("New message", payload);
+        const rawMessage = payload.new
+        const message = {
+          bcastId: rawMessage.bcast_id,
+          content: rawMessage.content,
+          createdAt: new Date(rawMessage.created_at),
+          userId: rawMessage.user_id
+        }
+        console.log('message', message);
+        this.messages.push(message);
+      });
     }
   },
 });

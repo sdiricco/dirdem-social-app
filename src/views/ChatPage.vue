@@ -1,10 +1,9 @@
 <template>
-  <div class="chat-container">
+  <div class="chat-container" >
     <div class="chat-header ion-padding border">
-      <div>{{ otherUser.name }}</div>
       <div>{{ `bcastId: ${messageStore.bcastId}` }}</div>
     </div>
-    <div class="chat-messages ion-padding">
+    <div class="chat-messages ion-padding" ref="chatContainer">
       <div v-for="message in messageStore.messages" class="chat-message" :class="{ 'my-message': message.userId === messageStore.getUserId }">
         <ion-card>
           <ion-card-content>
@@ -24,29 +23,37 @@
 import SearchToolbar from "@/components/SearchToolbar.vue";
 import { IonContent, IonHeader, IonPage, IonInput, IonButton, IonCard, IonCardContent } from "@ionic/vue";
 import { useMessageStore } from "@/store/message";
-import { ref, onMounted, onBeforeUnmount } from "vue";
-import client from "@/api/client";
+import { ref, onMounted, onBeforeUnmount, onUpdated, nextTick, watch } from "vue";
 
 const messageStore = useMessageStore();
 
-const otherUser = ref({
-  name: "otherUser",
+const chatContainer = ref<HTMLDivElement | null>(null);
+
+
+
+function scrollToBottom() {
+  if (chatContainer.value) {
+    setTimeout(() => {
+      chatContainer.value!.scrollTop = chatContainer.value!.scrollHeight;
+    }, 100);
+  }
+}
+
+onUpdated(() => {
+  scrollToBottom();
 });
 
-const user = ref({
-  id: "sjasjamma",
-});
+watch(() => messageStore.messages, (newValue, oldValue) => {
+  scrollToBottom();
+}, {deep:true});
 
 onMounted(async () => {
   await messageStore.fetchMessages();
   if (!messageStore.getUserId) {
     return;
   }
-  console.log("[Listen messages]");
-
-  client.message.onInsert(messageStore.bcastId, (payload) => {
-    console.log("New message", payload);
-  });
+  messageStore.listenMessages();
+  scrollToBottom();
 });
 </script>
 
