@@ -3,7 +3,7 @@
     <div v-if="!broadcastStore.candidateBroadcasts.length">
       <p>No broadcast fetching API [{{ filter }}]</p>
     </div>
-    <ion-card card v-for="bcast in broadcastStore.candidateBroadcasts" class="m-4">
+    <ion-card v-for="bcast in broadcastStore.candidateBroadcasts" class="m-4">
     <ion-card-header class="d-flex justify-content-between">
       <div>
         <ion-card-title>{{ bcast.content.title || '---' }}</ion-card-title>
@@ -50,7 +50,7 @@
     </ion-header>
     <ion-content class="ion-padding">
       <BroadcastForm />
-    </ion-content>
+    </ion-content>candidateBroadcasts
   </ion-modal>
   <ion-fab slot="fixed" vertical="bottom" horizontal="end">
     <ion-fab-button @click="modalOpen = true">
@@ -104,6 +104,7 @@ async function onClickJoin(bcast:any){
 }
 
 onMounted(async () => {
+  await broadcastStore.fetchCandidate()
 });
 
 

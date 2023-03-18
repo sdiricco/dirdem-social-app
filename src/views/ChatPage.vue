@@ -4,12 +4,12 @@
       <div>{{ `bcastId: ${messageStore.bcastId}` }}</div>
     </div>
     <div class="chat-messages ion-padding" ref="chatContainer">
-      <div v-for="message in messageStore.messages" class="chat-message" :class="{ 'my-message': message.userId === messageStore.getUserId }">
-        <ion-card>
+      <div v-for="message in messageStore.messages" class="chat-message mb-2 bg-light" :class="{ 'my-message': message.userId === messageStore.getUserId }">
+        <div class="content border rounded">
           <ion-card-content>
             {{ message.content }}
           </ion-card-content>
-        </ion-card>
+        </div>
       </div>
     </div>
     <div class="chat-form ion-padding border">
@@ -76,17 +76,18 @@ onMounted(async () => {
 .chat-messages {
   flex: 1;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .chat-message {
-  margin-bottom: 8px;
+  width: 80%;
 }
 
-.my-message ion-card {
-  --background: #03a9f4;
-  color: #fff;
+.chat-message.my-message{
   align-self: flex-end;
 }
+
 
 .chat-form ion-input {
   flex: 1;

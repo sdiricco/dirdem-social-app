@@ -43,8 +43,6 @@ import { IonItem, IonLabel, IonInput, IonList, IonTextarea, IonButton, IonGrid, 
 import { useBroadcastStore } from "@/store/broadcast";
 const broadcastStore = useBroadcastStore();
 
-
-
 function addTag(){
   broadcastStore.tempBroadcast.tag.push(broadcastStore.tempTag)
 }
