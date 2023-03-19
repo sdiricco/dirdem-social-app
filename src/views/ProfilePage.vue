@@ -48,29 +48,27 @@
         <ion-toolbar>
           <ion-title>Modifica il profilo</ion-title>
           <ion-buttons slot="end">
-            <ion-button @click="isOpen = false">
+            <ion-button @click="isOpen = false" >
               <ion-icon :icon="closeOutline"></ion-icon>
             </ion-button>
           </ion-buttons>
         </ion-toolbar>
       </ion-header>
       <ion-content class="ion-padding">
-        <ion-list>
-          <ion-item>
-            <ion-label position="stacked">Email</ion-label>
-            <ion-input placeholder="Email" ></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-label position="stacked">Nome</ion-label>
-            <ion-input placeholder="Nome"></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-label position="stacked">Cognome</ion-label>
-            <ion-input placeholder="Cognome"></ion-input>
-          </ion-item>
-        </ion-list>
-
-        <ion-button shape="round" color="primary" expand="block" @click="onClickSave"> Salva </ion-button>
+        <ion-item>
+          <ion-label position="stacked">Email</ion-label>
+          <ion-input placeholder="Email"></ion-input>
+        </ion-item>
+        <ion-item class="ion-margin-bottom">
+          <ion-label position="stacked">Tag</ion-label>
+          <ion-input v-model="inputText" placeholder="Aggingi tag" @keyup.enter="addTag" @keyup.space.prevent="addTag">
+          </ion-input>
+        </ion-item>
+        <ion-chip v-for="(tag, index) in selectedTags" :key="index" :outline="true">
+          <ion-label>{{ tag }}</ion-label>
+          <ion-icon :icon=closeCircleOutline @click="removeTag(index)"></ion-icon>
+        </ion-chip>
+          <ion-button shape="round" color="primary" expand="block" @click="onClickSave"> spostare pulsante in fondo alla pagina </ion-button>  
       </ion-content>
     </ion-modal>
   </div>
@@ -87,23 +85,24 @@ import {
   IonContent,
   IonIcon,
   IonLabel,
-  IonToggle,
   IonItem,
   IonList,
-  IonCardContent,
   IonButton,
-  IonCard,
-  IonCardHeader,
   IonAvatar,
   IonCardTitle,
-  IonCardSubtitle,
+  IonChip
 } from "@ionic/vue";
-import { mailOutline, callOutline, lockClosedOutline, pencil, closeOutline, sendOutline, arrowRedoOutline, arrowUndoOutline, bookmarkOutline } from "ionicons/icons";
+import { mailOutline, pencil, closeOutline, arrowRedoOutline, arrowUndoOutline, bookmarkOutline } from "ionicons/icons";
 import { onMounted, reactive, ref } from "vue";
-import {useProfileStore} from "@/store/profile"
-import router from "@/router";
+import { useProfileStore } from "@/store/profile"
+import { closeCircleOutline } from 'ionicons/icons';
 
+const avatarUrl = ref(`https://robohash.org/${Math.random().toString(36).substring(7)}.png`);
 const profileStore = useProfileStore();
+
+const isOpen = ref(false);
+const selectedTags = ref(['test', 'figa', 'aggangiareitagdellouserinfo']);
+const inputText = ref('');
 
 const user = reactive({
   name: "Mario Rossi",
@@ -112,20 +111,24 @@ const user = reactive({
   phone: "+39 1234567890",
 });
 
-function onModifyProfile() {
-  router.push("temp-profile");
-}
-
-async function onClickSave(){
+async function onClickSave() {
+  profileStore.update()
   await profileStore.update();
 }
 
-const avatarUrl = ref(`https://robohash.org/${Math.random().toString(36).substring(7)}.png`);
+function addTag() {
+  if (inputText.value) {
+    selectedTags.value.push(inputText.value);
+    inputText.value = '';
+  }
+};
 
-const isOpen = ref(false);
+function removeTag(index: number) {
+  selectedTags.value.splice(index, 1);
+};
 
 onMounted(() => {
   profileStore.fetch();
-  console.log(profileStore.userInfo)
 });
+
 </script>

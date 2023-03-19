@@ -34,7 +34,7 @@ export const useProfileStore = defineStore({
     email(){
       const auth = useAuthStore();
       return auth.getEmail
-    }
+    },
   },
   actions: { 
 
