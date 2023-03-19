@@ -1,22 +1,27 @@
 <template>
   <ion-page>
-    <ion-header>
-      <SearchToolbar />
-    </ion-header>
+    <ion-tabs>
+      <ion-header>
+        <SearchToolbar />
+      </ion-header>
+      <ion-router-outlet></ion-router-outlet>
+      <ion-tab-bar slot="bottom">
+        <ion-tab-button tab="overview" href="/home/broadcast">
+          <ion-label>Home</ion-label>
+        </ion-tab-button>
 
-    <ion-content :fullscreen="true">
-      <router-view></router-view>
-      
-    </ion-content>
+        <ion-tab-button tab="categories" href="/home/profile">
+          <ion-label>Profile</ion-label>
+        </ion-tab-button>
+      </ion-tab-bar>
+    </ion-tabs>
   </ion-page>
 </template>
 
 <script lang="ts" setup>
 import SearchToolbar from "@/components/SearchToolbar.vue";
-import { IonContent, IonHeader, IonPage } from "@ionic/vue";
+import { IonContent, IonHeader, IonPage, IonTabs, IonRouterOutlet, IonTabBar, IonTabButton, IonLabel } from "@ionic/vue";
 import { useMainStore } from "@/store";
 
 const store = useMainStore();
-
-
 </script>

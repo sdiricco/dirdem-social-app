@@ -1,4 +1,5 @@
 <template>
+  <ion-page>
   <div class="p-4">
     <div class="d-flex flex-column justify-content-center align-items-center pb-4">
       <ion-avatar class="mb-4 border">
@@ -74,10 +75,12 @@
       </ion-content>
     </ion-modal>
   </div>
+</ion-page>
 </template>
 
 <script lang="ts" setup>
 import {
+  IonPage,
   IonModal,
   IonTitle,
   IonButtons,

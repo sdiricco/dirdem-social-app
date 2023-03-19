@@ -27,10 +27,10 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('@/views/AdminPage.vue'),
   },
   {
-    path: '/home',
+    path: '/home/',
     name: 'Home',
     component: () => import('@/views/HomePage.vue'),
-    redirect: '/home/broadcast',
+    redirect: "/home/broadcast",
     children: [
       {
         path: "broadcast",

@@ -1,4 +1,5 @@
 <template>
+  <ion-page>
   <div class="chat-container" >
     <div class="chat-header ion-padding border">
       <div>{{ `bcastId: ${messageStore.bcastId}` }}</div>
@@ -17,6 +18,7 @@
       <ion-button expand="block" @click="messageStore.sendMessage">Send</ion-button>
     </div>
   </div>
+</ion-page>
 </template>
 
 <script lang="ts" setup>

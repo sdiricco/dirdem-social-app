@@ -1,4 +1,5 @@
 <template>
+  <ion-page>
   <div class="overflow-auto h-100">
     <div v-if="!broadcastStore.candidateBroadcasts.length">
       <p>No broadcast fetching API [{{ filter }}]</p>
@@ -57,11 +58,13 @@
       <ion-icon :icon="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
+</ion-page>
 </template>
 
 <script lang="ts" setup>
 import { ref, onMounted } from "vue";
 import {
+  IonPage,
   IonContent,
   IonHeader,
   IonModal,
