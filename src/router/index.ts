@@ -4,45 +4,45 @@ import { RouteRecordRaw } from 'vue-router';
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    redirect: '/welcome'
+    redirect: '/auth'
   },
   {
-    path: '/welcome',
-    name: 'Welcome',
-    component: () => import('@/views/WelcomePage.vue'),
-  },
-  {
-    path: '/registration',
-    name: 'Registration',
-    component: () => import('@/views/RegistrationPage.vue'),
-  },
-  {
-    path: '/login',
-    name: 'Login',
-    component: () => import('@/views/LoginPage.vue'),
-  },
-  {
-    path: '/admin',
-    name: 'Admin',
-    component: () => import('@/views/AdminPage.vue'),
-  },
-  {
-    path: '/home/',
-    name: 'Home',
-    component: () => import('@/views/HomePage.vue'),
-    redirect: "/home/broadcast",
+    path: '/auth',
+    name: 'Auth',
+    component: () => import('@/views/AuthPage.vue'),
+    redirect: "/auth/welcome",
     children: [
       {
-        path: "broadcast",
-        component: () => import('@/views/BroadcastPage.vue')
+        path: "welcome",
+        component: () => import('@/views/WelcomePage.vue')
       },
       {
-        path: "my-broadcasts",
-        component: () => import('@/views/MyBroadcastsPage.vue')
+        path: "login",
+        component: () => import('@/views/LoginPage.vue')
       },
       {
-        path: "chat-page",
-        component: () => import('@/views/ChatPage.vue')
+        path: "registration",
+        component: () => import('@/views/RegistrationPage.vue')
+      }
+    ]
+  },
+  {
+    path: '/home',
+    name: 'Home',
+    component: () => import('@/views/HomePage.vue'),
+    redirect: "/home/candidate-broadcasts",
+    children: [
+      {
+        path: "candidate-broadcasts",
+        component: () => import('@/views/CandidateBroadcastPage.vue')
+      },
+      {
+        path: "joined-broadcasts",
+        component: () => import('@/views/JoinedBroadcastsPage.vue')
+      },
+      {
+        path: "joined-broadcasts/:id",
+        component: () => import('@/views/ChatBroadcastsPage.vue')
       },
       {
         path: "profile",

@@ -2,7 +2,7 @@
   <ion-page>
     <ion-tabs>
       <ion-header>
-        <SearchToolbar />
+        <NavBar />
       </ion-header>
       <ion-router-outlet></ion-router-outlet>
       <ion-tab-bar slot="bottom">
@@ -19,8 +19,8 @@
 </template>
 
 <script lang="ts" setup>
-import SearchToolbar from "@/components/SearchToolbar.vue";
-import { IonContent, IonHeader, IonPage, IonTabs, IonRouterOutlet, IonTabBar, IonTabButton, IonLabel } from "@ionic/vue";
+import NavBar from "@/components/NavBar.vue";
+import { IonHeader, IonPage, IonTabs, IonRouterOutlet, IonTabBar, IonTabButton, IonLabel } from "@ionic/vue";
 import { useMainStore } from "@/store";
 
 const store = useMainStore();

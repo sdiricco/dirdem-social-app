@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts" setup>
-import SearchToolbar from "@/components/SearchToolbar.vue";
+import SearchToolbar from "@/components/NavBar.vue";
 import { IonContent, IonHeader, IonPage, IonInput, IonButton, IonCard, IonCardContent } from "@ionic/vue";
 import { useMessageStore } from "@/store/message";
 import { ref, onMounted, onBeforeUnmount, onUpdated, nextTick, watch } from "vue";
