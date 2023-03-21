@@ -11,6 +11,7 @@ import outputDto from "@/functions/dto/output-dto";
 import utilsFns from "@/functions/utils-fns";
 import { IInsertBcast } from "@/interfaces/insert-bcast";
 import { ISignIn } from "@/interfaces/sign-in";
+import { IMessage } from "@/interfaces/message";
 
 const bcastUserRecordExists = (supabase: SupabaseClient<any, "public", any>) => (userId: string) => (bcastId: string) => {
     return supabase.from("bcast_user")
@@ -89,9 +90,7 @@ const api =
 
         onInsert: (userId: string) =>
           (
-            cb: (
-              payload: RealtimePostgresChangesPayload<{ [key: string]: any }>,
-            ) => void,
+            cb: (message: IMessage) => void,
             channelId = uuid(),
           ) =>
             supabase
@@ -104,7 +103,10 @@ const api =
                   table: "bcast_user",
                   filter: `user_id=eq.${userId}`,
                 },
-                cb,
+                (payload: RealtimePostgresChangesPayload<{ [key: string]: any }>) => {
+                  const message: IMessage = handlers.messageInsertedHandler(payload);
+                  cb(message);
+                },
               )
               .subscribe(),
 

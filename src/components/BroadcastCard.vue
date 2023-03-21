@@ -10,7 +10,7 @@
       </ion-fab-button>
     </ion-card-header>
 
-    <ion-card-content>
+    <ion-card-content>home/profile
       <ion-list>
         <ion-item lines="none">
           <ion-icon slot="start" :icon="locationOutline"></ion-icon>
