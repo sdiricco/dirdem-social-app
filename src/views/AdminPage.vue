@@ -98,7 +98,7 @@ import { createClient } from "@supabase/supabase-js";
 
 import client from "@/api/client";
 import { supabaseUrl, supabaseKey, supabaseAdminKey } from "@/constants";
-import api from "@/api";
+import api from "@/api/api";
 import { IBcast } from "@/interfaces/bcast";
 import { Console } from "console";
 const clientAdmin = createClient(supabaseUrl, supabaseAdminKey);
