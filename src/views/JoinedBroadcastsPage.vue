@@ -1,7 +1,14 @@
 <template>
   <ion-page>
-    <NoBroadcasts v-if="!broadcastStore.candidateBroadcasts.length" />
-    <BroadcastCard v-for="broadcast in broadcastStore.joinedBroadcasts" :broadcast="broadcast" @click-join="onClickJoin(broadcast)" />
+    <ion-header>
+      <HeaderLarge />
+    </ion-header>
+    <ion-content>
+      <NoBroadcasts v-if="!broadcastStore.joinedBroadcasts.length" />
+      <BroadcastCard v-for="broadcast in broadcastStore.joinedBroadcasts" :broadcast="broadcast" @click-join="onClickJoin(broadcast)">
+        <ion-button fill="solid" expand="full" class="no-margin" @click="router.push(`/home/joined-broadcasts/${broadcast.id}`)">Chat</ion-button>
+      </BroadcastCard>
+    </ion-content>
   </ion-page>
 </template>
 
@@ -9,9 +16,10 @@
 /**************************************************/
 /* IMPORTS */
 /**************************************************/
-import { IonPage } from "@ionic/vue";
+import { IonPage, IonButton, IonHeader, IonContent } from "@ionic/vue";
 import NoBroadcasts from "@/components/NoBroadcasts.vue";
 import BroadcastCard from "@/components/BroadcastCard.vue";
+import HeaderLarge from "@/components/HeaderLarge.vue";
 import { onMounted } from "vue";
 import { useBroadcastStore } from "@/store/broadcast";
 import { useMessageStore } from "@/store/message";
@@ -36,7 +44,6 @@ async function onClickJoin(broadcast: any) {
 /* COMPONENT HOOKS */
 /**************************************************/
 onMounted(async () => {
-  await broadcastStore.fetchCandidate();
   await broadcastStore.fetchJoined();
 });
 </script>

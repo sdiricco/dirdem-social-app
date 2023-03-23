@@ -1,9 +1,6 @@
 <template>
   <ion-page>
     <ion-tabs>
-      <ion-header>
-        <NavBar />
-      </ion-header>
       <ion-router-outlet></ion-router-outlet>
       <NavTabs />
     </ion-tabs>

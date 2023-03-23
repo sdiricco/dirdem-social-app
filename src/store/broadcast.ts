@@ -4,6 +4,7 @@ import { IBcast } from "@/interfaces/bcast";
 import client from "@/api/client";
 import { IInsertBcast } from "@/interfaces/insert-bcast";
 import { ICandidateBcast } from "@/interfaces/candidate-bcast";
+import {getCurrentPosition} from "@/functions/geolocalization"
 
 interface IState {
   candidateBroadcasts: ICandidateBcast[];
@@ -75,9 +76,10 @@ export const useBroadcastStore = defineStore({
         if (!this.userId) {
           return
         }
+        const currentPosition = await getCurrentPosition()
         const response = await client.bcast.getCandidate(this.userId)({
-          lat: 33.33,
-          lng: 44.33
+          lat: currentPosition.coords.latitude,
+          lng: currentPosition.coords.longitude
         })(['mio']);
         console.log('[Api response: bcast.getCandidate()]', response);
         this.candidateBroadcasts = response

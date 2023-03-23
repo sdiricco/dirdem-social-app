@@ -1,19 +1,26 @@
 <template>
   <ion-page>
-    <NoBroadcasts v-if="!broadcastStore.candidateBroadcasts.length" />
-    <div class="overflow-auto h-100">
-      <BroadcastCard v-for="broadcast in broadcastStore.joinedBroadcasts" :broadcast="broadcast" @click-join="onClickJoin(broadcast)" />
-    </div>
-    <ion-modal :is-open="modalOpen">
-      <CreateNewBroadcastModal @cancel="modalOpen = false" @save="onSubmitBCast" />
-    </ion-modal>
-    <CreateNewBroadcastButton @click="modalOpen = true" />
+    <ion-header>
+      <HeaderLarge />
+    </ion-header>
+    <ion-content>
+      <NoBroadcasts v-if="!broadcastStore.candidateBroadcasts.length" />
+      <div class="overflow-auto">
+        <BroadcastCard v-for="broadcast in broadcastStore.candidateBroadcasts" :broadcast="broadcast" @click-join="onClickJoin(broadcast)">
+          <ion-button fill="solid" expand="full" class="no-margin" @click="onClickJoin(broadcast)">Unisciti</ion-button>
+        </BroadcastCard>
+      </div>
+      <ion-modal :is-open="modalOpen">
+        <CreateNewBroadcastModal @cancel="modalOpen = false" @save="onSubmitBCast" />
+      </ion-modal>
+      <CreateNewBroadcastButton @click="modalOpen = true" />
+    </ion-content>
   </ion-page>
 </template>
 
 <script lang="ts" setup>
 import { ref, onMounted } from "vue";
-import { IonPage, IonModal } from "@ionic/vue";
+import { IonPage, IonModal, IonButton, IonHeader, IonContent } from "@ionic/vue";
 import { add, star, mailOutline, arrowRedoOutline, closeOutline, locationOutline, timeOutline } from "ionicons/icons";
 import { useAuthStore } from "@/store/auth";
 import { useBroadcastStore } from "@/store/broadcast";
@@ -22,6 +29,7 @@ import CreateNewBroadcastModal from "@/components/CreateNewBroadcastModal.vue";
 import CreateNewBroadcastButton from "@/components/CreateNewBroadcastButton.vue";
 import NoBroadcasts from "@/components/NoBroadcasts.vue";
 import BroadcastCard from "@/components/BroadcastCard.vue";
+import HeaderLarge from "@/components/HeaderLarge.vue";
 const broadcastStore = useBroadcastStore();
 const authStore = useAuthStore();
 const modalOpen = ref(false);

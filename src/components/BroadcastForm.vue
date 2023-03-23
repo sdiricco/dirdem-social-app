@@ -39,8 +39,10 @@
 </template>
 
 <script lang="ts" setup>
+import { onMounted } from "vue";
 import { IonItem, IonLabel, IonInput, IonList, IonTextarea, IonButton, IonGrid, IonCol, IonRow } from "@ionic/vue";
 import { useBroadcastStore } from "@/store/broadcast";
+import {getCurrentPosition} from "@/functions/geolocalization"
 const broadcastStore = useBroadcastStore();
 
 function addTag(){
@@ -50,6 +52,12 @@ function addTag(){
 async function onSubmitBCast() {
   await broadcastStore.create();
 }
+onMounted(async ()=> {
+  const currentPosition = await getCurrentPosition();
+  broadcastStore.tempBroadcast.location.lat =  currentPosition.coords.latitude;
+  broadcastStore.tempBroadcast.location.lng =  currentPosition.coords.longitude;
+})
+
 </script>
 
 <style scoped></style>

@@ -1,15 +1,13 @@
 <template>
   <ion-toolbar color="primary" class="pt64">
     <ion-buttons slot="start" class="pb16">
-      <ion-menu-button></ion-menu-button>
+      <ion-back-button default-href="/home"></ion-back-button>
     </ion-buttons>
-    <ion-title>{{ auth.getEmail }}</ion-title>
-    <ion-progress-bar type="indeterminate" v-if="store.httpRequestOnGoing" color="secondary"></ion-progress-bar>
   </ion-toolbar>
 </template>
 
 <script lang="ts" setup>
-import { IonToolbar, IonProgressBar, IonButtons, IonMenuButton, IonTitle } from "@ionic/vue";
+import { IonToolbar, IonProgressBar, IonButtons, IonMenuButton, IonTitle, IonBackButton } from "@ionic/vue";
 
 import { useMainStore } from "@/store";
 import { useAuthStore } from "@/store/auth";

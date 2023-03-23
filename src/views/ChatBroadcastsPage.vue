@@ -1,37 +1,54 @@
 <template>
   <ion-page>
-  <div class="chat-container" >
-    <div class="chat-header ion-padding border">
-      <div>{{ `bcastId: ${messageStore.bcastId}` }}</div>
-    </div>
-    <div class="chat-messages ion-padding" ref="chatContainer">
-      <div v-for="message in messageStore.messages" class="chat-message mb-2 bg-light" :class="{ 'my-message': message.userId === messageStore.getUserId }">
-        <div class="content border rounded">
-          <ion-card-content>
-            {{ message.content }}
-          </ion-card-content>
+    <ion-header>
+      <HeaderChat />
+    </ion-header>
+    <ion-content>
+      <div class="chat-container">
+        <div class="chat-header ion-padding border">
+          <div>{{ `bcastId: ${messageStore.bcastId}` }}</div>
+        </div>
+        <div class="chat-messages ion-padding" ref="chatContainer">
+          <div v-for="message in messageStore.messages" class="chat-message mb-2 bg-light" :class="{ 'my-message': message.userId === messageStore.getUserId }">
+            <div class="content border rounded">
+              <ion-card-content>
+                {{ message.content }}
+              </ion-card-content>
+            </div>
+          </div>
+        </div>
+        <div class="chat-form border-top">
+          <ion-item lines="none">
+            <ion-input type="text" placeholder="Type a message..." v-model="messageStore.tempMessage"></ion-input>
+            <ion-button fill="clear" @click="messageStore.sendMessage">
+              <ion-icon :icon="send"></ion-icon>
+            </ion-button>
+          </ion-item>
         </div>
       </div>
-    </div>
-    <div class="chat-form ion-padding border">
-      <ion-input type="text" placeholder="Type a message..." v-model="messageStore.tempMessage"></ion-input>
-      <ion-button expand="block" @click="messageStore.sendMessage">Send</ion-button>
-    </div>
-  </div>
-</ion-page>
+    </ion-content>
+  </ion-page>
 </template>
 
 <script lang="ts" setup>
-import SearchToolbar from "@/components/NavBar.vue";
-import { IonContent, IonHeader, IonPage, IonInput, IonButton, IonCard, IonCardContent } from "@ionic/vue";
+import { IonContent, IonHeader, IonPage, IonInput, IonButton, IonCard, IonCardContent, IonItem, IonIcon } from "@ionic/vue";
+import { send } from "ionicons/icons";
+
 import { useMessageStore } from "@/store/message";
 import { ref, onMounted, onBeforeUnmount, onUpdated, nextTick, watch } from "vue";
-
+import { useRoute } from "vue-router";
+import HeaderChat from "@/components/HeaderChat.vue";
+const route = useRoute();
 const messageStore = useMessageStore();
 
+if (typeof route.params.id === "string") {
+  messageStore.bcastId = route.params.id;
+} else {
+  console.error("ID del broadcast non è una stringa");
+  // Gestisci l'errore come preferisci, ad esempio reindirizzando l'utente o mostrando un messaggio di errore
+}
+
 const chatContainer = ref<HTMLDivElement | null>(null);
-
-
 
 function scrollToBottom() {
   if (chatContainer.value) {
@@ -45,15 +62,16 @@ onUpdated(() => {
   scrollToBottom();
 });
 
-watch(() => messageStore.messages, (newValue, oldValue) => {
-  scrollToBottom();
-}, {deep:true});
+watch(
+  () => messageStore.messages,
+  (newValue, oldValue) => {
+    scrollToBottom();
+  },
+  { deep: true }
+);
 
 onMounted(async () => {
   await messageStore.fetchMessages();
-  if (!messageStore.getUserId) {
-    return;
-  }
   messageStore.listenMessages();
   scrollToBottom();
 });
@@ -86,10 +104,9 @@ onMounted(async () => {
   width: 80%;
 }
 
-.chat-message.my-message{
+.chat-message.my-message {
   align-self: flex-end;
 }
-
 
 .chat-form ion-input {
   flex: 1;

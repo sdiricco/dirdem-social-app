@@ -1,7 +1,7 @@
 import wkx from 'wkx';
 
-export function getCurrentPosition() {
-  return new Promise((resolve, reject) => {
+export function getCurrentPosition(): Promise<GeolocationPosition> {
+  return new Promise<GeolocationPosition>((resolve, reject) => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(resolve, reject);
     } else {

@@ -18,4 +18,8 @@ const emit = defineEmits(['click'])
 
 </script>
 
-<style scoped></style>
+<style scoped>
+ion-fab-button{
+  --box-shadow: none
+}
+</style>

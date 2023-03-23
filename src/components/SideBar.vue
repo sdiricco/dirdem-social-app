@@ -12,16 +12,6 @@
       <ion-toggle slot="end" @ion-change="onToggleTheme" :checked="store.isDark"> </ion-toggle>
     </ion-item>
     <ion-menu-toggle>
-      <ion-item lines="inset" button @click="onClickHome">
-        <ion-label>Home</ion-label>
-      </ion-item>
-    </ion-menu-toggle>
-    <ion-menu-toggle>
-      <ion-item lines="inset" button @click="onClickMyBroadcasts">
-        <ion-label>My Broadcasts</ion-label>
-      </ion-item>
-    </ion-menu-toggle>
-    <ion-menu-toggle>
       <ion-item lines="inset" button @click="onClickProfile">
         <ion-label>Profile</ion-label>
       </ion-item>
@@ -42,17 +32,11 @@ async function onToggleTheme(evt: any) {
   await store.toggleTheme(isDark);
 }
 
-function onClickMyBroadcasts(){
-  router.push("/home/my-broadcasts");
-}
 
 function onClickProfile() {
   router.push("/home/profile");
 }
 
-function onClickHome(){
-  router.push("/home");
-}
 </script>
 
 <style scoped>
