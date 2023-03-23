@@ -62,7 +62,7 @@ const api =
                 _lng: location.lng,
                 _tag: tag,
               })
-              .then(handlers.bcastCandidateHandler),
+              .then(handlers.candidateBcastHandler),
 
         getJoined: (userId: string) =>
           supabase

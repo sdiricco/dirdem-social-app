@@ -55,7 +55,7 @@ const handlePostgresChangePayload = (dto: Function) => (payload: RealtimePostgre
     return dto(payload?.new);
 }
 
-const bcastCandidateHandler: ApiHandler<ICandidateBcast[]> = handleArray(inputDto.buildCandidateBcast);
+
 const bcastHandler: ApiHandler<IBcast[]> = handleArray(inputDto.buildBcast);
 const userInfoHandler: ApiHandler<IUserInfo> = handleFirstObject(inputDto.buildUserInfo);
 const messageHandler: ApiHandler<IMessage[]> = handleArray(inputDto.buildMessage);
@@ -66,7 +66,6 @@ const messageInsertedHandler: ApiHandler<IMessage> = handlePostgresChangePayload
 
 
 export default {
-  bcastCandidateHandler,
   bcastHandler,
   userInfoHandler,
   messageHandler,
