@@ -9,14 +9,17 @@ import {getCurrentPosition} from "@/functions/geolocalization"
 interface IState {
   candidateBroadcasts: ICandidateBcast[];
   joinedBroadcasts: IBcast[];
+  insertedBroadcasts: IBcast[];
   tempBroadcast: IInsertBcast;
   tempTag: string;
+
 }
 export const useBroadcastStore = defineStore({
   id: "broadcast",
   state: (): IState => ({
     candidateBroadcasts: [],
     joinedBroadcasts: [],
+    insertedBroadcasts: [],
     tempBroadcast: {
       content: {
         title: "",
@@ -39,6 +42,9 @@ export const useBroadcastStore = defineStore({
       const authStore = useAuthStore();
       return authStore.getUserId
     },
+    getJoinedAndInsertedBroadcasts(): IBcast[]{
+      return [...this.insertedBroadcasts, ...this.joinedBroadcasts]
+    }
   },
   actions: {
     async join(bcastId: string){
@@ -68,6 +74,7 @@ export const useBroadcastStore = defineStore({
       }
       const response = await client.bcast.getInserted(this.userId);
       console.log('[Api response: bcast.getInserted()]', response);
+      this.insertedBroadcasts = response
 
     },
     async fetchCandidate() {
@@ -108,8 +115,13 @@ export const useBroadcastStore = defineStore({
       if (!this.userId) {
         return
       }
-      const response = await client.bcast.insert(this.userId)(this.tempBroadcast);
-      console.log('[Api response: bcast.insert()]', response);
+      try {
+        const response = await client.bcast.insert(this.userId)(this.tempBroadcast);
+        console.log('[Api response: bcast.insert()]', response);
+      } catch (e:any) {
+        console.log('Error during creation', e.message);
+      }
+
 
     },
   },

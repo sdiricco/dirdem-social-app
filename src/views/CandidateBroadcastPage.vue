@@ -10,7 +10,7 @@
           <ion-button fill="solid" expand="full" class="no-margin" @click="onClickJoin(broadcast)">Unisciti</ion-button>
         </BroadcastCard>
       </div>
-      <ion-modal :is-open="modalOpen">
+      <ion-modal :is-open="modalOpen" css-class="modal-container">
         <CreateNewBroadcastModal @cancel="modalOpen = false" @save="onSubmitBCast" />
       </ion-modal>
       <CreateNewBroadcastButton @click="modalOpen = true" />
@@ -30,6 +30,7 @@ import CreateNewBroadcastButton from "@/components/CreateNewBroadcastButton.vue"
 import NoBroadcasts from "@/components/NoBroadcasts.vue";
 import BroadcastCard from "@/components/BroadcastCard.vue";
 import HeaderLarge from "@/components/HeaderLarge.vue";
+import router from "@/router";
 const broadcastStore = useBroadcastStore();
 const authStore = useAuthStore();
 const modalOpen = ref(false);
@@ -37,6 +38,7 @@ const filter = ref("all");
 
 async function onSubmitBCast() {
   await broadcastStore.create();
+  modalOpen.value = false;
 }
 
 async function onClickJoin(bcast: any) {
@@ -61,4 +63,6 @@ onMounted(async () => {
 ion-segment {
   --background: #efefef;
 }
+
+
 </style>

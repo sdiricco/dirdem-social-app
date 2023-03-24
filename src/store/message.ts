@@ -46,7 +46,7 @@ export const useMessageStore = defineStore({
       this.messages = await client.message.get(this.bcastId);
     },
     listenMessages(){
-      client.message.onInsert(this.bcastId, (message: IMessage) => {
+      client.message.onInsert(this.bcastId, (message: any) => {
         console.log('message', message);
         this.messages.push(message);
       });

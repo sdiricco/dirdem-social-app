@@ -4,8 +4,8 @@
       <HeaderLarge />
     </ion-header>
     <ion-content>
-      <NoBroadcasts v-if="!broadcastStore.joinedBroadcasts.length" />
-      <BroadcastCard v-for="broadcast in broadcastStore.joinedBroadcasts" :broadcast="broadcast" @click-join="onClickJoin(broadcast)">
+      <NoBroadcasts v-if="!broadcastStore.getJoinedAndInsertedBroadcasts.length" />
+      <BroadcastCard v-for="broadcast in broadcastStore.getJoinedAndInsertedBroadcasts" :broadcast="broadcast" @click-join="onClickJoin(broadcast)">
         <ion-button fill="solid" expand="full" class="no-margin" @click="router.push(`/home/joined-broadcasts/${broadcast.id}`)">Chat</ion-button>
       </BroadcastCard>
     </ion-content>
@@ -45,5 +45,6 @@ async function onClickJoin(broadcast: any) {
 /**************************************************/
 onMounted(async () => {
   await broadcastStore.fetchJoined();
+  await broadcastStore.fetchInserted();
 });
 </script>
