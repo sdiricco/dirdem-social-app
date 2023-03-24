@@ -1,5 +1,5 @@
 <template>
-  <ion-toolbar color="primary" class="pt64">
+  <ion-toolbar color="primary" class="pt4">
     <ion-buttons slot="start" class="pb16">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>

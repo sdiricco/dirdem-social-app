@@ -48,7 +48,7 @@ export const useMessageStore = defineStore({
     listenMessages(){
       client.message.onInsert(this.bcastId, (message: any) => {
         console.log('message', message);
-        this.messages.push(message);
+        this.messages.push(message.new);
       });
     }
   },

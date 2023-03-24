@@ -57,9 +57,7 @@ function addTag(){
   broadcastStore.tempBroadcast.tag.push(broadcastStore.tempTag)
 }
 
-async function onSubmitBCast() {
-  await broadcastStore.create();
-}
+
 onMounted(async ()=> {
   const currentPosition = await getCurrentPosition();
   broadcastStore.tempBroadcast.location.lat =  currentPosition.coords.latitude;

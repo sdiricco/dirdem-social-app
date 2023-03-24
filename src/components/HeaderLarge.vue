@@ -1,6 +1,6 @@
 <template>
-  <ion-toolbar color="primary" class="pt64">
-    <ion-buttons slot="start" class="pb16">
+  <ion-toolbar color="primary" class="pt-5">
+    <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>{{ auth.getEmail }}</ion-title>

@@ -39,6 +39,9 @@ const filter = ref("all");
 async function onSubmitBCast() {
   await broadcastStore.create();
   modalOpen.value = false;
+  await broadcastStore.fetchCandidate();
+  await broadcastStore.fetchJoined();
+  await broadcastStore.fetchInserted();
 }
 
 async function onClickJoin(bcast: any) {
