@@ -10,7 +10,7 @@
     "test:e2e": "vue-cli-service test:e2e",
     "lint": "vue-cli-service lint",
     "postinstall": "yarn build",
-    "start": "vue-cli-service serve",
+    "start": "PORT=8081 vue-cli-service serve",
     "native-build": "npx rimraf dist && ionic build && npx cap sync && npx cap copy",
     "native-open-android": "npx cap open android",
     "native-dev": "yarn native-build && yarn native-open-android",

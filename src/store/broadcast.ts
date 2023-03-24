@@ -22,7 +22,7 @@ export const useBroadcastStore = defineStore({
         title: "",
         message: "",
       },
-      expiresAt: new Date(),
+      expiresAt: new Date(new Date().getTime() + 86400000),
       location: {
         lat: 0,
         lng: 0,
