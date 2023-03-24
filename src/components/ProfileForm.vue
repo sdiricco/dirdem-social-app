@@ -56,22 +56,24 @@
       </ion-header>
       <ion-content class="ion-padding">
         <ion-list>
-          <ion-item>
-            <ion-label position="stacked">Email</ion-label>
-            <ion-input placeholder="Email"></ion-input>
+          <ion-item class="ion-margin-bottom">
+            <ion-label position="stacked">Tag</ion-label>
+            <ion-input v-model="inputText" placeholder="Aggingi tag" @keyup.enter="addTag" @keyup.space.prevent="addTag"> </ion-input>
+            <ion-button fill="clear" slot="end" size="large" @click="addTag"> 
+              <ion-icon :icon="addCircleOutline"></ion-icon>
+            </ion-button>
           </ion-item>
-          <ion-item>
-            <ion-label position="stacked">Nome</ion-label>
-            <ion-input placeholder="Nome"></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-label position="stacked">Cognome</ion-label>
-            <ion-input placeholder="Cognome"></ion-input>
-          </ion-item>
+          <ion-chip v-for="(tag, index) in profileStore.tempUserInfo.tag" :key="index" :outline="true">
+            <ion-label>{{ tag }}</ion-label>
+            <ion-icon :icon="closeCircleOutline" @click="removeTag(index)"></ion-icon>
+          </ion-chip>
         </ion-list>
 
-        <ion-button shape="round" color="primary" expand="block" @click="onClickSave"> Salva </ion-button>
       </ion-content>
+      <ion-footer class="footer-height">
+        <ion-button shape="round" color="primary" expand="block" @click="onClickSave"> Salva </ion-button>
+
+      </ion-footer>
     </ion-modal>
   </div>
 </template>
@@ -98,6 +100,8 @@ import {
   IonAvatar,
   IonCardTitle,
   IonCardSubtitle,
+  IonFooter,
+  IonChip
 } from "@ionic/vue";
 import {
   mailOutline,
@@ -109,12 +113,16 @@ import {
   arrowRedoOutline,
   arrowUndoOutline,
   bookmarkOutline,
+  closeCircleOutline,
+  addCircleOutline
 } from "ionicons/icons";
 import { onMounted, reactive, ref } from "vue";
 import { useProfileStore } from "@/store/profile";
 import router from "@/router";
 
 const profileStore = useProfileStore();
+
+const inputText = ref('');
 
 const user = reactive({
   name: "Mario Rossi",
@@ -127,16 +135,40 @@ function onModifyProfile() {
   router.push("temp-profile");
 }
 
+function addTag() {
+  if (inputText.value) {
+    profileStore.tempUserInfo.tag.push(inputText.value);
+    inputText.value = '';
+  }
+};
+
+function removeTag(index: number) {
+  profileStore.tempUserInfo.tag.splice(index, 1);
+};
+
 async function onClickSave() {
   await profileStore.update();
+  isOpen.value = false;
+  await profileStore.fetch()
 }
 
 const avatarUrl = ref(`https://robohash.org/${Math.random().toString(36).substring(7)}.png`);
 
 const isOpen = ref(false);
 
-onMounted(() => {
-  profileStore.fetch();
+onMounted(async () => {
+  await profileStore.fetch();
   console.log(profileStore.userInfo);
 });
 </script>
+
+
+<style scoped>
+ion-content{
+  height: calc(100% - 56px - 56px);
+  overflow-y: auto;
+}
+.footer-height{
+  height: 56px;
+}
+</style>
