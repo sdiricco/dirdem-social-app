@@ -9,7 +9,7 @@
           <div>{{ `bcastId: ${messageStore.bcastId}` }}</div>
         </div>
         <div class="chat-messages ion-padding" ref="chatContainer">
-          <div v-for="message in messageStore.messages" class="chat-message mb-2 bg-light" :class="{ 'my-message': message.userId === messageStore.getUserId }">
+          <div v-for="message in messageStore.messages" class="chat-message mb-2 bg-light" :class="{ 'my-message': message.userId === messageStore.getUserId || message.user_id === messageStore.getUserId }">
             <div class="content border rounded">
               <ion-card-content>
                 {{ message.content }}
