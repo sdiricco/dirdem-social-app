@@ -44,7 +44,7 @@
     </ion-list>
 
     <ion-modal :is-open="isOpen">
-      <ion-header class="ion-no-border">
+      <ion-header class="ion-no-border pt-5">
         <ion-toolbar>
           <ion-title>Modifica il profilo</ion-title>
           <ion-buttons slot="end">
@@ -70,9 +70,10 @@
         </ion-list>
 
       </ion-content>
-      <ion-footer class="footer-height">
-        <ion-button shape="round" color="primary" expand="block" @click="onClickSave"> Salva </ion-button>
-
+      <ion-footer class="footer-height ion-no-border">
+        <div class="mx-2">
+          <ion-button shape="round" color="primary" expand="block" @click="onClickSave"> Salva </ion-button>
+        </div>
       </ion-footer>
     </ion-modal>
   </div>
@@ -165,7 +166,7 @@ onMounted(async () => {
 
 <style scoped>
 ion-content{
-  height: calc(100% - 56px - 56px);
+  height: calc(100% - 56px - 56px - 3rem);
   overflow-y: auto;
 }
 .footer-height{

@@ -1,6 +1,7 @@
 import wkx from 'wkx';
+import { Geolocation, Position } from '@capacitor/geolocation';
 
-export function getCurrentPosition(): Promise<GeolocationPosition> {
+function getCurrentPositionFromBrowser(): Promise<GeolocationPosition> {
   return new Promise<GeolocationPosition>((resolve, reject) => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(resolve, reject);
@@ -8,6 +9,20 @@ export function getCurrentPosition(): Promise<GeolocationPosition> {
       reject("Geolocation not supported!");
     }
   });
+}
+function getCurrentPositionFromCapacitor(): Promise<Position> {
+  return Geolocation.getCurrentPosition();
+}
+
+export function getCurrentPosition(): Promise<GeolocationPosition | Position> {
+  if (navigator.geolocation) {
+    console.log("[Get position from browser]")
+    return getCurrentPositionFromBrowser()
+  }
+  else{
+    console.log("[Get position from capacitor]")
+    return getCurrentPositionFromCapacitor();
+  }
 }
 
 export function parseGeoPoint(geoPoint: string) {

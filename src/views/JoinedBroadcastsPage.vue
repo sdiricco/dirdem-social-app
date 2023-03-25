@@ -5,8 +5,8 @@
     </ion-header>
     <ion-content>
       <NoBroadcasts v-if="!broadcastStore.getJoinedAndInsertedBroadcasts.length" />
-      <BroadcastCard v-for="broadcast in broadcastStore.getJoinedAndInsertedBroadcasts" :broadcast="broadcast" @click-join="onClickJoin(broadcast)">
-        <ion-button fill="solid" expand="full" class="no-margin" @click="router.push(`/home/joined-broadcasts/${broadcast.id}`)">Chat</ion-button>
+      <BroadcastCard class="my-2" v-for="broadcast in broadcastStore.getJoinedAndInsertedBroadcasts" :broadcast="broadcast" @click-join="onClickJoin(broadcast)">
+        <ion-button fill="solid" expand="full" :style="{margin: '0px'}" class="no-margin" @click="router.push(`/home/joined-broadcasts/${broadcast.id}`)">Chat</ion-button>
       </BroadcastCard>
     </ion-content>
   </ion-page>
@@ -48,3 +48,9 @@ onMounted(async () => {
   await broadcastStore.fetchInserted();
 });
 </script>
+
+<style scoped>
+ion-button{
+  --box-shadow: none
+}
+</style>

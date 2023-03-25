@@ -6,7 +6,7 @@
     <ion-content>
       <NoBroadcasts v-if="!broadcastStore.candidateBroadcasts.length" />
       <div class="overflow-auto">
-        <BroadcastCard v-for="broadcast in broadcastStore.candidateBroadcasts" :broadcast="broadcast" @click-join="onClickJoin(broadcast)">
+        <BroadcastCard class="my-2" v-for="broadcast in broadcastStore.candidateBroadcasts" :broadcast="broadcast" @click-join="onClickJoin(broadcast)">
           <ion-button fill="solid" expand="full" class="no-margin" @click="onClickJoin(broadcast)">Unisciti</ion-button>
         </BroadcastCard>
       </div>
@@ -66,6 +66,5 @@ onMounted(async () => {
 ion-segment {
   --background: #efefef;
 }
-
 
 </style>

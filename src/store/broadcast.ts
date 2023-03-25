@@ -22,16 +22,16 @@ export const useBroadcastStore = defineStore({
     insertedBroadcasts: [],
     tempBroadcast: {
       content: {
-        title: "",
-        message: "",
+        title: "Il mio titolo",
+        message: "il mio contenuto",
       },
       expiresAt: new Date(new Date().getTime() + 86400000),
       location: {
         lat: 0,
         lng: 0,
       },
-      maxDistanceKm: 0,
-      maxUsers: 0,
+      maxDistanceKm: 100,
+      maxUsers: 100,
       tag: [],
       explicitContent: false,
     },

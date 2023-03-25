@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="border-top border-bottom">
     <ion-card-header class="d-flex justify-content-between">
       <div>
         <ion-card-title>{{ props.broadcast.content.title || "---" }}</ion-card-title>
