@@ -1,5 +1,5 @@
-# Vue 3 PRO template
-vue3/ionic advanced boilerplate. Includes typescript, vue router, pwa support, font-awesome
+# Broadcast
+Vue3/ionic app. Includes typescript, vue router, pwa support, font-awesome
 
 ## Installation
 
@@ -21,7 +21,7 @@ For more information, see https://capacitorjs.com/docs
 
 ## Dev environment
 
-Puoi avviare l'applicazione in due modalità:
+You can start the application in dev environment mode or in native dev environment mode
 
 ### Dev environment
 
@@ -38,6 +38,27 @@ In this mode, the application will be run by a specific IDE for the supported pl
 ```sh
 yarn native-dev
 ```
+
+# Todo
+
+1. Riscrivere il routing dell'applicazione.
+
+### Riscrivere il routing dell'applicazione
+
+L'applicazione dovrà avere le seguenti route path:
+
+- `app/auth`
+- `app/home`
+
+#### Route path `app/auth`
+
+Questo path conterrà la fase di autenticazione dell'app, la pagina di login e la pagina di registrazione. Di fatto la pagina di login e la pagina di registrazione saranno dei componenti che comunicheranno con uno store dedicato.
+
+#### Route path `app/home`
+
+Questo path sarà il default path dell'applicazione
+
+
 
 
 

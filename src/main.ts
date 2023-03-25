@@ -49,6 +49,7 @@ import { faUserSecret, faSatelliteDish, faMoon, faSun, faWifi, faMagnifyingGlass
 /* add icons to the library */
 library.add(faUserSecret, faSatelliteDish, faMoon, faSun, faWifi, faMagnifyingGlass, faCircleXmark)
 
+
 const pinia = createPinia()
 
 const app = createApp(App)

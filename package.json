@@ -3,11 +3,6 @@
   "version": "0.0.1",
   "private": true,
   "description": "An Ionic project",
-  "vue": {
-    "pwa": {
-      "themeColor": "#4287f5"
-    }
-  },
   "scripts": {
     "dev": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -15,7 +10,7 @@
     "test:e2e": "vue-cli-service test:e2e",
     "lint": "vue-cli-service lint",
     "postinstall": "yarn build",
-    "start": "vue-cli-service serve",
+    "start": "PORT=8081 vue-cli-service serve",
     "native-build": "npx rimraf dist && ionic build && npx cap sync && npx cap copy",
     "native-open-android": "npx cap open android",
     "native-dev": "yarn native-build && yarn native-open-android",
@@ -25,6 +20,7 @@
     "@capacitor/android": "4.0.1",
     "@capacitor/app": "^4.1.1",
     "@capacitor/core": "4.0.1",
+    "@capacitor/geolocation": "^4.1.0",
     "@capacitor/haptics": "^4.1.0",
     "@capacitor/keyboard": "^4.1.0",
     "@capacitor/network": "^4.1.0",
@@ -44,7 +40,7 @@
     "bootstrap": "^5.2.3",
     "core-js": "^3.6.5",
     "node-polyfill-webpack-plugin": "^2.0.1",
-    "pinia": "^2.0.27",
+    "pinia": "^2.0.33",
     "register-service-worker": "^1.7.2",
     "sass-loader": "^13.2.0",
     "uuid": "^9.0.0",

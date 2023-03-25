@@ -1,6 +1,6 @@
 import { supabaseUrl, supabaseKey, supabaseAdminKey } from '@/constants';
 import { createClient } from '@supabase/supabase-js';
-import api from '.';
+import api from './api';
 
 const client = createClient(supabaseUrl, supabaseKey);
 

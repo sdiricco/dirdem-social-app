@@ -1,8 +1,6 @@
 import { IGeoLocation } from "./geo-location";
 
-export interface IBcast {
-    id: string;
-    userId: string;
+export interface IInsertBcast {
     expiresAt: Date;
     content: {
         title: string;

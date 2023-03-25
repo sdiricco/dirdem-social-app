@@ -10,8 +10,8 @@ interface ISettingsStore {
     isDark: boolean;
   }
 }
-export const useLayoutStore = defineStore({
-  id: "settings-store",
+export const useSettingsStore = defineStore({
+  id: "settings",
   state: (): ISettingsStore =>({
     preferences: {
       isDark: false,

@@ -1,6 +1,6 @@
 <template>
-  <ion-toolbar color="primary" class="pt64">
-    <ion-buttons slot="start" class="pb16">
+  <ion-toolbar color="primary" class="pt-5 ion-no-border">
+    <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>{{ auth.getEmail }}</ion-title>
@@ -11,10 +11,9 @@
 <script lang="ts" setup>
 import { IonToolbar, IonProgressBar, IonButtons, IonMenuButton, IonTitle } from "@ionic/vue";
 
-import { useStore } from "@/store";
-import {useAuthStore} from "@/store/auth"
+import { useMainStore } from "@/store";
+import { useAuthStore } from "@/store/auth";
 
 const auth = useAuthStore();
-const store = useStore();
-
+const store = useMainStore();
 </script>

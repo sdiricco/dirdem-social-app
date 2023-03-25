@@ -1,22 +1,17 @@
 <template>
   <ion-page>
-    <ion-header>
-      <SearchToolbar />
-    </ion-header>
-
-    <ion-content :fullscreen="true">
-      <router-view></router-view>
-      
-    </ion-content>
+    <ion-tabs>
+      <ion-router-outlet></ion-router-outlet>
+      <NavTabs />
+    </ion-tabs>
   </ion-page>
 </template>
 
 <script lang="ts" setup>
-import SearchToolbar from "@/components/SearchToolbar.vue";
-import { IonContent, IonHeader, IonPage } from "@ionic/vue";
-import { useStore } from "@/store";
+import NavBar from "@/components/NavBar.vue";
+import { IonHeader, IonPage, IonTabs, IonRouterOutlet } from "@ionic/vue";
+import NavTabs from "@/components/NavTabs.vue";
+import { useMainStore } from "@/store";
 
-const store = useStore();
-
-
+const store = useMainStore();
 </script>

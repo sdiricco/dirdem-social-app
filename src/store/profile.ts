@@ -13,7 +13,8 @@ import { ApiError } from "@/models/apiError";
 /*****************************************************************************/
 export interface IProfile {
   userInfo: IUserInfo | null,
-  error: ApiError | null
+  error: ApiError | null,
+  tempUserInfo: any,
 }
 
 /*****************************************************************************/
@@ -23,6 +24,13 @@ export const useProfileStore = defineStore({
   id: "profile",
   state: (): IProfile =>({
     userInfo: null,
+    tempUserInfo: {
+      tag: [],
+      bcast:{
+        toGet: 10,
+        toSend: 10,
+      }
+    },
     error: null,
   }),
   getters: {
@@ -34,14 +42,18 @@ export const useProfileStore = defineStore({
     email(){
       const auth = useAuthStore();
       return auth.getEmail
-    }
+    },
   },
   actions: { 
 
     /* fetch user profile */
     async fetch(){
       try {
+        if (!this.userId) {
+          return;
+        }
         this.userInfo = await client.userInfo.get(this.userId);
+        this.tempUserInfo = this.userInfo;
         console.log(this.userInfo)
       } catch (error) {
         this.handleApiError(error);
@@ -51,7 +63,10 @@ export const useProfileStore = defineStore({
     /* update user profile */
     async update(){
       try {
-        const response = await client.userInfo.update(this.userId)({bcast: {toGet: 10, toSend:10}, tag: ['mio', 'tuo']})
+        if (!this.userId) {
+          return;
+        }
+        const response = await client.userInfo.update(this.userId)(this.tempUserInfo)
         console.log(response)
       } catch (error) {
         this.handleApiError(error);

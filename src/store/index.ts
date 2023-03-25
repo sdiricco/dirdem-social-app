@@ -19,8 +19,8 @@ interface IState {
     id: string
   }
 }
-export const useStore = defineStore({
-  id: "store",
+export const useMainStore = defineStore({
+  id: "main",
   state: (): IState =>({
     httpRequestOnGoing: false,
     appVersion: "0.0.1",
@@ -44,7 +44,7 @@ export const useStore = defineStore({
       this.preferences.isDark = isDark;
       console.log("Toggle theme");
       console.log("\tisDark", isDark);
-      await setTheme(isDark);
+      await setTheme(false);
     },
     async fetchPreferences() {
       console.log("Fetch preferences");
@@ -87,7 +87,8 @@ export const useStore = defineStore({
     },
     async loadApp() {
       await this.fetchPreferences();
-      await setTheme(this.isDark);
+      await setTheme(false);
+      // await setTheme(this.isDark);
       this.listenForNetworkChanges();
       await this.getNetworkStatus();
     },

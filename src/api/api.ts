@@ -4,13 +4,14 @@ import {
 } from "@supabase/supabase-js";
 import { v4 as uuid } from "uuid";
 import { ISignUp } from "../interfaces/sign-up";
-import { ISignIn } from "src/interfaces/sign-in";
-import { IBcast } from "../interfaces/bcast";
 import { IGeoLocation } from "../interfaces/geo-location";
 import { IUserInfo } from "../interfaces/user-info";
 import handlers from "./handlers";
 import outputDto from "@/functions/dto/output-dto";
 import utilsFns from "@/functions/utils-fns";
+import { IInsertBcast } from "@/interfaces/insert-bcast";
+import { ISignIn } from "@/interfaces/sign-in";
+import { IMessage } from "@/interfaces/message";
 
 const bcastUserRecordExists = (supabase: SupabaseClient<any, "public", any>) => (userId: string) => (bcastId: string) => {
     return supabase.from("bcast_user")
@@ -32,7 +33,7 @@ const api =
       supabase,
 
       bcast: {
-        insert: (userId: string) => (bcast: IBcast) => {
+        insert: (userId: string) => (bcast: IInsertBcast) => {
           const rawBcast = outputDto.buildRawBcast(userId, bcast);
           return supabase
             .from("bcast")
@@ -69,7 +70,7 @@ const api =
             .select("bcast(*)")
             .eq("user_id", userId)
             .is("joined", true)
-            .then(handlers.bcastHandler),
+            .then(handlers.interactedBcastHandler),
 
         getHided: (userId: string) =>
           supabase
@@ -77,7 +78,7 @@ const api =
             .select("bcast(*)")
             .eq("user_id", userId)
             .is("hided", true)
-            .then(handlers.bcastHandler),
+            .then(handlers.interactedBcastHandler),
 
         getReported: (userId: string) =>
           supabase
@@ -85,13 +86,11 @@ const api =
             .select("bcast(*)")
             .eq("user_id", userId)
             .is("reported", true)
-            .then(handlers.bcastHandler),
+            .then(handlers.interactedBcastHandler),
 
         onInsert: (userId: string) =>
           (
-            cb: (
-              payload: RealtimePostgresChangesPayload<{ [key: string]: any }>,
-            ) => void,
+            cb: (message: IMessage) => void,
             channelId = uuid(),
           ) =>
             supabase
@@ -104,11 +103,14 @@ const api =
                   table: "bcast_user",
                   filter: `user_id=eq.${userId}`,
                 },
-                cb,
+                (payload: RealtimePostgresChangesPayload<{ [key: string]: any }>) => {
+                  const message: IMessage = handlers.messageInsertedHandler(payload);
+                  cb(message);
+                },
               )
               .subscribe(),
 
-        join: async (userId: string) => async (bcastId: string) => {
+        join: (userId: string) => async (bcastId: string) => {
           const bcastUserExists = await bcastUserRecordExists(supabase)(userId)(bcastId);
           if (bcastUserExists) {
             return supabase
@@ -123,12 +125,12 @@ const api =
           }
         },
 
-        hide: async (userId: string) => async (bcastId: string) => {
+        hide: (userId: string) => async (bcastId: string) => {
           const bcastUserExists = await bcastUserRecordExists(supabase)(userId)(bcastId);
           if (bcastUserExists) {
             return supabase
               .from("bcast_user")
-              .update({ hided: true })
+              .update({ joined: false, hided: true, reported: false })
               .eq("user_id", userId)
               .eq("bcast_id", bcastId)
           } else {
@@ -138,12 +140,12 @@ const api =
           }
         },
 
-        report: async (userId: string) => async (bcastId: string) => {
+        report: (userId: string) => async (bcastId: string) => {
           const bcastUserExists = await bcastUserRecordExists(supabase)(userId)(bcastId);
           if (bcastUserExists) {
             return supabase
               .from("bcast_user")
-              .update({ reported: true })
+              .update({ joined: false, hided: true, reported: true })
               .eq("user_id", userId)
               .eq("bcast_id", bcastId)
           } else {

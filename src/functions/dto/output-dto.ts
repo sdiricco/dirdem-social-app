@@ -1,19 +1,19 @@
 import { IRawUserInfo } from "@/interfaces/raw/raw-user-info";
 import { IUserInfo } from "@/interfaces/user-info";
-import { IBcast } from "@/interfaces/bcast";
 import { IRawBcast } from "@/interfaces/raw/raw-bcast";
 import { IMessage } from "@/interfaces/message";
 import { IRawMessage } from "@/interfaces/raw/raw-message";
+import { IInsertBcast } from "@/interfaces/insert-bcast";
 
 
 const buildRawUserInfo = (userId: string, userInfo: Partial<IUserInfo> ): IRawUserInfo => ({
     id: userId,
-    bcast_to_get: userInfo.bcast.toGet,
-    bcast_to_send: userInfo.bcast.toSend,
-    tag: userInfo?.tag,
+    bcast_to_get: userInfo?.bcast?.toGet || 0,
+    bcast_to_send: userInfo?.bcast?.toSend || 0,
+    tag: userInfo?.tag || [],
 });
 
-const buildRawBcast = (userId: string, bcast: IBcast): Partial<IRawBcast> => ({
+const buildRawBcast = (userId: string, bcast: IInsertBcast): Partial<IRawBcast> => ({
     user_id: userId,
     expires_at: bcast.expiresAt,
     max_user: bcast.maxUsers,
