@@ -2,15 +2,13 @@ import { defineStore } from "pinia";
 import { useAuthStore } from "./auth";
 import { IBcast } from "@/interfaces/bcast";
 import client from "@/api/client";
-import { IInsertBcast } from "@/interfaces/insert-bcast";
-import { ICandidateBcast } from "@/interfaces/candidate-bcast";
 import {getCurrentPosition} from "@/functions/geolocalization"
 
 interface IState {
-  candidateBroadcasts: ICandidateBcast[];
+  candidateBroadcasts: IBcast[];
   joinedBroadcasts: IBcast[];
   insertedBroadcasts: IBcast[];
-  tempBroadcast: IInsertBcast;
+  tempBroadcast: IBcast;
   tempTag: string;
 
 }
@@ -33,7 +31,7 @@ export const useBroadcastStore = defineStore({
       maxDistanceKm: 100,
       maxUsers: 100,
       tag: [],
-      explicitContent: false,
+      explicitContent: false
     },
     tempTag: ''
   }),

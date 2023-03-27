@@ -6,19 +6,19 @@ import { v4 as uuid } from "uuid";
 import { ISignUp } from "../interfaces/sign-up";
 import { IGeoLocation } from "../interfaces/geo-location";
 import { IUserInfo } from "../interfaces/user-info";
-import handlers from "./handlers";
 import outputDto from "@/functions/dto/output-dto";
 import utilsFns from "@/functions/utils-fns";
-import { IInsertBcast } from "@/interfaces/insert-bcast";
 import { ISignIn } from "@/interfaces/sign-in";
 import { IMessage } from "@/interfaces/message";
+import { IBcast } from "@/interfaces/bcast";
+import handlers from "./handlers";
 
 const bcastUserRecordExists = (supabase: SupabaseClient<any, "public", any>) => (userId: string) => (bcastId: string) => {
     return supabase.from("bcast_user")
       .select('*')
       .eq("user_id", userId)
       .eq("bcast_id", bcastId)
-      .then(handlers.bcastUserExistsHandler)
+      .then(handlers.dataHasLengthHandler)
   }
 
 
@@ -33,7 +33,7 @@ const api =
       supabase,
 
       bcast: {
-        insert: (userId: string) => (bcast: IInsertBcast) => {
+        insert: (userId: string) => (bcast: IBcast) => {
           const rawBcast = outputDto.buildRawBcast(userId, bcast);
           return supabase
             .from("bcast")
@@ -44,14 +44,14 @@ const api =
           supabase
             .from("bcast")
             .select("*")
-            .then(handlers.bcastHandler),
+            .then(handlers.arrayBcastHandler),
 
         getInserted: (userId: string) =>
           supabase
             .from("bcast")
             .select("*")
             .eq("user_id", userId)
-            .then(handlers.bcastHandler),
+            .then(handlers.arrayBcastHandler),
 
         getCandidate:
           (userId: string) => (location: IGeoLocation) => (tag: string[]) =>
@@ -62,7 +62,7 @@ const api =
                 _lng: location.lng,
                 _tag: tag,
               })
-              .then(handlers.candidateBcastHandler),
+              .then(handlers.arrayBcastHandler),
 
         getJoined: (userId: string) =>
           supabase
@@ -162,7 +162,7 @@ const api =
             .from("message")
             .select("*")
             .eq("bcast_id", bcastId)
-            .then(handlers.messageHandler),
+            .then(handlers.arrayMessageHandler),
 
         insert: (userId: string) => (bcastId: string) => (content: string) =>
           supabase
@@ -173,9 +173,7 @@ const api =
 
         onInsert: (
           bcastId: string,
-          cb: (
-            payload: RealtimePostgresChangesPayload<{ [key: string]: any }>,
-          ) => void,
+          cb: (payload: IMessage) => void,
           channelId = uuid(),
         ) =>
           supabase
@@ -188,7 +186,11 @@ const api =
                 table: "message",
                 filter: `bcast_id=eq.${bcastId}`,
               },
-              cb,
+              data => {
+                const message = handlers.messageInsertedHandler(data)
+                console.log(message)
+                cb(message!!)
+              }
             )
             .subscribe(),
       },
