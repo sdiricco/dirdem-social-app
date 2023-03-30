@@ -21,7 +21,7 @@
 
 <script lang="ts" setup>
 import { onMounted, defineEmits } from "vue";
-import { IonContent, IonHeader, IonToolbar, IonButtons, IonButton, IonTitle, IonFooter } from "@ionic/vue";
+import { IonContent, IonHeader, IonToolbar, IonButtons, IonButton, IonTitle, IonFooter, IonIcon } from "@ionic/vue";
 import { closeOutline } from "ionicons/icons";
 import { useBroadcastStore } from "@/store/broadcast";
 import BroadcastForm from "@/components/BroadcastForm.vue";

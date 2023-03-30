@@ -1,12 +1,18 @@
 <template>
   <ion-page>
     <ion-header>
-      <HeaderLarge />
+      <Header show-menu-button />
     </ion-header>
     <ion-content>
       <NoBroadcasts v-if="!broadcastStore.getJoinedAndInsertedBroadcasts.length" />
-      <BroadcastCard class="my-2" v-for="broadcast in broadcastStore.getJoinedAndInsertedBroadcasts" :broadcast="broadcast" @click-join="onClickJoin(broadcast)">
-        <ion-button fill="solid" expand="full" :style="{margin: '0px'}" class="no-margin" @click="router.push(`/home/joined-broadcasts/${broadcast.id}`)">Chat</ion-button>
+      <BroadcastCard
+        class="my-2"
+        v-for="broadcast in broadcastStore.getJoinedAndInsertedBroadcasts"
+        :broadcast="broadcast"
+        @click-join="onClickJoin(broadcast)">
+        <ion-button fill="solid" expand="full" :style="{ margin: '0px' }" class="no-margin" @click="router.push(`/home/joined-broadcasts/${broadcast.id}`)"
+          >Chat</ion-button
+        >
       </BroadcastCard>
     </ion-content>
   </ion-page>
@@ -20,6 +26,7 @@ import { IonPage, IonButton, IonHeader, IonContent } from "@ionic/vue";
 import NoBroadcasts from "@/components/NoBroadcasts.vue";
 import BroadcastCard from "@/components/BroadcastCard.vue";
 import HeaderLarge from "@/components/HeaderLarge.vue";
+import Header from "@/components/Header.vue";
 import { onMounted } from "vue";
 import { useBroadcastStore } from "@/store/broadcast";
 import { useMessageStore } from "@/store/message";
@@ -50,7 +57,7 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-ion-button{
-  --box-shadow: none
+ion-button {
+  --box-shadow: none;
 }
 </style>

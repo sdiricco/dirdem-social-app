@@ -1,78 +1,46 @@
+// @ts-nocheck
+
 import inputDto from "@/functions/dto/input-dto";
-import { IBcast } from "@/interfaces/bcast";
-import { ICandidateBcast } from "@/interfaces/candidate-bcast";
-import { IMessage } from "@/interfaces/message";
-import { IUserInfo } from "@/interfaces/user-info";
-import { RealtimePostgresChangesPayload } from "@supabase/supabase-js";
-import { ApiError } from "../models/apiError";
+import { ApiError } from "@/models/apiError";
+import { IBcast } from "src/interfaces/bcast";
+import { IMessage } from "src/interfaces/message";
+import { IUserInfo } from "src/interfaces/user-info";
+import { UserAuth } from "@/interfaces/user-auth"
 
 type ApiHandler<T> = (data: any) => T;
 
-const handleObject = (dto: Function) => ({ data, error }: { data: any, error: any }) => {
+const errorHandler = (error) => {
     if (error) {
         throw new ApiError(error.message, {
-            details: error.name,
-            code: error.status
+            details: error?.name,
+            code: error?.status
         })
     }
-    return dto(data);
 }
 
-const handleFirstObject = (dto: Function) => ({data, error}: {data: any, error: any}) => {
-    if (error) {
-        throw new ApiError(error.message, {
-            details: error.name,
-            code: error.status
-        })
-    }
-    return dto(data?.at(0));
-}
+const handleObject = (dto: Function) => ({ data, error }) => error ? errorHandler(error) : dto(data);
+const handleFirstObject = (dto: Function) => ({ data, error }) => error ? errorHandler(error) : dto(data?.at(0));
+const handleArray = (dto: Function) => ({ data, error }) => error ? errorHandler(error) : data.map((_:any) => dto(_));
+const handleInteractedBcast = (dto: Function) => ({ data, error }) => error ? errorHandler(error) : data.map((_:any) => dto(_.bcast))
+const handlePostgresChangePayload = (dto: Function) => (payload) => payload?.errors? errorHandler({ message: 'Error postgres change payload' }) : dto(payload?.new);
+const handleAuth = (dto: Function) => ({ data, error }) => error ? errorHandler(error) : dto(data);
 
-const handleArray = (dto: Function) => ({data, error}: {data: any, error: any}) => {
-    if (error) {
-        throw new ApiError(error.message, {
-            details: error.name,
-            code: error.status
-        })
-    }
-    return data.map((_:any) => dto(_));
-}
-
-const handleInteractedBcast = (dto: Function) => ({data, error}: {data: any, error: any}) => {
-    if (error) {
-        throw new ApiError(error.message, {
-            details: error.name,
-            code: error.status
-        })
-    }
-    return data.map((_:any) => dto(_.bcast));
-}
-
-const handlePostgresChangePayload = (dto: Function) => (payload: RealtimePostgresChangesPayload<{ [key: string]: any }>) => {
-    if (payload?.errors) {
-        throw new ApiError(payload?.errors?.join('-'));
-    }
-    return dto(payload?.new);
-}
-
-
-const bcastHandler: ApiHandler<IBcast[]> = handleArray(inputDto.buildBcast);
+const arrayBcastHandler: ApiHandler<IBcast[]> = handleArray(inputDto.buildBcast);
+const arrayMessageHandler: ApiHandler<IMessage[]> = handleArray(inputDto.buildMessage);
 const userInfoHandler: ApiHandler<IUserInfo> = handleFirstObject(inputDto.buildUserInfo);
-const messageHandler: ApiHandler<IMessage[]> = handleArray(inputDto.buildMessage);
-const bcastUserExistsHandler: ApiHandler<boolean> = handleObject(((data: any) => data.length > 0));
-const candidateBcastHandler: ApiHandler<ICandidateBcast[]> = handleArray(inputDto?.buildBcast);
+const dataHasLengthHandler: ApiHandler<boolean> = handleObject(((data: any) => data.length > 0));
 const interactedBcastHandler: ApiHandler<IBcast[]> = handleInteractedBcast(inputDto.buildBcast);
 const messageInsertedHandler: ApiHandler<IMessage> = handlePostgresChangePayload(inputDto.buildMessage);
-
+const authHandler: ApiHandler<UserAuth> = handleAuth(inputDto.buildUserAuth);
 
 export default {
-  bcastHandler,
-  userInfoHandler,
-  messageHandler,
-  bcastUserExistsHandler,
-  candidateBcastHandler,
-  interactedBcastHandler,
-  messageInsertedHandler
+    arrayBcastHandler,
+    arrayMessageHandler,
+    userInfoHandler,
+    dataHasLengthHandler,
+    interactedBcastHandler,
+    messageInsertedHandler,
+    authHandler,
 }
 
 

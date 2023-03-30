@@ -1,7 +1,7 @@
 <template>
   <ion-page>
     <ion-header>
-      <HeaderChat />
+      <Header show-back-button/>
     </ion-header>
     <ion-content>
       <ProfileForm />
@@ -12,5 +12,5 @@
 <script lang="ts" setup>
 import {IonPage, IonHeader, IonContent} from "@ionic/vue";
 import ProfileForm from "@/components/ProfileForm.vue"
-import HeaderChat from "@/components/HeaderChat.vue";
+import Header from "@/components/Header.vue";
 </script>

@@ -41,23 +41,8 @@ yarn native-dev
 
 # Todo
 
-1. Riscrivere il routing dell'applicazione.
-
-### Riscrivere il routing dell'applicazione
-
-L'applicazione dovrà avere le seguenti route path:
-
-- `app/auth`
-- `app/home`
-
-#### Route path `app/auth`
-
-Questo path conterrà la fase di autenticazione dell'app, la pagina di login e la pagina di registrazione. Di fatto la pagina di login e la pagina di registrazione saranno dei componenti che comunicheranno con uno store dedicato.
-
-#### Route path `app/home`
-
-Questo path sarà il default path dell'applicazione
-
+- Creare un componente `header` in modo che abbia le props: [`showMenuButton`, `showBackButton`]
+- Capire come getisre il padding top in modo che includa anche status bar
 
 
 

@@ -20,7 +20,7 @@
         <ion-icon :icon="informationCircle" color="danger" size="small"></ion-icon>
         <ion-label class="ion-padding-left" color="danger">{{ authStore.error.message }}</ion-label>
       </div>
-      <p class="mt64">Hai già un account? <router-link to="/login">Accedi</router-link></p>
+      <p class="mt64">Hai già un account? <router-link to="/auth/login">Accedi</router-link></p>
     </ion-card-content>
   </ion-content>
 </template>

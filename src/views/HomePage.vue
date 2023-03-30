@@ -8,8 +8,7 @@
 </template>
 
 <script lang="ts" setup>
-import NavBar from "@/components/NavBar.vue";
-import { IonHeader, IonPage, IonTabs, IonRouterOutlet } from "@ionic/vue";
+import { IonPage, IonTabs, IonRouterOutlet } from "@ionic/vue";
 import NavTabs from "@/components/NavTabs.vue";
 import { useMainStore } from "@/store";
 

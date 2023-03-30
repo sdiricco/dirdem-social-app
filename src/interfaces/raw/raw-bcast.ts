@@ -10,5 +10,6 @@ export interface IRawBcast {
   content: string;
   explicit: boolean;
   location: string;
+  distance_km?: number;
 }
 
