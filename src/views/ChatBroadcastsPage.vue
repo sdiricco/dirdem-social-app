@@ -1,7 +1,7 @@
 <template>
   <ion-page>
     <ion-header>
-      <HeaderChat />
+      <Header show-back-button />
     </ion-header>
     <ion-content>
       <ChatContainer/>
@@ -16,7 +16,7 @@ import ChatContainer from "@/components/ChatContainer.vue";
 import { useMessageStore } from "@/store/message";
 import { onMounted } from "vue";
 import { useRoute } from "vue-router";
-import HeaderChat from "@/components/HeaderChat.vue";
+import Header from "@/components/Header.vue";
 const route = useRoute();
 const messageStore = useMessageStore();
 

@@ -5,6 +5,8 @@ import { IRawMessage } from "@/interfaces/raw/raw-message";
 import { IRawUserInfo } from "@/interfaces/raw/raw-user-info";
 import { IUserInfo } from "@/interfaces/user-info";
 import { parseGeoPoint } from "../geolocalization";
+import { IRawUserAuth } from "@/interfaces/raw/raw-user-auth";
+import { UserAuth } from "@/interfaces/user-auth";
 
 
 const buildBcast = (rawBcast: IRawBcast): IBcast => {
@@ -48,9 +50,14 @@ const buildMessage = (rawMessage: IRawMessage): IMessage => {
   }
 };
 
+const buildUserAuth = (rawUserInfo: IRawUserAuth): UserAuth => {
+  return rawUserInfo;
+}
+
 
 export default {
   buildBcast,
   buildUserInfo,
-  buildMessage
+  buildMessage,
+  buildUserAuth
 }

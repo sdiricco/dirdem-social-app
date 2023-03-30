@@ -56,7 +56,7 @@ export const useAuthStore = defineStore({
         const response = await client.auth.signIn({
           email: this.email,
           password: this.password,
-        });
+        }); 
         console.log('[Login succesfully]', response)
         router.push("/home");
       } catch (error) {

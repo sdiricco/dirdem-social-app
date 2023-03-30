@@ -223,11 +223,14 @@ const api =
       auth: {
         signIn: (signIn: ISignIn) =>
           supabase
-            .auth.signInWithPassword(signIn),
+            .auth
+              .signInWithPassword(signIn)
+              .then(handlers.authHandler),
 
         signUp: (signUp: ISignUp) =>
           supabase
-            .auth.signUp(signUp),
+            .auth.signUp(signUp)
+            .then(handlers.authHandler),
       },
     };
   };

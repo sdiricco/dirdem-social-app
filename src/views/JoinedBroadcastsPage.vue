@@ -1,7 +1,7 @@
 <template>
   <ion-page>
     <ion-header>
-      <HeaderLarge />
+      <Header show-menu-button />
     </ion-header>
     <ion-content>
       <NoBroadcasts v-if="!broadcastStore.getJoinedAndInsertedBroadcasts.length" />
@@ -26,6 +26,7 @@ import { IonPage, IonButton, IonHeader, IonContent } from "@ionic/vue";
 import NoBroadcasts from "@/components/NoBroadcasts.vue";
 import BroadcastCard from "@/components/BroadcastCard.vue";
 import HeaderLarge from "@/components/HeaderLarge.vue";
+import Header from "@/components/Header.vue";
 import { onMounted } from "vue";
 import { useBroadcastStore } from "@/store/broadcast";
 import { useMessageStore } from "@/store/message";

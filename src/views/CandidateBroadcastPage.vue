@@ -1,7 +1,7 @@
 <template>
   <ion-page>
     <ion-header>
-      <HeaderLarge />
+      <Header show-menu-button />
     </ion-header>
     <ion-content>
       <NoBroadcasts v-if="!broadcastStore.candidateBroadcasts.length" />
@@ -21,31 +21,25 @@
 <script lang="ts" setup>
 import { ref, onMounted } from "vue";
 import { IonPage, IonModal, IonButton, IonHeader, IonContent } from "@ionic/vue";
-import { add, star, mailOutline, arrowRedoOutline, closeOutline, locationOutline, timeOutline } from "ionicons/icons";
-import { useAuthStore } from "@/store/auth";
 import { useBroadcastStore } from "@/store/broadcast";
-import BroadcastForm from "@/components/BroadcastForm.vue";
 import CreateNewBroadcastModal from "@/components/CreateNewBroadcastModal.vue";
 import CreateNewBroadcastButton from "@/components/CreateNewBroadcastButton.vue";
 import NoBroadcasts from "@/components/NoBroadcasts.vue";
 import BroadcastCard from "@/components/BroadcastCard.vue";
-import HeaderLarge from "@/components/HeaderLarge.vue";
-import router from "@/router";
+import Header from "@/components/Header.vue";
+
 const broadcastStore = useBroadcastStore();
-const authStore = useAuthStore();
 const modalOpen = ref(false);
-const filter = ref("all");
 
 async function onSubmitBCast() {
   await broadcastStore.create();
-  modalOpen.value = false;
   await broadcastStore.fetchCandidate();
   await broadcastStore.fetchJoined();
   await broadcastStore.fetchInserted();
+  modalOpen.value = false;
 }
 
 async function onClickJoin(bcast: any) {
-  console.log("join", bcast?.id);
   await broadcastStore.join(bcast?.id);
 }
 
@@ -66,5 +60,4 @@ onMounted(async () => {
 ion-segment {
   --background: #efefef;
 }
-
 </style>
