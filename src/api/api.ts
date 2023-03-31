@@ -165,9 +165,10 @@ const api =
             .range(offset, (offset+limit))
             .then(_ => {
               console.log(`@todo IMPORTANT::check if metadata from pagination is present`);
+              console.log(_)
               return _;
             })
-            .then(handlers.arrayMessageHandler),
+            .then(handlers.messagesHandler),
 
         insert: (userId: string) => (bcastId: string) => (content: string) =>
           supabase
@@ -192,7 +193,7 @@ const api =
                 filter: `bcast_id=eq.${bcastId}`,
               },
               data => {
-                const message = handlers.messageInsertedHandler(data)
+                const message = handlers.messageInsertedHandler({ payload: data?.new })
                 console.log(message)
                 cb(message!!)
               }

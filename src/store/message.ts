@@ -43,7 +43,8 @@ export const useMessageStore = defineStore({
     },
     async fetchMessages(){
       console.log('[Fetch messages]');
-      this.messages = await client.message.get(this.bcastId);
+      const messageResult = await client.message.get(this.bcastId);
+      this.messages = messageResult.messages;
     },
     listenMessages(){
       client.message.onInsert(this.bcastId, (message: IMessage) => {
