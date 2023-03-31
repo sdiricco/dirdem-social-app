@@ -157,11 +157,16 @@ const api =
       },
 
       message: {
-        get: (bcastId: string) =>
+        get: (bcastId: string, limit = 50, offset = 0) =>
           supabase
             .from("message")
             .select("*")
             .eq("bcast_id", bcastId)
+            .range(offset, (offset+limit))
+            .then(_ => {
+              console.log(`@todo IMPORTANT::check if metadata from pagination is present`);
+              return _;
+            })
             .then(handlers.arrayMessageHandler),
 
         insert: (userId: string) => (bcastId: string) => (content: string) =>
