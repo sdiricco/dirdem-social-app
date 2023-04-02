@@ -6,6 +6,7 @@ import router from "@/router";
 import { ApiError } from "@/models/apiError";
 import client from "@/api/client";
 import {getUser} from "@/functions/localstorage"
+import utils from "@/functions/utils-fns"
 
 /*****************************************************************************/
 /* Interfaces */
@@ -13,7 +14,8 @@ import {getUser} from "@/functions/localstorage"
 interface IAuthState {
   email: string;
   password: string;
-  error: ApiError | null
+  error: ApiError | null;
+  isLoading: boolean;
 }
 
 /*****************************************************************************/
@@ -25,7 +27,8 @@ export const useAuthStore = defineStore({
   state: (): IAuthState => ({
     email: "",
     password: "",
-    error: null
+    error: null,
+    isLoading: false,
   }),
 
   getters: {
@@ -39,13 +42,17 @@ export const useAuthStore = defineStore({
     /* Sign up */
     async signUp() {
       try {
+        this.isLoading = true;
         const response = await client.auth.signUp({
           email: this.email,
           password: this.password,
         });
+        await utils.wait(2000);
+        this.isLoading = false;
         console.log('[Login succesfully]', response)
         router.push("/home");
       } catch (error) {
+        this.isLoading = false;
         this.handleApiError(error)
       }
     },
@@ -53,13 +60,17 @@ export const useAuthStore = defineStore({
     /* sign in */
     async signIn() {
       try {
+        this.isLoading = true;
         const response = await client.auth.signIn({
           email: this.email,
           password: this.password,
         }); 
+        await utils.wait(2000);
+        this.isLoading = false;
         console.log('[Login succesfully]', response)
         router.push("/home");
       } catch (error) {
+        this.isLoading = false;
         this.handleApiError(error)
       }
     },

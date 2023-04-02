@@ -14,7 +14,10 @@ const removeUndefinedOrNullProps = (obj:any) => {
   )
 };
 
+const wait = (t_ms: number) => new Promise((res) => setTimeout(res, t_ms))
+
 export default {
   pick,
-  removeUndefinedOrNullProps
+  removeUndefinedOrNullProps,
+  wait,
 };

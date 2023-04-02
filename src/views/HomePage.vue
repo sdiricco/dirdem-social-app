@@ -10,7 +10,6 @@
 <script lang="ts" setup>
 import { IonPage, IonTabs, IonRouterOutlet } from "@ionic/vue";
 import NavTabs from "@/components/NavTabs.vue";
-import { useMainStore } from "@/store";
 
-const store = useMainStore();
+
 </script>

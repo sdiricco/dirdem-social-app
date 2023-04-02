@@ -14,8 +14,6 @@ import { IonApp, IonRouterOutlet, IonPage, IonMenu } from "@ionic/vue";
 import SiderBar from "./components/SideBar.vue";
 import { onMounted } from "vue";
 import {useMainStore} from "@/store";
-import {getCurrentPosition} from "@/functions/geolocalization"
-import {getUser} from "@/functions/localstorage"
 
 const store = useMainStore()
 onMounted(async() => {
@@ -23,10 +21,6 @@ onMounted(async() => {
   store.$subscribe(async (_mutations, state) => {
     await store.savePreferences(state.preferences);
   });
-  const response = await getCurrentPosition();
-  console.log('response: ', response);
-  
-  getUser()
 });
 </script>
 

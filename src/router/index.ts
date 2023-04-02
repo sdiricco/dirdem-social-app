@@ -1,6 +1,9 @@
 import { createRouter, createWebHistory } from '@ionic/vue-router';
 import { RouteRecordRaw } from 'vue-router';
 
+const getJoinedBroadcastPage = () => import('@/views/JoinedBroadcastsPage.vue') 
+const getCandidateBroadcastPage = () => import('@/views/CandidateBroadcastPage.vue') 
+
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
@@ -33,28 +36,39 @@ const routes: Array<RouteRecordRaw> = [
     redirect: "/home/candidate-broadcasts",
     children: [
       {
+        name: 'candidate-broadcasts-page',
         path: "candidate-broadcasts",
-        component: () => import('@/views/CandidateBroadcastPage.vue')
+        component: getCandidateBroadcastPage 
       },
       {
+        name: 'joined-broadcasts-page',
         path: "joined-broadcasts",
-        component: () => import('@/views/JoinedBroadcastsPage.vue')
+        component: getJoinedBroadcastPage
       },
       {
         path: "joined-broadcasts/:id",
         component: () => import('@/views/ChatBroadcastsPage.vue')
       },
       {
+        name: 'profile-page',
         path: "profile",
         component: () => import('@/views/ProfilePage.vue')
       }
     ]
-  }
+  },
+
 ]
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
+})
+
+router.beforeEach((to, from) => {
+  if (to.name === 'candidate-broadcasts-page') {
+    
+  }
+  
 })
 
 export default router

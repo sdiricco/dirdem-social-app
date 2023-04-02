@@ -4,8 +4,12 @@
       <Header show-menu-button />
     </ion-header>
     <ion-content>
-      <NoBroadcasts v-if="!broadcastStore.candidateBroadcasts.length" />
-      <div class="overflow-auto">
+      <ion-refresher slot="fixed" @ionRefresh="handleRefresh($event)">
+        <ion-refresher-content></ion-refresher-content>
+      </ion-refresher>
+      <NoBroadcasts v-if="!broadcastStore.candidateBroadcasts.length && !broadcastStore.isLoading" />
+      <SkeletonBroadcast v-for="i in 10" v-else-if="!broadcastStore.candidateBroadcasts.length && broadcastStore.isLoading" />
+      <div v-else class="overflow-auto">
         <BroadcastCard class="my-2" v-for="broadcast in broadcastStore.candidateBroadcasts" :broadcast="broadcast" @click-join="onClickJoin(broadcast)">
           <ion-button fill="solid" expand="full" class="no-margin" @click="onClickJoin(broadcast)">Unisciti</ion-button>
         </BroadcastCard>
@@ -19,14 +23,17 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from "vue";
-import { IonPage, IonModal, IonButton, IonHeader, IonContent } from "@ionic/vue";
+import { ref, onMounted, onUnmounted } from "vue";
+import { IonPage, IonModal, IonButton, IonHeader, IonContent, IonRefresher, IonRefresherContent } from "@ionic/vue";
+import { onBeforeRouteUpdate } from "vue-router";
 import { useBroadcastStore } from "@/store/broadcast";
 import CreateNewBroadcastModal from "@/components/CreateNewBroadcastModal.vue";
 import CreateNewBroadcastButton from "@/components/CreateNewBroadcastButton.vue";
 import NoBroadcasts from "@/components/NoBroadcasts.vue";
 import BroadcastCard from "@/components/BroadcastCard.vue";
 import Header from "@/components/Header.vue";
+import SkeletonBroadcast from "@/components/SkeletonBroadcast.vue";
+import utilsFns from "@/functions/utils-fns";
 
 const broadcastStore = useBroadcastStore();
 const modalOpen = ref(false);
@@ -43,8 +50,20 @@ async function onClickJoin(bcast: any) {
   await broadcastStore.join(bcast?.id);
 }
 
+async function handleRefresh(evt:any){
+  console.log('refreshing...');
+  await broadcastStore.fetchCandidate()
+  evt.target.complete();
+  
+}
+
 onMounted(async () => {
-  await broadcastStore.fetchCandidate();
+  console.log("[HO MONTATO CANDIDATE BROADCAST PAGE]");
+  await broadcastStore.fetchCandidate()
+});
+
+onUnmounted(() => {
+  console.log("STO SMONTANDO CANDIDATE BROADCAST PAGE");
 });
 </script>
 

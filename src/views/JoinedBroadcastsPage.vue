@@ -4,8 +4,12 @@
       <Header show-menu-button />
     </ion-header>
     <ion-content>
-      <NoBroadcasts v-if="!broadcastStore.getJoinedAndInsertedBroadcasts.length" />
-      <BroadcastCard
+      <ion-refresher slot="fixed" @ionRefresh="handleRefresh($event)">
+        <ion-refresher-content></ion-refresher-content>
+      </ion-refresher>
+      <NoBroadcasts v-if="!broadcastStore.getJoinedAndInsertedBroadcasts.length && !broadcastStore.isLoading" />
+      <SkeletonBroadcast v-for="i in 10" v-else-if="!broadcastStore.candidateBroadcasts.length && broadcastStore.isLoading && !refreshing" />
+      <BroadcastCard v-else
         class="my-2"
         v-for="broadcast in broadcastStore.getJoinedAndInsertedBroadcasts"
         :broadcast="broadcast"
@@ -22,12 +26,13 @@
 /**************************************************/
 /* IMPORTS */
 /**************************************************/
-import { IonPage, IonButton, IonHeader, IonContent } from "@ionic/vue";
+import { IonPage, IonButton, IonHeader, IonContent, IonRefresher, IonRefresherContent } from "@ionic/vue";
 import NoBroadcasts from "@/components/NoBroadcasts.vue";
 import BroadcastCard from "@/components/BroadcastCard.vue";
-import HeaderLarge from "@/components/HeaderLarge.vue";
+import SkeletonBroadcast from "@/components/SkeletonBroadcast.vue";
+
 import Header from "@/components/Header.vue";
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 import { useBroadcastStore } from "@/store/broadcast";
 import { useMessageStore } from "@/store/message";
 import router from "@/router";
@@ -38,6 +43,8 @@ import router from "@/router";
 const broadcastStore = useBroadcastStore();
 const messageStore = useMessageStore();
 
+let refreshing = ref(false)
+
 /**************************************************/
 /* COMPONENT FUNCTIONS */
 /**************************************************/
@@ -45,6 +52,14 @@ async function onClickJoin(broadcast: any) {
   await broadcastStore.join(broadcast.id);
   messageStore.bcastId = broadcast.id;
   router.push("/home/chat-page");
+}
+
+async function handleRefresh(evt:any){
+  refreshing.value = true;
+  await broadcastStore.fetchCandidate()
+  refreshing.value = false;
+  evt.target.complete();
+  
 }
 
 /**************************************************/

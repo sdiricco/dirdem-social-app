@@ -2,7 +2,10 @@ import { defineStore } from "pinia";
 import { useAuthStore } from "./auth";
 import { IBcast } from "@/interfaces/bcast";
 import client from "@/api/client";
-import {getCurrentPosition} from "@/functions/geolocalization"
+import { getCurrentPosition } from "@/functions/geolocalization";
+import { ApiError } from "@/models/apiError";
+import utils from "@/functions/utils-fns"
+
 
 interface IState {
   candidateBroadcasts: IBcast[];
@@ -10,7 +13,8 @@ interface IState {
   insertedBroadcasts: IBcast[];
   tempBroadcast: IBcast;
   tempTag: string;
-
+  error: ApiError | null;
+  isLoading: boolean;
 }
 export const useBroadcastStore = defineStore({
   id: "broadcast",
@@ -18,6 +22,9 @@ export const useBroadcastStore = defineStore({
     candidateBroadcasts: [],
     joinedBroadcasts: [],
     insertedBroadcasts: [],
+
+    /* Temp broadcast structure */
+    /* Used when creating a new broadcast */
     tempBroadcast: {
       content: {
         title: "Il mio titolo",
@@ -31,96 +38,164 @@ export const useBroadcastStore = defineStore({
       maxDistanceKm: 100,
       maxUsers: 100,
       tag: [],
-      explicitContent: false
+      explicitContent: false,
     },
-    tempTag: ''
+    tempTag: "",
+
+    /* Api Error structure */
+    error: null,
+
+    /* Loading variable */
+    isLoading: false,
   }),
+
   getters: {
     userId() {
       const authStore = useAuthStore();
-      return authStore.getUserId
+      return authStore.getUserId;
     },
-    getJoinedAndInsertedBroadcasts(): IBcast[]{
-      return [...this.insertedBroadcasts, ...this.joinedBroadcasts]
-    }
+    getJoinedAndInsertedBroadcasts(): IBcast[] {
+      return [...this.insertedBroadcasts, ...this.joinedBroadcasts];
+    },
   },
+
   actions: {
-    async join(bcastId: string){
+
+    /* Join candidate broadcast */
+    async join(bcastId: string) {
       if (!this.userId) {
-        return
+        return;
       }
-      await client.bcast.join(this.userId)(bcastId);
-      console.log('[JOINED, bcastid]', bcastId)
+      try {
+        this.isLoading = true
+        await client.bcast.join(this.userId)(bcastId);
+        await utils.wait(2000);
+        this.isLoading = false
+        console.log("[JOINED, bcastid]", bcastId);
+      } catch (error) {
+        this.isLoading = false
+        this.handleApiError(error);
+      }
     },
-    async hide(bcastId: string){
+
+    /* Hide candidate broadcast */
+    async hide(bcastId: string) {
       if (!this.userId) {
-        return
+        return;
       }
-      await client.bcast.hide(this.userId)(bcastId);
-      console.log('[HIDED, bcastid]', bcastId)
+      try {
+        this.isLoading = true
+        await client.bcast.hide(this.userId)(bcastId);
+        await utils.wait(2000);
+        this.isLoading = false
+        console.log("[HIDED, bcastid]", bcastId);
+      } catch (error) {
+        this.isLoading = false
+        this.handleApiError(error);
+      }
     },
-    async report(bcastId: string){
+
+    /* Report candidate broadcast */
+    async report(bcastId: string) {
       if (!this.userId) {
-        return
+        return;
       }
-      await client.bcast.report(this.userId)(bcastId);
-      console.log('[REPORTED, bcastid]', bcastId)
+      try {
+        this.isLoading = true
+        await client.bcast.report(this.userId)(bcastId);
+        await utils.wait(2000);
+        this.isLoading = false
+        console.log("[REPORTED, bcastid]", bcastId);
+      } catch (error) {
+        this.isLoading = false
+        this.handleApiError(error); 
+      }
+
     },
+
+    /* Fetch Inserted broadcasts */
     async fetchInserted() {
       if (!this.userId) {
-        return
+        return;
       }
-      const response = await client.bcast.getInserted(this.userId);
-      console.log('[Api response: bcast.getInserted()]', response);
-      this.insertedBroadcasts = response
+      try {
+        this.isLoading = true;
+        const response = await client.bcast.getInserted(this.userId);
+        await utils.wait(2000);
+        this.insertedBroadcasts = response;
+        this.isLoading = false;
+        console.log("[Api response: bcast.getInserted()]", response);
+      } catch (error) {
+        this.isLoading = false
+        this.handleApiError(error); 
+      }
 
     },
+
+    /* Fetch Candidate broadcast*/
     async fetchCandidate() {
+      if (!this.userId) {
+        return;
+      }
       try {
-        console.log('user-id', this.userId);
-        if (!this.userId) {
-          return
-        }
-        const currentPosition = await getCurrentPosition()
+        this.isLoading = true;
+        const currentPosition = await getCurrentPosition();
         const response = await client.bcast.getCandidate(this.userId)({
           lat: currentPosition.coords.latitude,
-          lng: currentPosition.coords.longitude
-        })(['mio']);
-        console.log('[Api response: bcast.getCandidate()]', response);
-        this.candidateBroadcasts = response
-      } catch (e) {
-        console.log('error in fetch', e)
+          lng: currentPosition.coords.longitude,
+        })(["mio"]);
+        await utils.wait(2000);
+        this.candidateBroadcasts = response;
+        this.isLoading = false;
+        console.log("[Api response: bcast.getCandidate()]", response);
+      } catch (error) {
+        this.isLoading = false
+        this.handleApiError(error); 
       }
     },
-    async fetchHided() {
-      if (!this.userId) {
-        return
-      }
-      const response = await client.bcast.getHided(this.userId);
-      console.log('[Api response: bcast.getHided()]', response);
-    },
+
+    /* Fetch Joined broadcast*/
     async fetchJoined() {
       if (!this.userId) {
-        return
+        return;
+      } 
+      try {
+        this.isLoading = true;
+        const response = await client.bcast.getJoined(this.userId);
+        this.joinedBroadcasts = response;
+        await utils.wait(2000);
+        this.isLoading = false
+        console.log("[Api response: bcast.getJoined()]", response);
+      } catch (error) {
+        this.isLoading = false
+        this.handleApiError(error); 
       }
-      console.log('user id')
-      console.log(this.userId)
-      const response = await client.bcast.getJoined(this.userId);
-      console.log('[Api response: bcast.getJoined()]', response);
-      this.joinedBroadcasts = response
     },
+
+    /* CreateNew Broadcast*/
     async create() {
       if (!this.userId) {
-        return
+        return;
       }
       try {
+        this.isLoading = true;
         const response = await client.bcast.insert(this.userId)(this.tempBroadcast);
-        console.log('[Api response: bcast.insert()]', response);
-      } catch (e:any) {
-        console.log('Error during creation', e.message);
+        await utils.wait(2000);
+        this.isLoading = false
+        console.log("[Api response: bcast.insert()]", response);
+      } catch (error) {
+        this.isLoading = false
+        this.handleApiError(error); 
       }
+    },
 
-
+    /* handle errors */
+    async handleApiError(error: any) {
+      if (error instanceof ApiError) {
+        this.error = error;
+      } else {
+        alert(`[UNKNOWN ERROR]: ${error.message}`);
+      }
     },
   },
 });
