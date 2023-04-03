@@ -49,21 +49,21 @@ export const useBroadcastStore = defineStore({
       if (!this.userId) {
         return
       }
-      await client.bcast.join(this.userId)(bcastId);
+      await client.bcast.join(this.userId, bcastId);
       console.log('[JOINED, bcastid]', bcastId)
     },
     async hide(bcastId: string){
       if (!this.userId) {
         return
       }
-      await client.bcast.hide(this.userId)(bcastId);
+      await client.bcast.hide(this.userId, bcastId);
       console.log('[HIDED, bcastid]', bcastId)
     },
     async report(bcastId: string){
       if (!this.userId) {
         return
       }
-      await client.bcast.report(this.userId)(bcastId);
+      await client.bcast.report(this.userId, bcastId);
       console.log('[REPORTED, bcastid]', bcastId)
     },
     async fetchInserted() {
@@ -72,7 +72,7 @@ export const useBroadcastStore = defineStore({
       }
       const response = await client.bcast.getInserted(this.userId);
       console.log('[Api response: bcast.getInserted()]', response);
-      this.insertedBroadcasts = response
+      this.insertedBroadcasts = response?.bcast;
 
     },
     async fetchCandidate() {
@@ -82,12 +82,12 @@ export const useBroadcastStore = defineStore({
           return
         }
         const currentPosition = await getCurrentPosition()
-        const response = await client.bcast.getCandidate(this.userId)({
+        const response = await client.bcast.getCandidate(this.userId, {
           lat: currentPosition.coords.latitude,
           lng: currentPosition.coords.longitude
-        })(['mio']);
+        }, ['mio']);
         console.log('[Api response: bcast.getCandidate()]', response);
-        this.candidateBroadcasts = response
+        this.candidateBroadcasts = response?.bcast
       } catch (e) {
         console.log('error in fetch', e)
       }
@@ -107,14 +107,14 @@ export const useBroadcastStore = defineStore({
       console.log(this.userId)
       const response = await client.bcast.getJoined(this.userId);
       console.log('[Api response: bcast.getJoined()]', response);
-      this.joinedBroadcasts = response
+      this.joinedBroadcasts = response?.bcast
     },
     async create() {
       if (!this.userId) {
         return
       }
       try {
-        const response = await client.bcast.insert(this.userId)(this.tempBroadcast);
+        const response = await client.bcast.insert(this.userId, this.tempBroadcast);
         console.log('[Api response: bcast.insert()]', response);
       } catch (e:any) {
         console.log('Error during creation', e.message);

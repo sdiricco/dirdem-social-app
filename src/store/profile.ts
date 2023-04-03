@@ -66,7 +66,7 @@ export const useProfileStore = defineStore({
         if (!this.userId) {
           return;
         }
-        const response = await client.userInfo.update(this.userId)(this.tempUserInfo)
+        const response = await client.userInfo.update(this.userId, this.tempUserInfo)
         console.log(response)
       } catch (error) {
         this.handleApiError(error);

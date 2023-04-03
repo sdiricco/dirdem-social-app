@@ -38,7 +38,7 @@ export const useMessageStore = defineStore({
         return
       }
       console.log('[Send messages]');
-      await client.message.insert(this.getUserId)(this.bcastId)(this.tempMessage)
+      await client.message.insert(this.getUserId, this.bcastId, this.tempMessage)
       this.tempMessage = ''
     },
     async fetchMessages(){

@@ -13,7 +13,7 @@ import { IMessage } from "@/interfaces/message";
 import { IBcast } from "@/interfaces/bcast";
 import handlers from "./handlers";
 
-const bcastUserRecordExists = (supabase: SupabaseClient<any, "public", any>) => (userId: string) => (bcastId: string) => {
+const bcastUserRecordExists = (supabase: SupabaseClient<any, "public", any>, userId: string, bcastId: string) => {
     return supabase.from("bcast_user")
       .select('*')
       .eq("user_id", userId)
@@ -33,28 +33,30 @@ const api =
       supabase,
 
       bcast: {
-        insert: (userId: string) => (bcast: IBcast) => {
+        insert: (userId: string, bcast: IBcast) => {
           const rawBcast = outputDto.buildRawBcast(userId, bcast);
           return supabase
             .from("bcast")
             .insert(rawBcast);
         },
 
-        getAll: () =>
+        getAll: (limit = 50, offset = 0) =>
           supabase
             .from("bcast")
             .select("*")
-            .then(handlers.arrayBcastHandler),
+            .range(offset, (offset+limit))
+            .then(handlers.bcastsHandler),
 
-        getInserted: (userId: string) =>
+        getInserted: (userId: string, limit = 50, offset = 0) =>
           supabase
             .from("bcast")
             .select("*")
             .eq("user_id", userId)
-            .then(handlers.arrayBcastHandler),
+            .range(offset, (offset+limit))
+            .then(handlers.bcastsHandler),
 
         getCandidate:
-          (userId: string) => (location: IGeoLocation) => (tag: string[]) =>
+          (userId: string, location: IGeoLocation, tag: string[], limit = 50, offset = 0) =>
             supabase
               .rpc("candidate_bcast", {
                 _user_id: userId,
@@ -62,37 +64,37 @@ const api =
                 _lng: location.lng,
                 _tag: tag,
               })
-              .then(handlers.arrayBcastHandler),
+              .range(offset, (offset+limit))
+              .then(handlers.bcastsHandler),
 
-        getJoined: (userId: string) =>
+        getJoined: (userId: string, limit = 50, offset = 0) =>
           supabase
             .from("bcast_user")
             .select("bcast(*)")
             .eq("user_id", userId)
             .is("joined", true)
-            .then(handlers.interactedBcastHandler),
+            .range(offset, (offset+limit))
+            .then(handlers.bcastInteractedHandler,),
 
-        getHided: (userId: string) =>
+        getHided: (userId: string, limit = 50, offset = 0) =>
           supabase
             .from("bcast_user")
             .select("bcast(*)")
             .eq("user_id", userId)
             .is("hided", true)
-            .then(handlers.interactedBcastHandler),
+            .range(offset, (offset+limit))
+            .then(handlers.bcastInteractedHandler,),
 
-        getReported: (userId: string) =>
+        getReported: (userId: string, limit = 50, offset = 0) =>
           supabase
             .from("bcast_user")
             .select("bcast(*)")
             .eq("user_id", userId)
             .is("reported", true)
-            .then(handlers.interactedBcastHandler),
+            .range(offset, (offset+limit))
+            .then(handlers.bcastInteractedHandler,),
 
-        onInsert: (userId: string) =>
-          (
-            cb: (message: IMessage) => void,
-            channelId = uuid(),
-          ) =>
+        onInsert: (userId: string, cb: (message: IMessage) => void, channelId = uuid()) =>
             supabase
               .channel(channelId)
               .on(
@@ -110,8 +112,8 @@ const api =
               )
               .subscribe(),
 
-        join: (userId: string) => async (bcastId: string) => {
-          const bcastUserExists = await bcastUserRecordExists(supabase)(userId)(bcastId);
+        join: async (userId: string, bcastId: string) => {
+          const bcastUserExists = await bcastUserRecordExists(supabase, userId, bcastId);
           if (bcastUserExists) {
             return supabase
               .from("bcast_user")
@@ -125,8 +127,8 @@ const api =
           }
         },
 
-        hide: (userId: string) => async (bcastId: string) => {
-          const bcastUserExists = await bcastUserRecordExists(supabase)(userId)(bcastId);
+        hide: async (userId: string, bcastId: string) => {
+          const bcastUserExists = await bcastUserRecordExists(supabase, userId, bcastId);
           if (bcastUserExists) {
             return supabase
               .from("bcast_user")
@@ -140,8 +142,8 @@ const api =
           }
         },
 
-        report: (userId: string) => async (bcastId: string) => {
-          const bcastUserExists = await bcastUserRecordExists(supabase)(userId)(bcastId);
+        report: async (userId: string, bcastId: string) => {
+          const bcastUserExists = await bcastUserRecordExists(supabase, userId, bcastId);
           if (bcastUserExists) {
             return supabase
               .from("bcast_user")
@@ -170,18 +172,14 @@ const api =
             })
             .then(handlers.messagesHandler),
 
-        insert: (userId: string) => (bcastId: string) => (content: string) =>
+        insert: (userId: string, bcastId: string, content: string) =>
           supabase
             .from("message")
             .insert([
               { content, user_id: userId, bcast_id: bcastId },
             ]),
 
-        onInsert: (
-          bcastId: string,
-          cb: (payload: IMessage) => void,
-          channelId = uuid(),
-        ) =>
+        onInsert: (bcastId: string, cb: (payload: IMessage) => void, channelId = uuid()) =>
           supabase
             .channel(channelId)
             .on(
@@ -209,14 +207,14 @@ const api =
             .eq("id", userId)
             .then(handlers.userInfoHandler),
 
-        insert: (userId: string) => (userInfo: IUserInfo) => {
+        insert: (userId: string, userInfo: IUserInfo) => {
           const rawUserInfo = outputDto.buildRawUserInfo(userId, userInfo);
           return supabase
             .from("user_info")
             .insert(rawUserInfo);
         },
 
-        update: (userId: string) => (userInfo: Partial<IUserInfo>) => {
+        update: (userId: string, userInfo: Partial<IUserInfo>) => {
           const rawUserInfo = outputDto.buildRawUserInfo(userId, userInfo);
           const obj = utilsFns.removeUndefinedOrNullProps(rawUserInfo);
           return supabase
