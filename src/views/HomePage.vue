@@ -11,5 +11,4 @@
 import { IonPage, IonTabs, IonRouterOutlet } from "@ionic/vue";
 import NavTabs from "@/components/NavTabs.vue";
 
-
 </script>

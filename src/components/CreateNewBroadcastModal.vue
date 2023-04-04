@@ -10,7 +10,7 @@
     </ion-toolbar>
   </ion-header>
   <ion-content>
-    <BroadcastForm />
+    <!-- <BroadcastForm /> -->
   </ion-content>
   <ion-footer class="footer-height ion-no-border">
     <div class="mx-2">
@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, defineEmits } from "vue";
+import { onMounted } from "vue";
 import { IonContent, IonHeader, IonToolbar, IonButtons, IonButton, IonTitle, IonFooter, IonIcon } from "@ionic/vue";
 import { closeOutline } from "ionicons/icons";
 import { useBroadcastStore } from "@/store/broadcast";
