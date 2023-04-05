@@ -45,7 +45,7 @@ const userInfoHandler: ({ data, error }) => IUserInfo = R.pipe(
     inputDto.buildUserInfo
 )
 
-const authHandler: ({ data, error }) => any = R.pipe(
+const authHandler: ({ data, error }) => UserAuth = R.pipe(
     errorHandler(),
     R.prop('data'),
     inputDto.buildUserAuth
