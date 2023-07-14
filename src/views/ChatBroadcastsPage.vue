@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <ion-page>
     <ion-header>
       <Header show-back-button />
@@ -31,4 +31,4 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-</style>
+</style> -->

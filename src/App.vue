@@ -13,22 +13,17 @@
 import { IonApp, IonRouterOutlet, IonPage, IonMenu } from "@ionic/vue";
 import SiderBar from "./components/SideBar.vue";
 import { onMounted } from "vue";
-import {useMainStore} from "@/store";
 import {getCurrentPosition} from "@/functions/geolocalization"
-import {getUser} from "@/functions/localstorage"
+import { useMainStore } from "./store/main-store";
+
 
 const store = useMainStore()
 onMounted(async() => {
   await store.loadApp();
-  store.$subscribe(async (_mutations, state) => {
-    await store.savePreferences(state.preferences);
-  });
+  // store.$subscribe(async (_mutations, state) => {
+  //   await store.savePreferences(state.preferences);
+  // });
   const response = await getCurrentPosition();
   console.log('response: ', response);
-  
-  getUser()
 });
 </script>
-
-<style>
-</style>

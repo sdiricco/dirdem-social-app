@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <ion-toolbar color="primary" class="pt4">
     <ion-buttons slot="start" class="pb16">
       <ion-menu-button></ion-menu-button>
@@ -16,4 +16,4 @@ import { useAuthStore } from "@/store/auth";
 
 const auth = useAuthStore();
 const store = useMainStore();
-</script>
+</script> -->

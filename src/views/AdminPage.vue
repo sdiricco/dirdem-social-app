@@ -1,12 +1,10 @@
-<template>
+<!-- <template>
   <ion-page>
     <ion-content :fullscreen="true">
-      <!--Users-->
       <ion-item-divider color="dark">
         <ion-label>User</ion-label>
       </ion-item-divider>
       <ion-list class="ion-padding">
-        <!-- List all users -->
         <ion-item>
           <ion-label>User</ion-label>
           <ion-select interface="action-sheet" placeholder="Select a user" v-model="selectedUser">
@@ -21,12 +19,10 @@
         </ion-item>
       </ion-list>
 
-      <!--Broadcasts-->
       <ion-item-divider color="dark">
         <ion-label>Broadcasts</ion-label>
       </ion-item-divider>
       <ion-list class="ion-padding">
-        <!-- List all users -->
         <ion-item class="overflow-auto">
           <ion-button @click="getAllBroadcasts" fill="outline">Get All broadcasts</ion-button>
           <ion-button @click="getAllBroadcasts" fill="outline">Get Candidate Broadcast</ion-button>
@@ -144,4 +140,4 @@ onMounted(async () => {
 ion-segment {
   --background: #efefef;
 }
-</style>
+</style> -->

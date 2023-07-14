@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <ion-list lines="inset" class="overflow-auto">
     <ion-item>
       <ion-label position="stacked">Titolo</ion-label>
@@ -82,4 +82,4 @@ onMounted(async () => {
 });
 </script>
 
-<style scoped></style>
+<style scoped></style> -->

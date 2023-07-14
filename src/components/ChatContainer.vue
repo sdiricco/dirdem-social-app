@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div class="chat-container">
     <div class="chat-header ion-padding border">
       <div>{{ `bcastId: ${messageStore.bcastId}` }}</div>
@@ -100,4 +100,4 @@ onMounted(async () => {
 .chat-form ion-button {
   width: 100px;
 }
-</style>
+</style> -->

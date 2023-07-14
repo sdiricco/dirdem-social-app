@@ -9,7 +9,7 @@
     <ion-item lines="inset">
       <ion-icon slot="start" :icon="moon"></ion-icon>
       <ion-label>Dark mode</ion-label>
-      <ion-toggle slot="end" @ion-change="onToggleTheme" :checked="store.isDark"> </ion-toggle>
+      <ion-toggle slot="end" @ion-change="onToggleTheme" :checked="store.theme === ThemesEnum.Dark"> </ion-toggle>
     </ion-item>
     <ion-menu-toggle>
       <ion-item lines="inset" button @click="onClickProfile">
@@ -20,16 +20,16 @@
 </template>
 
 <script lang="ts" setup>
-import router from "../router";
+import { useMainStore } from "@/store/main-store";
 import { IonHeader, IonToolbar, IonContent, IonIcon, IonLabel, IonToggle, IonItem, IonMenuToggle } from "@ionic/vue";
 import { moon } from "ionicons/icons";
-import { useMainStore } from "@/store";
+import { ThemesEnum } from "@/constants/enum";
+import router from "@/router/router";
 
 const store = useMainStore();
 
 async function onToggleTheme(evt: any) {
-  const isDark = evt.target.checked;
-  await store.toggleTheme(isDark);
+  await store.toggleTheme();
 }
 
 
@@ -38,13 +38,3 @@ function onClickProfile() {
 }
 
 </script>
-
-<style scoped>
-.pt64 {
-  padding-top: 64px;
-}
-
-.pb16 {
-  padding-bottom: 16px;
-}
-</style>

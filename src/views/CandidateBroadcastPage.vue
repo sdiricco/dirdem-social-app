@@ -1,12 +1,12 @@
-<template>
+<!-- <template>
   <ion-page>
     <ion-header>
       <Header show-menu-button />
     </ion-header>
     <ion-content>
-      <NoBroadcasts v-if="!broadcastStore.candidateBroadcasts.length" />
+      <NoBroadcasts v-if="!broadcastStore.bcastList.length" />
       <div class="overflow-auto">
-        <BroadcastCard class="my-2" v-for="broadcast in broadcastStore.candidateBroadcasts" :broadcast="broadcast" @click-join="onClickJoin(broadcast)">
+        <BroadcastCard class="my-2" v-for="broadcast in broadcastStore.bcastList" :broadcast="broadcast" @click-join="onClickJoin(broadcast)">
           <ion-button fill="solid" expand="full" class="no-margin" @click="onClickJoin(broadcast)">Unisciti</ion-button>
         </BroadcastCard>
       </div>
@@ -33,9 +33,6 @@ const modalOpen = ref(false);
 
 async function onSubmitBCast() {
   await broadcastStore.create();
-  await broadcastStore.fetchCandidate();
-  await broadcastStore.fetchJoined();
-  await broadcastStore.fetchInserted();
   modalOpen.value = false;
 }
 
@@ -44,7 +41,7 @@ async function onClickJoin(bcast: any) {
 }
 
 onMounted(async () => {
-  await broadcastStore.fetchCandidate();
+  await broadcastStore.fetchList();
 });
 </script>
 
@@ -60,4 +57,4 @@ onMounted(async () => {
 ion-segment {
   --background: #efefef;
 }
-</style>
+</style> -->

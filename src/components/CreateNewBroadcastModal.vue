@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <ion-header class="ion-no-border pt-5">
     <ion-toolbar>
       <ion-title>Crea un broadcast</ion-title>
@@ -39,4 +39,4 @@ ion-content {
   height: calc(100% - 56px - 56px - 3rem);
   overflow-y: auto;
 }
-</style>
+</style> -->

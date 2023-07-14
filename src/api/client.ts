@@ -1,4 +1,4 @@
-import { supabaseUrl, supabaseKey, supabaseAdminKey } from '@/constants';
+import { supabaseKey, supabaseUrl } from '@/constants/constants';
 import { createClient } from '@supabase/supabase-js';
 import api from './api';
 

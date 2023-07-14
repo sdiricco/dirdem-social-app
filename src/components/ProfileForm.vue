@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div class="p-4">
     <div class="d-flex flex-column justify-content-center align-items-center pb-4">
       <ion-avatar class="mb-4 border">
@@ -172,4 +172,4 @@ ion-content{
 .footer-height{
   height: 56px;
 }
-</style>
+</style> -->

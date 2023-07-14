@@ -6,7 +6,8 @@
           <div class="col-md-6">
             <div class="d-grid gap-2">
               <ion-button expand="block" size="large" color="dark" @click="router.push('/auth/login')">Accedi</ion-button>
-              <ion-button expand="block" size="large" color="dark" @click="router.push('/auth/registration')">Registrati</ion-button>
+              <ion-button expand="block" size="large" color="dark"
+                @click="router.push('/auth/registration')">Registrati</ion-button>
             </div>
           </div>
         </div>

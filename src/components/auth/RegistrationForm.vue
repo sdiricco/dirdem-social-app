@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <ion-content class="ion-padding">
     <ion-card-header class="mt-5">
       <ion-card-title>Registrati</ion-card-title>
@@ -34,4 +34,4 @@ const authStore = useAuthStore();
 onMounted(() => {
   authStore.$reset();
 });
-</script>
+</script> -->

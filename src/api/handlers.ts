@@ -1,21 +1,16 @@
 // @ts-nocheck
 
 import * as R from 'ramda';
-import inputDto from "@/functions/dto/input-dto";
-import { ApiError } from "@/models/apiError";
-import { IBcast } from "src/interfaces/bcast";
 import { IMessage } from "src/interfaces/message";
 import { IUserInfo } from "src/interfaces/user-info";
 import { UserAuth } from "@/interfaces/user-auth";
-import utilsFns from '@/functions/utils-fns';
-
+import { IListedBcast } from '@/interfaces/listedBcast';
+import { IBcast } from '@/interfaces/bcast';
+import inputDto from './dto/input-dto';
 
 const errorHandler = (customErrorMessage = 'Handler error') => ({ error, errors, ...props }) => {
     if (error || errors?.length) {
-        throw new ApiError(error.message || customErrorMessage, {
-            details: error?.name,
-            code: error?.status
-        })
+        throw error.message || customErrorMessage;
     }
     return { ...props };
 }
@@ -32,10 +27,16 @@ const messageInsertedHandler: (data) => IMessage = R.pipe(
     inputDto.buildMessage
 )
 
-const bcastsHandler: ({ data, error }) => { count: number, bcast: IBcast[] } = R.pipe(
+const bcastListHandler: ({ data, error }) => { count: number, bcastList: IListedBcast[] } = R.pipe(
     errorHandler(),
-    R.over(R.lensPath(['data']), R.map(inputDto.buildBcast)),
+    R.over(R.lensPath(['data']), R.map(inputDto.buildListedBcast)),
     ({ data, count }) => ({ bcast: data, count })
+)
+
+const bcastHandler: ({ data, error }) => IBcast = R.pipe(
+    errorHandler(),
+    R.prop('data'),
+    inputDto.buildBcast
 )
 
 const userInfoHandler: ({ data, error }) => IUserInfo = R.pipe(
@@ -51,32 +52,20 @@ const authHandler: ({ data, error }) => UserAuth = R.pipe(
     inputDto.buildUserAuth
 )
 
-const bcastInteractedHandler: ({ data, error }) => { count: number, bcast: IBcast[] } = R.pipe(
-    errorHandler(),
-    R.over(R.lensPath(['data']), R.pipe(
-        R.map(
-            R.pipe(
-                R.prop('bcast'),
-                inputDto.buildBcast
-            )
-        )
-    )),
-    ({ data, count }) => ({ bcast: data, count })
-)
-
 const dataHasLengthHandler: ({ data, error }) => boolean = R.pipe(
     errorHandler(),
     R.prop('data'),
     R.length,
-    R.gt(R.__, 0),
-    utilsFns.logger('res')
+    R.gt(R.__, 0)
 )
+
+//
 
 export default {
     messagesHandler,
     messageInsertedHandler,
-    bcastsHandler,
-    bcastInteractedHandler,
+    bcastListHandler,
+    bcastHandler,
     userInfoHandler,
     authHandler,    
     dataHasLengthHandler
