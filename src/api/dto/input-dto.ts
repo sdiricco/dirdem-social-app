@@ -4,11 +4,11 @@ import { IRawBcast } from "@/interfaces/raw/raw-bcast";
 import { IRawMessage } from "@/interfaces/raw/raw-message";
 import { IRawUserInfo } from "@/interfaces/raw/raw-user-info";
 import { IUserInfo } from "@/interfaces/user-info";
-import { parseGeoPoint } from "../../functions/geolocalization";
+import { parseGeoPoint } from "../../functions/geolocalization-fns";
 import { IRawUserAuth } from "@/interfaces/raw/raw-user-auth";
 import { UserAuth } from "@/interfaces/user-auth";
 import { IRawListedBcast } from "@/interfaces/raw/raw-listed-bcast";
-import { IListedBcast } from "@/interfaces/listedBcast";
+import { IListedBcast } from "@/interfaces/listed-bcast";
 
 
 const buildBcast = (rawBcast: IRawBcast): IBcast => {

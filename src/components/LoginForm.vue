@@ -28,7 +28,7 @@
 <script lang="ts" setup>
 import { IonContent, IonItem, IonButton, IonLabel, IonInput, IonCardHeader, IonCardContent, IonCardTitle, IonIcon } from "@ionic/vue";
 import { arrowForwardSharp, informationCircle } from "ionicons/icons";
-import { onMounted, ref } from "vue";
+import { ref } from "vue";
 
 const { error } = defineProps(['error']);
 const emit = defineEmits(['submit']);

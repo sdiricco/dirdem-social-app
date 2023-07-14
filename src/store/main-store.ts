@@ -1,11 +1,11 @@
 import { defineStore } from "pinia";
 import { Preferences } from "@capacitor/preferences";
-import { setTheme } from "@/theme/utility";
 import { Network } from '@capacitor/network';
 import { IMainState } from "@/interfaces/state/main-state";
 import { ThemesEnum } from "@/constants/enum";
 import { useAuthStore } from "./auth-store";
 import { version as appVersion } from '../../package.json';
+import { setTheme } from "@/functions/theme-fns";
 
 
 export const useMainStore = defineStore({
@@ -57,9 +57,9 @@ export const useMainStore = defineStore({
     },
     setApiErrorMessage(errorMessage: string | null) {
       this.apiErrorMessage = errorMessage;
-      setTimeout(() => {
-        this.apiErrorMessage = null
-      }, 5000)
+      // setTimeout(() => {
+      //   this.apiErrorMessage = null
+      // }, 5000)
     }
   },
 });

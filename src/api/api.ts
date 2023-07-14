@@ -10,6 +10,7 @@ import { IMessage } from "@/interfaces/message";
 import { IBcast } from "@/interfaces/bcast";
 import handlers from "./handlers";
 
+
 const bcastUserRecordExists = (supabase: SupabaseClient<any, "public", any>, userId: string, bcastId: string) => {
   return supabase.from("bcast_user")
     .select('*')
@@ -18,10 +19,9 @@ const bcastUserRecordExists = (supabase: SupabaseClient<any, "public", any>, use
     .then(handlers.dataHasLengthHandler)
 }
 
-
 const api = (init = false) => (supabase: SupabaseClient<any, "public", any>) => {
   if (init) {
-    throw new Error("Supabase client alredy initialized");
+    throw new Error("Supabase client alredy initialized")
   }
   init = true;
 
@@ -31,7 +31,7 @@ const api = (init = false) => (supabase: SupabaseClient<any, "public", any>) => 
 
     bcast: {
       insert: (userId: string, bcast: IBcast) => {
-        const rawBcast = outputDto.buildRawBcast(userId, bcast);
+        const rawBcast = outputDto.buildRawBcast(userId, bcast)
         return supabase
           .from("bcast")
           .insert(rawBcast);
@@ -54,7 +54,7 @@ const api = (init = false) => (supabase: SupabaseClient<any, "public", any>) => 
         .then(handlers.bcastListHandler),
 
       join: async (userId: string, bcastId: string) => {
-        const bcastUserExists = await bcastUserRecordExists(supabase, userId, bcastId);
+        const bcastUserExists = await bcastUserRecordExists(supabase, userId, bcastId)
         if (bcastUserExists) {
           return supabase
             .from("bcast_user")
@@ -77,7 +77,7 @@ const api = (init = false) => (supabase: SupabaseClient<any, "public", any>) => 
           .eq("bcast_id", bcastId)
           .range(offset, (offset + limit))
           .then(_ => {
-            console.log(`@todo IMPORTANT::check if metadata from pagination is present`);
+            console.log(`@todo IMPORTANT::check if metadata from pagination is present`)
             console.log(_)
             return _;
           })
@@ -104,7 +104,7 @@ const api = (init = false) => (supabase: SupabaseClient<any, "public", any>) => 
             data => {
               const message = handlers.messageInsertedHandler({ payload: data?.new })
               console.log(message)
-              cb(message!!)
+              cb(message)
             }
           )
           .subscribe()
@@ -119,10 +119,10 @@ const api = (init = false) => (supabase: SupabaseClient<any, "public", any>) => 
           .then(handlers.userInfoHandler),
 
       insert: (userId: string, userInfo: IUserInfo) => {
-        const rawUserInfo = outputDto.buildRawUserInfo(userId, userInfo);
+        const rawUserInfo = outputDto.buildRawUserInfo(userId, userInfo)
         return supabase
           .from("user_info")
-          .insert(rawUserInfo);
+          .insert(rawUserInfo)
       },
 
       update: (userId: string, userInfo: Partial<IUserInfo>) => {
@@ -131,7 +131,7 @@ const api = (init = false) => (supabase: SupabaseClient<any, "public", any>) => 
         return supabase
           .from("user_info")
           .update(obj)
-          .eq('id', userId);
+          .eq('id', userId)
       },
     },
 

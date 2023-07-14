@@ -13,8 +13,9 @@
 import { IonApp, IonRouterOutlet, IonPage, IonMenu } from "@ionic/vue";
 import SiderBar from "./components/SideBar.vue";
 import { onMounted } from "vue";
-import {getCurrentPosition} from "@/functions/geolocalization"
+
 import { useMainStore } from "./store/main-store";
+import { getCurrentPosition } from "./functions/geolocalization-fns";
 
 
 const store = useMainStore()

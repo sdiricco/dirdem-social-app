@@ -6,7 +6,7 @@
 
 <script lang="ts" setup>
 import { IonPage } from "@ionic/vue";
-import LoginForm from "@/components/auth/LoginForm.vue";
+import LoginForm from "@/components/LoginForm.vue";
 import { useAuthStore } from "@/store/auth-store";
 import { useMainStore } from "@/store/main-store";
 
